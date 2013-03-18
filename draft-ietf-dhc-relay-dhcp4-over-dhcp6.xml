@@ -1,0 +1,79 @@
+<?xml version='1.0' ?>
+
+<?rfc toc="yes"?>
+<?rfc sortrefs="yes"?>
+<?rfc symrefs="yes"?>
+<?rfc compact="yes"?>
+<?rfc subcompact="no"?>
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+<!ENTITY rfc2119 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
+<!ENTITY rfc3315 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3315.xml">
+]>
+<rfc category="std" docName="draft-ietf-dhc-relay-dhcp4-over-dhcp6"
+     updates="3315" ipr="trust200902">
+  <front>
+    <title abbrev="Relay DHCPv4 over DHCPv6">Relay DHCPv4 messages
+    over DHCPv6</title>
+
+    <author fullname="Marcin Siodelski" initials="M." surname="Siodelski">
+      <organization abbrev="ISC"></organization>
+      <address>
+        <postal>
+          <street>950 Charter Street</street>
+          <city>Redwood City</city>
+          <region>CA</region>
+          <code>94063</code>
+          <country>USA</country>
+        </postal>
+        <phone>+1 650 423 1431</phone>
+        <email>msiodelski@gmail.com</email>
+      </address>
+    </author>
+    <date />
+
+    <area>Internet</area>
+    <workgroup>Dynamic Host Configuration Working Group</workgroup>
+
+
+    <keyword>DHCPv4</keyword>
+    <keyword>DHCPv6</keyword>
+    <keyword>DHCPv4 over DHCPv6</keyword>
+
+    <abstract>
+      <t>This document describes the mechanism to provision the DHCPv4
+      services over the DHCPv6 protocol.</t>
+    </abstract>
+  </front>
+
+  <middle>
+    <section title="Requirements Language">
+      <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
+      NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and
+      "OPTIONAL" in this document are to be interpreted as described in
+      <xref target="RFC2119">RFC 2119</xref>.</t>
+    </section>
+
+    <section title="Introduction">
+      <t>TBD</t>
+    </section>
+
+    <section title="Security Considerations">
+      <t>TBD</t>
+    </section>
+
+    <section title="IANA Considerations">
+      <t>TBD</t>
+    </section>
+
+    <section title="Acknowledgements">
+      <t>TBD</t>
+    </section>
+  </middle>
+
+  <back>
+    <references title="Informative References">
+      &rfc2119;
+      &rfc3315;
+    </references>
+  </back>
+</rfc>
