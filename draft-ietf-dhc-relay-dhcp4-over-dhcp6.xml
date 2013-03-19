@@ -9,7 +9,7 @@
 <!ENTITY rfc2119 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
 <!ENTITY rfc3315 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3315.xml">
 ]>
-<rfc category="std" docName="draft-ietf-dhc-relay-dhcp4-over-dhcp6"
+<rfc category="std" docName="draft-ietf-dhc-relay-dhcp4-over-dhcp6-00"
      updates="3315" ipr="trust200902">
   <front>
     <title abbrev="Relay DHCPv4 over DHCPv6">Relay DHCPv4 messages
@@ -54,7 +54,19 @@
     </section>
 
     <section title="Introduction">
+      <t>During the transition from IPv4 to IPv6 the dual stack networks
+      are common. In such networks either DHCPv4 or DHCPv6 servers are used
+      by hosts to obtain configuration. In many cases, the host being configured
+      with DHCPv4 protocol is separated from the DHCPv4 server by the IPv6 only
+      network segment, while existing protocols to not allow for DHCPv4 to
+      traverse IPv6 network.</t>
+      <t>This document describes extensions to DHCPv6 protocol to allow
+      transmission of DHCPv4 traffic via DHCPv6 enabled network.</t>
+    </section>
+
+    <section title="Protocol Overview">
       <t>TBD</t>
+
     </section>
 
     <section title="Security Considerations">
