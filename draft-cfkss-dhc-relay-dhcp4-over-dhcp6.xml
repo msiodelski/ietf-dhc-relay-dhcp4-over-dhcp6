@@ -7,6 +7,7 @@
 <?rfc subcompact="no"?>
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
 <!ENTITY rfc2119 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
+<!ENTITY rfc2131 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2131.xml">
 <!ENTITY rfc3315 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3315.xml">
 ]>
 <rfc category="std" docName="draft-cfkss-dhc-relay-dhcp4-over-dhcp6-00"
@@ -29,7 +30,23 @@
         <email>msiodelski@gmail.com</email>
       </address>
     </author>
+
+    <author fullname="Qi Sun" initials="Q." surname="Sun">
+      <organization abbrev="(to be specified)"></organization>
+      <address>
+        <postal>
+          <street></street>
+          <city></city>
+          <region></region>
+          <code></code>
+          <country></country>
+        </postal>
+        <phone></phone>
+        <email></email>
+      </address>
+    </author>
     <date />
+
 
     <area>Internet</area>
     <workgroup>Dynamic Host Configuration Working Group</workgroup>
@@ -65,6 +82,27 @@
       transmission of DHCPv4 traffic via DHCPv6 enabled network.</t>
     </section>
 
+    <section title="Terminology">
+      <t>The following terminology has been used in this document:
+      <list style="symbols">
+        <t>Unified Server - the server which is capable to receive and process
+        both DHCPv4 and DHCPv6 packets encapsulated in DHCPv6 Relay-forw
+        messages. Responses to processed DHCPv4 and DHCPv6 packets are sent
+        back to the Relay Agent using DHCPv6 Relay-repl messages.</t>
+      </list>
+      </t>
+    </section>
+
+    <section title="Assumptions">
+      <t>The following requirements have been identified for the protocol
+      described in this document:
+      <list style="numbers">
+        <t>Clients MUST not be modified.</t>
+        <t>Leverage existing DHCPv6 relays infrastructure.</t>
+      </list>
+      </t>
+    </section>
+
     <section title="Use Cases">
       <t>To leverage existing deployed architecture and not require additional
       components to be deployed in the network, existing DHCPv6 relays are
@@ -75,7 +113,7 @@
       described in this document. Thus, if the DHCPv4 client is separated from
       the DHCPv4 server by the IPv6 network segment it is required that DHCPv6
       traffic is carried through this segment and that at least one relay agent
-      resides on the route between the DHCP4 client and server.</t>
+      resides on the route between the DHCPv4 client and server.</t>
 
       <t>It is assumed that there is a DHCPv6 relay deployed on each
       link the clients are connected to.</t>
@@ -84,19 +122,19 @@
               title="Network topology with DHCPv6 server handling
                      DHCPv4 messages">
         <artwork><![CDATA[
-+--------------+   v4
-| DHCP4 client |--------+     Unified    Relayed
-+--------------+        |    +-------+  v4 and v6 +---------------+
-                        +----| Relay |------------| DHCPv6 server |
-+--------------+   v6   |    +-------+ Relay-forw +---------------+
-| DHCP6 client |--------+               (DHCPv6)
-+--------------+
++---------------+   v4
+| DHCPv4 client |-------+    +-------+   Relayed  +---------------+
++---------------+       |    |Unified|  v4 and v6 |    Unified    |
+                        +----| Relay |------------| DHCPv6+DHCPv4 |
++---------------+   v6  |    +-------+ Relay-forw |    Server     |
+| DHCPv6 client |-------+               (DHCPv6)  +---------------+
++---------------+
 ]]></artwork>
       </figure>
 
       <t>The <xref target="overview-dhcp6-server"/> shows the sample network
       topology where the traffic from both DHCPv4 and DHCPv6 clients is directed
-      to the same DHCP6 server. The unified relay agent conveys both v4 or v6
+      to the same server. The unified relay agent conveys both v4 or v6
       messages in RELAY-FORW message described in section 7.1 of
       <xref target="RFC3315">RFC 3315</xref>, but in two different options.
       The DHCPv6 messages are conveyed in OPTION_RELAY_MSG as described in the
@@ -111,15 +149,16 @@
       <xref target="RFC3315">RFC 3315</xref>. Server uses OPTION_RELAY_MSG4 to
       relay responses to DHCPv4 requests.</t>
 
-      <t>The topology presented above requires that not only is DHCP6 server
-      capable to process DHCP6, but also DHCP4 traffic. Such hybrid
-      implementations are common and in many cases can be created with a minimal
-      effort if the particular code comprises shared libraries with DHCP4 and
-      DHCP6 packets processing logic. The exact way how the server processes
-      DHCPv4 traffic received over DHCPv6 is outside of scope for this document.</t>
+      <t>The topology presented above requires that not only is DHCPv6 server
+      capable to process DHCPv6, but also DHCPv4 traffic. Such hybrid
+      implementations (referred here as "Unified Server") are common
+      and in many cases can be created with a minimal effort if the particular
+      code comprises shared libraries with DHCPv4 and DHCPv6 packets processing
+      logic. The exact way how the server processes DHCPv4 traffic received over
+      DHCPv6 is outside of scope for this document.</t>
 
       <t>Another desired use case is to process the v4 and v6 messages on two
-      distinct servers - DHCP6 server processing only v6 messages and the DHCP4
+      distinct servers - one server processing only v6 messages, another
       server processing only v4 messagess. The corresponding network topology
       has been shown on the <xref target="overview-dhcp4-and-dhcp6-server"/>.
       </t>
@@ -128,44 +167,88 @@
               title="Network topology with DHCPv6 server handling
                      DHCPv4 messages">
         <artwork><![CDATA[
-                                             +---------------+
-+---------------+  v4             +-----(4)--| DHCPv6 server |
-| DHCPv4 client |----+            |          +---------------+
-+---------------+    |       +----+--+       +---------------+
-                     +-(1)---| Relay |--(2)--| DHCPv4 server |
-                             +----+--+       +---------------+
+                                             +----------------+
++---------------+  v4             +-----(4)--| Unified Server |
+| DHCPv4 client |----+            |          +----------------+
++---------------+    |       +----+--+       +----------------+
+                     +-(1)---| Relay |--(2)--| Unified Server |
+                             +----+--+       +----------------+
 +---------------+  v6             |
 | DHCPv6 client |------(3)--------+
 +---------------+
 
 1. normal DHCPv4 traffic
-2. DHCPv4 packets encapsulated in RELAY-FORW/RELAY-REPL message in DHCPv6
+2. DHCPv4 packets encapsulated in RELAY-FORW/RELAY-REPL message
+   in DHCPv6
 3. normal DHCPv6 traffic
-4. DHCPv6 packets encapsulated in RELAY-FORW/RELAY-REPL message in DHCPv6
+4. DHCPv6 packets encapsulated in RELAY-FORW/RELAY-REPL message
+   in DHCPv6
 ]]></artwork>
       </figure>
 
-      <t>The v4 message is initiated by the DHCP4 client and is relayed by
+      <t>The v4 message is initiated by the DHCPv4 client and is relayed by
       the Relay in the same way as in the previous example. However, in this
       case the v6 and v4 messages are directed to different destinations.
-      The v4 messages are relayed to the DHCP4 server using IPv4. Therefore,
-      the following conditions MUST be met if the implementation supports this
-      use case.
-      <list style="symbols">
-        <t>The relay agents MUST be configurable so as respective destinations
-        can be specified for v4 and v6 traffic. It MUST be possible to configure
-        different server destinations for each protocol family.</t>
-        <t>The relay agent adjacent to the DHCP4 server MUST be able to
-        relay incoming DHCP4o6 messages using IPv4.</t>
-        <t>The relay agent adjacent to the DHCP4 server MUST be able to
-        receive relayed DHCP4 traffic from the server and relay it using
-        DHCPv6 RELAY-REPL as described above.</t>
-      </list>
-      </t>
+      Therefore, the implementation which supports this use case MUST be
+      capable configurable to specify different server destinations for
+      each protocol family. </t>
+
       <t>The former of the use cases described in this chapter MUST be supported
       by all implementations conforming to this specification. The support for
       the latter use case is optional.</t>
     </section>
+
+    <section title="Client Behavior">
+      <t>The DHCPv4 client follows the <xref target="RFC2131">RFC 2131</xref>
+      without any changes.</t>
+    </section>
+
+    <section title="Relay Bahavior">
+      <t>TBD</t>
+    </section>
+
+    <section title="Server Behavior">
+      <t>The server receives the relayed DHCPv6 traffic in DHCPv6 Relay-forward
+      messages and determines the type of the traffic (DHCPv4 or DHCPv6) by
+      examining whether Relay-forward message comprises the OPTION_RELAY_MSG
+      or OPTION_RELAY_MSG4 option. If a single message contains both types of
+      options than the server MUST drop the message.</t>
+
+      <t>Depending whether the server has received DHCPv4 or DHCPv6 it
+      creates the response and stores it in the OPTION_RELAY_MSG4 or
+      OPTION_RELAY_MSG option respectivelly. This option is in turn packed
+      into DHCPv6 Relay-reply message and sent back to the client.</t>
+    </section>
+
+    <section title="DHCPv4 Relay Message Option Format">
+    <t>The DHCPv4 Message option carries a DHCPv4 message that is sent by the
+    client or the server. Such DHCPv4 messages exclude any IP or UDP headers.</t>
+    <t>The format of the Relay Message option is:</t>
+    <figure align="center" anchor="dhcp4-relay-message-option-format"
+            title="DHCPv4 Relay Message Option Format">
+    <artwork><![CDATA[
+0                   1                   2                   3
+0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|       OPTION_RELAY_MSG4       |           option-len          |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                               |
+.                         DHCPv4-message                        .
+.                                                               .
+.                                                               .
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+option-code    OPTION_RELAY_MSG4 (TBD)
+
+option-len     Length of DHCPv4-message
+
+DHCPv4-message In a Relay-forward message, the received
+               message, relayed verbatim to the next relay agent
+               or server
+
+    ]]></artwork>
+    </figure>
+  </section>
 
     <section title="Security Considerations">
       <t>TBD</t>
@@ -181,8 +264,9 @@
   </middle>
 
   <back>
-    <references title="Informative References">
+    <references title="Normative References">
       &rfc2119;
+      &rfc2131;
       &rfc3315;
     </references>
   </back>
