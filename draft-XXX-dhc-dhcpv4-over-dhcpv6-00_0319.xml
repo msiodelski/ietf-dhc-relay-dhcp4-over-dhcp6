@@ -20,13 +20,18 @@
   <date year="2013"/>
 
   <abstract>
-    <t>This document describes a mechanism called DHCPv4 over DHCPv6, which is used to achieved IPv4 provisioning in a IPv6 network.</t>
+    <t>This document describes a mechanism for obtaining IPv4 parameters in IPv6 networks by carrying DHCPv4 messages over DHCPv6 transport..</t>
   </abstract>
 </front>
 
 <middle>
+	<section title="Introduction">
+	  <t>As the migration to IPv6 continues to happen, IPv6 only networks will become more prevalent, and there will be a need to provide IPv4 as a service over these IPv6 only networks. Along with the ability to provide IPv4 addressing, there might also be a need to provide other IPv4 configuration parameters such as addresses for reaching IPv4 services. There are several approaches possible to provision such information and this document describes one such approach.
+	  </t>
+	</section>
+
 	<section title="Architecture Overview">
-    <t>The architecture of the mechanism is illustrated in the following Figure 1. The client is a DHCP client which can either send and receive DHCPv4 message through IPv6 sessions, or through a new type of DHCPv6 option, which is called DHCPv4 Message option. the format of the option is described in section 2. The client should send all its IPv6 packets, including DHCPv6 packets or DHCPv4 over IPv6 packets (defined in section X) to the well-known multicast address named All_DHCP_Relay_Agents_and_Servers (defined in section 5.1 of RFC 3315).</t>
+    <t>This mechanism works by carrying encapsulated DHCPv4 messages over DHCPv6 messages. One possible architecture detailing the usage of this mechanism is illustrated in the following Figure 1. In this architecture, the client is a DHCP client which can send and receive DHCPv4 message through a new type of DHCPv6 option, which is called DHCPv4 Message option. The format of the option is described in section 2. The client sends all its DHCPv6 packets, including the DHCPv4 over DHCPv6 packets, to the well-known All_DHCP_Relay_Agents_and_Servers multicast address.</t>
 	  <figure>
       <artwork><![CDATA[ 
             _____________             _____________
@@ -44,6 +49,8 @@
       <postamble> Figure 1 Architecture Overview</postamble>
     </figure>
 	</section>
+
+
 	<section title="DHCPv4 Message Option Format">
     <t>The DHCPv4 Message option carries a DHCPv4 message that is sent by the client or the server. Such DHCPv4 messages exclude any IP or UDP headers.</t>
     <t>The format of the Relay Message option is:</t>    
@@ -72,42 +79,79 @@
   </section>
   <section title="Method 1: DHCPv4 over DHCPv6">
   	<section title="Method Overview">
-      <t>In this method, DHCP client will put DHCPv4 message into a DHCPv6 option, i.e. 
-      dhcpv4-message option. The DHCP packets sent out will be a DHCPv6 message.</t>
+      <t>In this method, DHCP client will put DHCPv4 message into a
+      DHCPv6 option, i.e. the dhcpv4-message option. The DHCP packets
+      will be sent out as a DHCPv6 message.</t>
     </section>
     <section title="Client Behavior">
-      <t>In this method, the DHCPv4 messages, including DHCPDISCOVER, DHCPOFFER, DHCPREQUEST,
-         DHCPACK, etc, are conveyed in a newly defined DHCPv6 option mentioned in the former
-         part. When the DHCP client requires an IPv4 address, it MUST generate a BOOTPREQUEST 
-         message to apply one from DHCP server. The DHCPv4 message is wrapped in the
-         dhcpv4-message option, which is then put into the Option field of DHCPv6 message. 
-         The DHCP client sends out the constructed DHCPv6 message to the Well-Known multicast
-         address, i.e. All_DHCP_Relay_Agents_and_Servers multicast address as is defined in 
-         RFC[3315]. The DHCP relay agent receiving the message handles the message as a normal
-         DHCPv6 relay agent in Section 20.1 of [RFC3315]. </t>
+      <t>In this method, the DHCPv4 messages, including DHCPDISCOVER,
+      DHCPOFFER, DHCPREQUEST, DHCPACK, etc, are conveyed in a newly
+      defined DHCPv6 option mentioned in the former part. When the
+      DHCP client requires an IPv4 address, it MUST generate a
+      BOOTPREQUEST message to apply one from DHCP server. The DHCPv4
+      message is wrapped in the dhcpv4-message option, which is then
+      put into the Option field of DHCPv6 message.  The DHCP client
+      sends out the constructed DHCPv6 message to the Well-Known
+      multicast address, i.e. All_DHCP_Relay_Agents_and_Servers
+      multicast address as is defined in RFC[3315]. The DHCP relay
+      agent receiving the message handles the message as a normal
+      DHCPv6 relay agent in Section 20.1 of [RFC3315]. </t>
     </section>
     <section title="Relay Agent Behavior">
-      <t>In this method, DHCP client and server can communicate with each other directly, which makes the relay agent not a must.</t>
+      <t>In this method, DHCP client and server are capable of
+      communicating with each other directly, which does not
+      necessitate any changes in DHCPv6 relay agent behavior.</t>
     </section>
   </section>
   <section title="Method 2: DHCPv4 over IPv6">
     <section title="Client Behavior">
-       <t>In this case, the client is enabled to send and receive DHCPv4 messages through IPv6 sessions. The IPv6 UDP packet that has a DHCPv4 message as its payload is called DHCPv4 over IPv6 packet. The client should use the port 546 as the destination port, and the port 547 as the source port of each DHCPv4 over IPv6 packet. </t>
+       <t>In this case, the client is enabled to send and receive
+       DHCPv4 messages through IPv6 sessions. The IPv6 UDP packet that
+       has a DHCPv4 message as its payload is called DHCPv4 over IPv6
+       packet. The client should use the port 546 as the destination
+       port, and the port 547 as the source port of each DHCPv4 over
+       IPv6 packet. </t>
     </section>
     <section title="Relay Agent Behavior">
-       <t>The relay agent should also send and receive DHCPv4 messages through IPv6 on the interface faced to the client. It should listen to the DHCPv4 over IPv6 packet on the port 546, and send DHCPv4 over IPv6 packet to the port 547.</t>
-       <t>When the relay agent received a BOOTPREQUEST message (i.e., DHCPDISCOVER, DHCPREQUEST, etc.), it constructs a new relay agent-forward message. It then copies the source IPv6 address from the header of the received DHCPv4 over IPv6 packet to the peer-address field of the relay agent-forward message. The relay agent copies the received BOOTPREQUEST message (excluding any IP or UDP headers) into the DHCPv4 Message option in the new message. It then forwards such a relay agent-forward message to the server.</t>
-       <t>When the relay agent received a relay agent-relay message that includes the DHCPv4 Message option from the server, it should extract the DHCPv4 message from the DHCPv4 Message option of the message, and relay agent it to the address contained in the peer-address field of the relay agent-reply message.</t>
+
+       <t>The relay agent should also send and receive DHCPv4 messages
+       through IPv6 on the interface facing to the client. It should
+       listen for DHCPv4 over IPv6 packets on port 546, and send
+       DHCPv4 over IPv6 packets on port 547.</t>
+
+       <t>When the relay agent receives a BOOTPREQUEST message (i.e.,
+       DHCPDISCOVER, DHCPREQUEST, etc.), it constructs a new relay
+       agent-forward message. It then copies the source IPv6 address
+       from the header of the received DHCPv4 over IPv6 packet to the
+       peer-address field of the relay agent-forward message. The
+       relay agent copies the received BOOTPREQUEST message (excluding
+       any IP or UDP headers) into the DHCPv4 Message option in the
+       new message. It then forwards such a relay agent-forward
+       message to the server.</t>
+
+       <t>When the relay agent received a relay agent-relay message
+       that includes the DHCPv4 Message option from the server, it
+       should extract the DHCPv4 message from the DHCPv4 Message
+       option of the message, and relay agent it to the address
+       contained in the peer-address field of the relay agent-reply
+       message.</t>
+
     </section>
   </section>
+
   <section title="Server Behavior">
-    <t>When a DHCPv6 server receives a valid DHCPv6 message, it checks DHCPv4 Message option and takes the payload of the option as DHCPv4 message. The DHCPv4 message is handled by the DHCPv6 server or another DHCPv4 server.</t>
+    <t>When a DHCPv6 server receives a valid DHCPv6 message, it checks
+    for the presence of a DHCPv4 Message option. If it is present, the
+    server processes the payload of the option as a DHCPv4
+    message. The DHCPv4 message is handled by the DHCPv6 server itself
+    (most likeley scenario) or forwarded to another DHCPv4 server.</t>
 
-    <t>When there is a replied DHCPv4 message, the DHCPv6 server MUST include a DHCPv4 Message option in the replied DHCPv6 message with the replied DHCPv4 message as the option payload. If there is no DHCPv4 message replied, the replied DHCPv6 message MUST NOT include the DHCPv4 Message option.</t>
+    <t>When sending out a DHCPv4 reply message, the DHCPv6 server MUST include a DHCPv4 Message option in an encapsulating DHCPv6 message that contains the DHCPv4 message as the option payload. </t>
 
-    <t>The DHCPv4 messages with the same transaction ID SHOULD NOT be transported in a pair of DHCPv6 messages with different transaction IDs.</t>
+    <t>DHCPv4 messages with the same transaction ID SHOULD NOT be
+    transported inside DHCPv6 messages with different transaction
+    IDs.</t>
 
-    <t>When there is no replied DHCPv6 message, the server discards the replied DHCPv4 message.</t>	
   </section>
 </middle>
 
@@ -125,4 +169,4 @@
 
 </back>
 </rfc>
-
+
