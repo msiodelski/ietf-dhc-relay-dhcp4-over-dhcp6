@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="US-ASCII"?>
 
-<!DOCTYPE rfc SYSTEM "rfc2629.dtd">
 <?rfc toc="yes"?>
 <?rfc tocompact="yes"?>
 <?rfc tocdepth="6"?>
@@ -8,111 +7,162 @@
 <?rfc sortrefs="yes"?>
 <?rfc autobreaks="no"?>
 <?rfc subcompact="no"?>
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+<!ENTITY rfc2131 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2131.xml">
+<!ENTITY rfc3315 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3315.xml">
+]>
 
 <rfc category="info" docName="draft-XXX-dhc-dhcpv4-over-dhcpv6-00" ipr="trust200902">
-    
+
 <front>
   <title abbrev="DHCPv4 over DHCPv6">DHCPv4 over DHCPv6 Transport</title>
    <author></author>
 <!-- Leave author list blank -->
-    
+
 
   <date year="2013"/>
 
   <abstract>
-    <t>This document describes a mechanism for obtaining IPv4 parameters in IPv6 networks by carrying DHCPv4 messages over DHCPv6 transport.</t>
+    <t>This document describes a mechanism for obtaining IPv4 parameters
+    in IPv6 networks by carrying DHCPv4 messages over DHCPv6 transport.</t>
   </abstract>
 </front>
 
 <middle>
     <section title="Introduction">
-      <t>As the migration to IPv6 continues to happen, IPv6 only networks will become more prevalent, and there will be a need to provide IPv4 as a service over these IPv6 only networks. Along with the ability to provide IPv4 addressing, there might also be a need to provide other IPv4 configuration parameters such as addresses for reaching IPv4 services. There are several approaches possible to provision such information and this document describes one such approach.
+      <t>As the migration to IPv6 continues to happen, IPv6 only networks
+      will become more prevalent, and there will be a need to provide IPv4
+      as a service over these IPv6 only networks. Along with the ability
+      to provide IPv4 addressing, there might also be a need to provide
+      other IPv4 configuration parameters such as addresses for reaching
+      IPv4 services. There are several approaches possible to provision
+      such information and this document describes one such approach.
       </t>
     </section>
 
     <section title="Architecture Overview">
-    <t>This mechanism works by carrying encapsulated DHCPv4 messages over DHCPv6 messages. One possible architecture detailing the usage of this mechanism is illustrated in the following Figure 1. In this architecture, the client is a DHCP client which can send and receive DHCPv4 message through a new type of DHCPv6 option, which is called DHCPv4 Message option. The format of the option is described in section 2. The client sends all its DHCPv6 packets, including the DHCPv4 over DHCPv6 packets, to the well-known All_DHCP_Relay_Agents_and_Servers multicast address.</t>
-    
-    <t>The DHCP clients can be running on CPE devices or end hosts, etc. At the time this document is written, 
-    DHCP clients on CPE devices are relatively easier to be modified comparing to those on end hosts. So this 
-    document takes the CPE as an example for describing the mechanism. This doesn't preclude end hosts from 
-    implementing the mechanism in the future.</t>
-    
-      <figure>
-      <artwork><![CDATA[ 
-            _____________             _____________
-           /             \           /             \
-           |             |           |             |
-  +--------+-+  IPv6   +-+-----------+-+  IPv6   +-+--------+
-  |   DHCP   | network |     DHCP      | network | Unified  |
-  |  Client  +---------+  Relay Agent  +---------+  Server  |
-  | (on CPE) |         |               |         |          |
-  +--------+-+         +-+-----------+-+         +-+--------+
-           |             |           |             |
-           \_____________/           \_____________/
-    
-      ]]></artwork>    
-      <postamble> Figure 1 Architecture Overview</postamble>
+    <t>The architecture described in this document addresses the typical
+    use case, where the DHCP client's uplink support IPv6 only and the
+    Service Provider's network support IPv6 and limited IPv4 services which
+    need to be accessed by the client over IPv6 only network.</t>
+
+    <t>The DHCP clients can be running on CPE devices or end hosts, etc.
+    At the time this document is written, DHCP clients on CPE devices are
+    relatively easier to be modified comparing to those on end hosts. So this
+    document takes the CPE as an example for describing the mechanism.
+    This doesn't preclude end hosts from implementing the mechanism in the
+    future. </t>
+
+    <t>This mechanism works by carrying encapsulated DHCPv4 messages over
+    DHCPv6 messages. One possible architecture detailing the usage of this
+    mechanism is illustrated in the <xref target="architecture-overview"/>.
+    In this architecture, the client is a DHCP client which can send and
+    receive DHCPv4 message through a new type of DHCPv6 option, which is
+    called DHCPv4 Message option. The format of the option is described in
+    section 2. The client sends all its DHCPv6 packets, including the DHCPv4
+    over DHCPv6 packets, to the well-known All_DHCP_Relay_Agents_and_Servers
+    multicast address on the DHCPv6 server port 547.</t>
+
+    <t>The DHCPv6 packet can be transmitted either via Relay Agents or
+    directly to the server. The server is referred in this document as
+    "Unified Server" for its capability of processing regular DHCPv6
+    traffic as well as DHCPv4 packets wrapped in the DHCPv4 Message
+    Option. Server replies with a relevant DHCPv6 packet carrying
+    DHCPv4 response wrapped with the DHCPv4 Message Option. The Client
+    receives response on the port 546.
+    </t>
+
+      <figure align="center" anchor="architecture-overview"
+              title="Architecture Overview">
+      <artwork><![CDATA[
+           _____________             _____________
+          /             \           /             \
+          |             |           |             |
+ +--------+-+  IPv6   +-+-----------+-+  IPv6   +-+--------+
+ |   DHCP   | network |     DHCP      | network | Unified  |
+ |  Client  +---------+  Relay Agent  +---------+  Server  |
+ | (on CPE) |         |               |         |          |
+ +--------+-+         +-+-----------+-+         +-+--------+
+          |             |           |             |
+          \_____________/           \_____________/
+
+      ]]></artwork>
     </figure>
-	</section>
+    </section>
 
 
     <section title="DHCPv4 Message Option Format">
-    <t>The DHCPv4 Message option carries a DHCPv4 message that is sent by the client or the server. Such DHCPv4 messages exclude any IP or UDP headers.</t>
-    <t>The format of the Relay Message option is:</t>    
-    <figure>
-    <artwork><![CDATA[ 
-       0                   1                   2                   3
-       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      |        OPTION_DHCPV4_MSG      |           option-len          |
-      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      |                                                               |
-      .                         DHCPv4-message                        .
-      .                                                               .
-      .                                                               .
-      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    <t>The DHCPv4 Message option carries a DHCPv4 message that is sent
+    by the client or the server. Such DHCPv4 messages exclude any IP or
+    UDP headers.</t>
+    <t>The format of the DHCPv4 Message Option is:</t>
+    <figure align="center" anchor="option-dhcpv4-msg"
+            title="DHCPv4 Message Option Format">
+    <artwork><![CDATA[
+0                   1                   2                   3
+0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|        OPTION_DHCPV4_MSG      |           option-len          |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                               |
+.                         DHCPv4-message                        .
+.                                                               .
+.                                                               .
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
-      option-code    OPTION_DHCPV4_MSG (TBD)
+   option-code    OPTION_DHCPV4_MSG (TBD)
 
-      option-len     Length of DHCPv4-message
+   option-len     Length of DHCPv4-message
 
-      DHCPv4-message The DHCPv4 message sent by the client or the server
-          
-    ]]></artwork>    
-    <postamble> Figure 2 DHCPv4 Message Option Format</postamble>
+   DHCPv4-message The DHCPv4 message sent by the client or the server
+
+    ]]></artwork>
     </figure>
   </section>
+<!--
   <section title="Method 1: DHCPv4 over DHCPv6">
     <section title="Method Overview">
       <t>In this method, DHCP client will put DHCPv4 message into a
       DHCPv6 option, i.e. the DHCPv4 Message Option. The DHCP packets
       will be sent out as a DHCPv6 message.</t>
     </section>
+-->
     <section title="Client Behavior">
-      <t>In this method, the DHCPv4 messages, including DHCPDISCOVER,
-      DHCPOFFER, DHCPREQUEST, DHCPACK, etc, are conveyed in a newly
-      defined DHCPv6 option mentioned in the former part. When the
-      DHCP client requires an IPv4 address, it MUST generate a
-      BOOTPREQUEST message to apply one from DHCP server. The DHCPv4
-      message is wrapped in the DHCPv4 Message Option, which is then
-      put into the Option field of DHCPv6 message.  The DHCP client
-      sends out the constructed DHCPv6 message to the Well-Known
-      multicast address, i.e. All_DHCP_Relay_Agents_and_Servers
-      multicast address as is defined in RFC[3315]. The DHCP relay
-      agent receiving the message handles the message as a normal
-      DHCPv6 relay agent in Section 20.1 of [RFC3315]. </t>
+      <t>The DHCPv4 messages, including DHCPDISCOVER, DHCPOFFER, DHCPREQUEST,
+      DHCPACK, etc, are conveyed in a newly defined DHCPv6 option mentioned
+      in the former part. When the DHCP client requires an IPv4 address,
+      it MUST generate a DHCPv4 message to apply one from DHCP server.
+      The DHCPv4 message is wrapped in the DHCPv4 Message Option, which is
+      then put into the Option field of DHCPv6 message. Client MUST store
+      exactly one DHCPv4 Message Option in a single DHCPv6 message. The DHCP
+      client sends out the constructed DHCPv6 message to the  Well-Known multicast
+      address, i.e. All_DHCP_Relay_Agents_and_Servers multicast address as is
+      defined in <xref target="RFC3315"/>. The DHCP relay agent receiving the
+      message handles the message as a normal DHCPv6 relay agent in Section 20.1
+      of <xref target="RFC3315"/>.
+      </t>
     </section>
     <section title="Relay Agent Behavior">
-      <t>The DHCP relay agent will receive the DHCPv6 message containing 
-      DHCPv4 Message Option from the multicast interface. It then handles the 
-      message as a normal DHCPv6 relay agent as in Section 20.1 of [RFC3315].
-      In this method, DHCP client and server are capable of communicating with 
+      <t>The DHCP relay agent will receive the DHCPv6 message containing
+      DHCPv4 Message Option from the multicast interface. It then handles the
+      message as a normal DHCPv6 relay agent as in Section 20.1 of <xref target="RFC3315"/>.
+      In this method, DHCP client and server are capable of communicating with
       each other directly, which does not necessitate any changes in
       DHCPv6 relay agent behavior.</t>
     </section>
+
+    <section title="Server Behavior">
+      <t>Server receives DHCPv6 packets from the Relay Agent or directly
+      from the Client. If it finds that received packet comprises the
+      DHCPv4 Message Option it unpacks the content of this option and
+      processes it as a regular DHCPv4 packet. The exact way how the
+      server processes the DHCPv4 packet received over DHCPv6 protocol
+      is out of the scope of this document.
+      </t>
+    </section>
+<!--
   </section>
-  <section title="Method 2: DHCPv4 over IPv6">
+ <section title="Method 2: DHCPv4 over IPv6">
     <section title="Client Behavior">
        <t>In this case, the client is enabled to send and receive
        DHCPv4 messages through IPv6 sessions. The IPv6 UDP packet that
@@ -150,9 +200,9 @@
 
   <section title="Server Behavior">
     <t>When a DHCPv6 server receives a valid DHCPv6 message, it checks
-    for the presence of a DHCPv4 Message Option. If it is not present, 
-    the server handles the DHCPv6 packet as is defined in [RFC3315]. If it is present, the
-    server processes the payload of the option as a DHCPv4
+    for the presence of a DHCPv4 Message Option. If it is not present,
+    the server handles the DHCPv6 packet as is defined in <xref target="RFC3315"/>.
+    If it is present, the server processes the payload of the option as a DHCPv4
     message. The DHCPv4 message is handled by the DHCPv6 server itself
     (most likely scenario) or forwarded to another DHCPv4 server.</t>
 
@@ -164,19 +214,18 @@
     IDs.</t>
 
   </section>
+-->
 </middle>
 
 <back>
 
   <references title="Normative References">
-  	
-     <?rfc include="reference.RFC.3315" ?>
-     <?rfc include="reference.RFC.2131" ?>
-   
+    &rfc2131;
+    &rfc3315;
   </references>
 
   <references title="Informative References">
-  	<?rfc include="reference.I-D.ietf-dhc-dhcpv4-over-ipv6" ?>   
+    <?rfc include="reference.I-D.ietf-dhc-dhcpv4-over-ipv6" ?>
   </references>
 
 </back>
