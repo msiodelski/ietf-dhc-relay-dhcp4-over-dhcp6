@@ -157,7 +157,7 @@
     (most likely scenario) or forwarded to another DHCPv4 server.</t>
 
     <t>When sending out a DHCPv4 reply message, the DHCPv6 server MUST include a DHCPv4 Message Option in an encapsulating DHCPv6 message that contains the DHCPv4 message as the option payload.
-    The server should use the link-address in the RELAY_FORW message to tell which link the client is located.</t>
+    </t>
 
     <t>DHCPv4 messages with the same transaction ID SHOULD NOT be
     transported inside DHCPv6 messages with different transaction
@@ -171,6 +171,7 @@
   <references title="Normative References">
   	
      <?rfc include="reference.RFC.3315" ?>
+     <?rfc include="reference.RFC.2131" ?>
    
   </references>
 
