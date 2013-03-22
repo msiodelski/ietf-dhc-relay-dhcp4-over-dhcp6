@@ -68,14 +68,14 @@ Table of Contents
    2.  Requirements Language . . . . . . . . . . . . . . . . . . . .   2
    3.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   2
    4.  Architecture Overview . . . . . . . . . . . . . . . . . . . .   3
-   5.  DHCPv4 Message Option Format  . . . . . . . . . . . . . . . .   4
+   5.  BOOTP Message Option Format . . . . . . . . . . . . . . . . .   4
    6.  Client Behavior . . . . . . . . . . . . . . . . . . . . . . .   4
    7.  Relay Agent Behavior  . . . . . . . . . . . . . . . . . . . .   5
    8.  Server Behavior . . . . . . . . . . . . . . . . . . . . . . .   5
    9.  Contributors List . . . . . . . . . . . . . . . . . . . . . .   5
-   10. IANA Consideration  . . . . . . . . . . . . . . . . . . . . .   5
-   11. References  . . . . . . . . . . . . . . . . . . . . . . . . .   5
-     11.1.  Normative References . . . . . . . . . . . . . . . . . .   5
+   10. IANA Consideration  . . . . . . . . . . . . . . . . . . . . .   6
+   11. References  . . . . . . . . . . . . . . . . . . . . . . . . .   6
+     11.1.  Normative References . . . . . . . . . . . . . . . . . .   6
      11.2.  Informative References . . . . . . . . . . . . . . . . .   6
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   6
 
@@ -97,15 +97,15 @@ Table of Contents
 
 3.  Terminology
 
-   BOOTREQUESTV6 (TBD) A new type of DHCPv6 Client/Server message
-   defined in this document.  A client sends to a server a BOOTREQUESTV6
-   message, which contains a DHCPv4 Message Option.  Each DHCPv4 Message
-   Option contains a BOOTREQUEST message that client used to request
-   IPv4 configuration parameters from the server.
+   This document makes use of the following terms
 
-   BOOTREPLYV6 (TBD) A new type of DHCPv6 Client/Server message defined
-   in this document.  A server sends a BOOTREPLYV6 message, which
-   contains a DHCPv4 Message Option, in response to the BOOTREQUESTV6
+   o  BOOTREQUESTV6 (TBD): A new type of DHCPv6 Client/Server message
+      defined in this document.  A client sends to a server a
+      BOOTREQUESTV6 message, which contains a BOOTP Message Option.
+      Each BOOTP Message Option contains a BOOTREQUEST message that
+      client used to request IPv4 configuration parameters from the
+      server.
+
 
 
 
@@ -114,17 +114,24 @@ Sun, et al.            Expires September 23, 2013               [Page 2]
 Internet-Draft             DHCPv4 over DHCPv6                 March 2013
 
 
-   message received from a client.  Each DHCPv4 Message Option wrapped
-   in a BOOTREPLYV6 message contains a BOOTREPLY message, which is the
-   response to the corresponding BOOTREQUEST message in BOOTREQUESTV6
-   message received from the client.
+   o  BOOTREPLYV6 (TBD): A new type of DHCPv6 Client/Server message
+      defined in this document.  A server sends a BOOTREPLYV6 message,
+      which contains a BOOTP Message Option, in response to the
+      BOOTREQUESTV6 message received from a client.  Each BOOTP Message
+      Option, wrapped in a BOOTREPLYV6 message contains a BOOTREPLY
+      message, which is the response to the corresponding BOOTREQUEST
+      message in BOOTREQUESTV6 message received from the client.
 
 4.  Architecture Overview
 
    The architecture described in this document addresses the typical use
-   case, where the DHCP client's uplink support IPv6 only and the
-   Service Provider's network support IPv6 and limited IPv4 services
+   case, where the DHCP client's uplink supports IPv6 only and the
+   Service Provider's network supports IPv6 and limited IPv4 services
    which need to be accessed by the client over IPv6 only network.
+   Although, the purpose of this document is to address the problem of
+   communication between DHCPv4 client and DHCPv4 server, the mechanisms
+   it describes do not restrict the transported types of messages to
+   DHCPv4.  The BOOTP messages can be transported as well.
 
    The DHCP clients can be running on CPE devices or end hosts, etc.  At
    the time this document is written, DHCP clients on CPE devices are
@@ -136,11 +143,11 @@ Internet-Draft             DHCPv4 over DHCPv6                 March 2013
    This mechanism works by carrying encapsulated DHCPv4 messages over
    DHCPv6 messages.  One possible architecture detailing the usage of
    this mechanism is illustrated in the Figure 1.  In this architecture,
-   the client is a DHCP client which can send and receive DHCPv4 message
+   the client is a DHCP client which can send and receive BOOTP message
    using a new type of DHCPv6 message with a new type of DHCPv6 option.
-   The DHCPv6 message is called BOOTREQUESTV6 message, while the new
-   option is DHCPv4 Message option.  The format of the option is
-   described in section 2.  The client sends all its DHCPv6 packets,
+   The DHCPv6 message is called BOOTREQUESTV6 message.  The new option
+   is called BOOTP Message Option.  The format of the option is
+   described in Section 5.  The client sends all its DHCPv6 packets,
    including the DHCPv4 over DHCPv6 packets, to the well-known
    All_DHCP_Relay_Agents_and_Servers multicast address on the DHCPv6
    server port 547.
@@ -148,17 +155,10 @@ Internet-Draft             DHCPv4 over DHCPv6                 March 2013
    The DHCPv6 packet can be transmitted either via Relay Agents or
    directly to the server.  The server is referred in this document as
    "Unified Server" for its capability of processing regular DHCPv6
-   traffic as well as DHCPv4 packets wrapped in the DHCPv4 Message
+   traffic as well as DHCPv4 packets wrapped in the BOOTP Message
    Option.  Server replies with a relevant DHCPv6 packet carrying DHCPv4
-   response wrapped with the DHCPv4 Message Option.  The Client receives
+   response wrapped with the BOOTP Message Option.  Client receives
    response on the port 546.
-
-
-
-
-
-
-
 
 
 
@@ -184,34 +184,34 @@ Internet-Draft             DHCPv4 over DHCPv6                 March 2013
 
                       Figure 1: Architecture Overview
 
-5.  DHCPv4 Message Option Format
+5.  BOOTP Message Option Format
 
-   The DHCPv4 Message option carries a DHCPv4 message that is sent by
-   the client or the server.  Such DHCPv4 messages exclude any IP or UDP
+   The BOOTP Message option carries a BOOTP message that is sent by the
+   client or the server.  Such BOOTP messages exclude any IP or UDP
    headers.
 
-   The format of the DHCPv4 Message Option is:
+   The format of the BOOTP Message Option is:
 
-   0                   1                   2                   3
-   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |        OPTION_DHCPV4_MSG      |           option-len          |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                                                               |
-   .                         DHCPv4-message                        .
-   .                                                               .
-   .                                                               .
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |        OPTION_BOOTP_MSG       |           option-len          |
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |                                                               |
+    .                         BOOTP-message                         .
+    .                                                               .
+    .                                                               .
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
-      option-code    OPTION_DHCPV4_MSG (TBD)
+       option-code    OPTION_BOOTP_MSG (TBD)
 
-      option-len     Length of DHCPv4-message
+       option-len     Length of BOOTP-message
 
-      DHCPv4-message The DHCPv4 message sent by the client or the server.
-                     In a BOOTREQUESTV6 message, contains a BOOTREQUEST
-                     message sent by client. In a BOOTREPLYV6 message,
-                     contains a BOOTREPLY message sent by server in
-                     response to a client.
+       BOOTP-message The BOOTP message sent by the client or the
+                     server. In a BOOTREQUESTV6 message, contains a
+                     BOOTREQUEST message sent by client. In a
+                     BOOTREPLYV6 message, contains a BOOTREPLY message
+                     sent by server in response to a client.
 
                   Figure 2: DHCPv4 Message Option Format
 
@@ -226,18 +226,19 @@ Sun, et al.            Expires September 23, 2013               [Page 4]
 Internet-Draft             DHCPv4 over DHCPv6                 March 2013
 
 
-   configuration parameters, it MUST generate a BOOTREQUEST message to
-   apply them from a server.  The BOOTREQUEST message is wrapped in the
-   DHCPv4 Message Option, which is then put into the Option field of the
-   BOOTREQUESTV6 message.  Client MUST put exactly one DHCPv4 Message
-   Option in a single BOOTREQUESTV6 message.  The client sends out the
-   BOOTREQUESTV6 message to the Well-Known multicast address, i.e.
-   All_DHCP_Relay_Agents_and_Servers multicast address defined in
-   [RFC3315].
+   configuration parameters, it MUST generate a DHCPv4 message to obtain
+   them from a server.  This message is stored verbatim in the BOOTP
+   Message Option carried by BOOTREQUESTV6 message.  Client MUST put
+   exactly one BOOTP Message Option in a single BOOTREQUESTV6 message.
+   Client sends out the BOOTREQUESTV6 message to the Well-Known
+   multicast address, i.e.  All_DHCP_Relay_Agents_and_Servers on
+   multicast address defined in [RFC3315].
 
-   When the client receives a BOOTREPLYV6 message, it MUST extract the
-   BOOTREPLY message in the DHCPv4 Message Option of the message, and
-   then handle the message as described in section 4.4 of [RFC2131].
+   When client receives a BOOTREPLYV6 message, it MUST look for the
+   BOOTP Message Option in this message.  If this option is not found,
+   the BOOTREPLYV6 message is discarded.  If BOOTP Message Option is
+   found, client extracts the DHCPv4 message it contains and processes
+   as described in section 4.4 of [RFC2131].
 
 7.  Relay Agent Behavior
 
@@ -246,34 +247,33 @@ Internet-Draft             DHCPv4 over DHCPv6                 March 2013
 
 8.  Server Behavior
 
-   If the server receives a BOOTREQUESTV6 message from a client
-   directly, it MUST extract the BOOTREQUEST message from the DHCPv4
-   Message Option in the BOOTREQUESTV6 message, and then hand it over to
-   its DHCPv4 engine.
+   If the server receives a BOOTREQUESTV6 message from a client, it
+   searches for BOOTP Message Option.  If this option is missing, the
+   server discards the packet.  Server MAY choose to notify an
+   administrator about reception of malformed packet.  The exact way how
+   server notifies an administrator is out of the scope of this document
 
-   The DHCPv4 engine of the server will response to a specific
-   BOOTREQUEST message as is defined in [RFC2131].  The server MUST wrap
-   the message into the DHCPv4 Message Option and put the option into a
-   BOOTREPLYV6 message.  It then sends BOOTREPLYV6 message to the source
-   IPv6 address of the received BOOTREQUESTV6 message.
+   If server finds the valid BOOTP Message Option, it extracts the
+   original DHCPv4 message sent by the client.  This message is in turn
+   passed to the DHCPv4 server engine, which creates a response to the
+   client's message as specified in [RFC2131].  Server stores the DHCPv4
+   response message, produced by the engine, in a payload of BOOTP
+   Message Option, which it stores in the BOOTREPLYV6 message.  If the
+   BOOTREQUESTV6 message was received directly by the server the
+   BOOTREPLYV6 message MUST be unicast through the interface on which
+   the original message was received.
 
-   If the received BOOTREQUESTV6 message is relayed by relay agent(s),
-   or the BOOTREPLYV6 message will be sent to a relay agent, the server
-   MUST handle the messages as described in section 20 of [RFC3315].
+   If the BOOTREQUESTV6 message was received in a Relay-forward message,
+   the server creates a Relay-reply message with the BOOTREPLYV6 message
+   in the payload of a Relay Message Option analogously to other types
+   of DHCPv6 messages as described in [RFC3315].  The server unicasts
+   the Relay-reply message directly to the IP address of the relay agent
+   from which the Relay-forward message was received.
 
 9.  Contributors List
 
    Many thanks to Ted Lemon, Bernie Volz, Tomek Mrugalski, Yuchi Chen
    and Cong Liu, for their great contributions to the draft.
-
-10.  IANA Consideration
-
-   IANA is kindly requested to allocate one DHCPv6 option code to the
-   OPTION_DHCPV4_MSG and two DHCPv6 message type code to the
-   BOOTREQUESTV6 and BOOTREPLYV6.
-
-11.  References
-
 
 
 
@@ -281,6 +281,14 @@ Sun, et al.            Expires September 23, 2013               [Page 5]
 
 Internet-Draft             DHCPv4 over DHCPv6                 March 2013
 
+
+10.  IANA Consideration
+
+   IANA is kindly requested to allocate one DHCPv6 option code to the
+   OPTION_BOOTP_MSG and two DHCPv6 message type codes to the
+   BOOTREQUESTV6 and BOOTREPLYV6.
+
+11.  References
 
 11.1.  Normative References
 
@@ -323,6 +331,13 @@ Authors' Addresses
    Email: yong@csnet1.cs.tsinghua.edu.cn
 
 
+
+
+Sun, et al.            Expires September 23, 2013               [Page 6]
+
+Internet-Draft             DHCPv4 over DHCPv6                 March 2013
+
+
    Marcin Siodelski
    950 Charter Street
    Redwood City, CA  94063
@@ -330,12 +345,6 @@ Authors' Addresses
 
    Phone: +1 650 423 1431
    Email: msiodelski@gmail.com
-
-
-
-Sun, et al.            Expires September 23, 2013               [Page 6]
-
-Internet-Draft             DHCPv4 over DHCPv6                 March 2013
 
 
    Suresh Krishnan
@@ -351,15 +360,6 @@ Internet-Draft             DHCPv4 over DHCPv6                 March 2013
    Germany
 
    Email: ian.farrer@telekom.de
-
-
-
-
-
-
-
-
-
 
 
 
