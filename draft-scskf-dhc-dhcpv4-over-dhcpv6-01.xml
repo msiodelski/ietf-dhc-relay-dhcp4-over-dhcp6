@@ -11,9 +11,10 @@
 <!ENTITY rfc2119 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
 <!ENTITY rfc2131 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2131.xml">
 <!ENTITY rfc3315 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3315.xml">
+<!ENTITY rfc4361 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4361.xml">
 ]>
 
-<rfc category="std" docName="draft-scskf-dhc-dhcpv4-over-dhcpv6-00" ipr="trust200902">
+<rfc category="std" docName="draft-scskf-dhc-dhcpv4-over-dhcpv6-01" ipr="trust200902">
 
 <front>
   <title abbrev="DHCPv4 over DHCPv6">DHCPv4 over DHCPv6 Transport</title>
@@ -211,8 +212,8 @@
 
       <t>The format of the BOOTP Message Option is: </t>
 
-      <figure align="center" anchor="option-dhcpv4-msg"
-            title="DHCPv4 Message Option Format">
+      <figure align="center" anchor="option-bootp-msg"
+            title="BOOTP Message Option Format">
       <artwork><![CDATA[
 0                   1                   2                   3
 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -252,9 +253,9 @@
       parameters, it MUST generate a DHCPv4 message to obtain them from a server.
       This message is stored verbatim in the BOOTP Message Option carried by
       BOOTREQUESTV6 message. Client MUST put exactly one BOOTP Message Option in a
-      single BOOTREQUESTV6 message. Client sends out the BOOTREQUESTV6 message to the
-      Well-Known multicast address, i.e. All_DHCP_Relay_Agents_and_Servers on multicast
-      address defined in <xref target="RFC3315"/>. </t>
+      single BOOTREQUESTV6 message. Client sends out the BOOTREQUESTV6 message 
+      to the Well-Known multicast address, i.e. All_DHCP_Relay_Agents_and_Servers
+      on multicast address defined in <xref target="RFC3315"/>. </t>
 
       <t>When client receives a BOOTREPLYV6 message, it MUST look for the
       BOOTP Message Option in this message. If this option is not found, the
@@ -262,6 +263,10 @@
       client extracts the DHCPv4 message it contains and processes as described
       in section 4.4 of <xref target="RFC2131"/>.
       </t>
+
+      <t>The client MUST implement <xref target="RFC4361"/> to work properly 
+      because the DHCPv4 and DHCPv6 engines are on the same client, or in other 
+      words DHCPv4 and DHCPv6 clients are on the same device. </t>
     </section>
 
     <section title="Relay Agent Behavior">
@@ -308,18 +313,27 @@
 
     </section>
 
-    <section title="Contributors List">
-      <t>Many thanks to Ted Lemon, Bernie Volz, Tomek Mrugalski,
-      Yuchi Chen and Cong Liu, for their great contributions to the draft.</t>
-    </section>
+  <section title="Security Considerations">
+    <t>In this specification, DHCPv6 is made a 'transport protocol' for DHCPv4
+    messages over an IPv6 network. In order to bypass firewalls or network 
+    authentication gateways, a malicious attacker may leverage this 
+    feature to convey other messages using DHCPv6, i.e. take DHCPv6
+    as a new type of tunnel. However the damage is the same with current
+    DHCPv4 and DHCPv6 practice.</t>
+  </section>
 
-  <section title="IANA Consideration">
+  <section title="IANA Considerations">
 
     <t>IANA is kindly requested to allocate one DHCPv6 option code to the
     OPTION_BOOTP_MSG and two DHCPv6 message type codes to the BOOTREQUESTV6
     and BOOTREPLYV6. </t>
 
   </section>
+
+    <section title="Contributors List">
+      <t>Many thanks to Ted Lemon, Bernie Volz, Tomek Mrugalski,
+      Yuchi Chen and Cong Liu, for their great contributions to the draft.</t>
+    </section>
 
 <!--
   </section>
@@ -396,6 +410,7 @@
   <references title="Normative References">
     &rfc2131;
     &rfc3315;
+    &rfc4361;
   </references>
 
   <references title="Informative References">
