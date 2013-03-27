@@ -5,13 +5,13 @@
 Network Working Group                                             Q. Sun
 Internet-Draft                                                    Y. Cui
 Intended status: Standards Track                     Tsinghua University
-Expires: September 27, 2013                                 M. Siodelski
+Expires: September 28, 2013                                 M. Siodelski
                                                                      ISC
                                                              S. Krishnan
                                                                 Ericsson
                                                                I. Farrer
                                                      Deutsche Telekom AG
-                                                          March 26, 2013
+                                                          March 27, 2013
 
 
                       DHCPv4 over DHCPv6 Transport
@@ -37,7 +37,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on September 27, 2013.
+   This Internet-Draft will expire on September 28, 2013.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Sun, et al.            Expires September 27, 2013               [Page 1]
+Sun, et al.            Expires September 28, 2013               [Page 1]
 
 Internet-Draft             DHCPv4 over DHCPv6                 March 2013
 
@@ -75,8 +75,8 @@ Table of Contents
    9.  Security Considerations . . . . . . . . . . . . . . . . . . .   6
    10. IANA Considerations . . . . . . . . . . . . . . . . . . . . .   6
    11. Contributors List . . . . . . . . . . . . . . . . . . . . . .   6
-   12. References  . . . . . . . . . . . . . . . . . . . . . . . . .   6
-     12.1.  Normative References . . . . . . . . . . . . . . . . . .   6
+   12. References  . . . . . . . . . . . . . . . . . . . . . . . . .   7
+     12.1.  Normative References . . . . . . . . . . . . . . . . . .   7
      12.2.  Informative References . . . . . . . . . . . . . . . . .   7
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   7
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Sun, et al.            Expires September 27, 2013               [Page 2]
+Sun, et al.            Expires September 28, 2013               [Page 2]
 
 Internet-Draft             DHCPv4 over DHCPv6                 March 2013
 
@@ -165,7 +165,7 @@ Internet-Draft             DHCPv4 over DHCPv6                 March 2013
 
 
 
-Sun, et al.            Expires September 27, 2013               [Page 3]
+Sun, et al.            Expires September 28, 2013               [Page 3]
 
 Internet-Draft             DHCPv4 over DHCPv6                 March 2013
 
@@ -221,7 +221,7 @@ Internet-Draft             DHCPv4 over DHCPv6                 March 2013
 
 
 
-Sun, et al.            Expires September 27, 2013               [Page 4]
+Sun, et al.            Expires September 28, 2013               [Page 4]
 
 Internet-Draft             DHCPv4 over DHCPv6                 March 2013
 
@@ -266,21 +266,28 @@ Internet-Draft             DHCPv4 over DHCPv6                 March 2013
    section 20.1.1 of [RFC3315].
 
    Additionally, the DHCPv6 relay agent MAY allow the configuration of a
-   dedicated DHCPv4 over DHCPv6 specfic destination addresses, differing
-   from the addresses of the DHCPv6 only server(s).  In order to
-   implement this function, the DHCPv6 relay agent MUST check the
-   contents of a received DHCP packet for the presence of the
-   BOOTREQUESTV6 option.  If one is found, then the DHCPv6 packet MUST
-   be duplicated, with one DHCP request being forwarded to the DHCPv6
-   only destination address and the second being sent to the DHCPv4
-   aware unified server.
+   dedicated DHCPv4 over DHCPv6 specific destination addresses,
+   differing from the addresses of the DHCPv6 only server(s).  To
+   implement this function, the relay checks the received DHCPv6 message
+   type and forwards according to the following logic:
+
+   1.  If the message type is BOOTREQUESTV6, then the DHCPv6 request is
+       relayed to the configured DHCPv4 aware unified server's
+       address(es).
 
 
 
-Sun, et al.            Expires September 27, 2013               [Page 5]
+Sun, et al.            Expires September 28, 2013               [Page 5]
 
 Internet-Draft             DHCPv4 over DHCPv6                 March 2013
 
+
+   2.  For any other DHCPv6 message type, forward according to section
+       20 of [RFC3315].
+
+   The above logic only allows for separate relay destinations
+   configured on the relay agent closest to the client (single relay
+   hop).  Multiple relaying hops are not considered in this document.
 
 8.  Server Behavior
 
@@ -323,20 +330,20 @@ Internet-Draft             DHCPv4 over DHCPv6                 March 2013
    OPTION_BOOTP_MSG and two DHCPv6 message type codes to the
    BOOTREQUESTV6 and BOOTREPLYV6.
 
+
+
+
+Sun, et al.            Expires September 28, 2013               [Page 6]
+
+Internet-Draft             DHCPv4 over DHCPv6                 March 2013
+
+
 11.  Contributors List
 
    Many thanks to Ted Lemon, Bernie Volz, Tomek Mrugalski, Yuchi Chen
    and Cong Liu, for their great contributions to the draft.
 
 12.  References
-
-
-
-
-Sun, et al.            Expires September 27, 2013               [Page 6]
-
-Internet-Draft             DHCPv4 over DHCPv6                 March 2013
-
 
 12.1.  Normative References
 
@@ -373,6 +380,20 @@ Authors' Addresses
    Email: sunqi@csnet1.cs.tsinghua.edu.cn
 
 
+
+
+
+
+
+
+
+
+
+Sun, et al.            Expires September 28, 2013               [Page 7]
+
+Internet-Draft             DHCPv4 over DHCPv6                 March 2013
+
+
    Yong Cui
    Tsinghua University
    Department of Computer Science, Tsinghua University
@@ -381,17 +402,6 @@ Authors' Addresses
 
    Phone: +86-10-6260-3059
    Email: yong@csnet1.cs.tsinghua.edu.cn
-
-
-
-
-
-
-
-
-Sun, et al.            Expires September 27, 2013               [Page 7]
-
-Internet-Draft             DHCPv4 over DHCPv6                 March 2013
 
 
    Marcin Siodelski
@@ -434,14 +444,4 @@ Internet-Draft             DHCPv4 over DHCPv6                 March 2013
 
 
 
-
-
-
-
-
-
-
-
-
-
-Sun, et al.            Expires September 27, 2013               [Page 8]
+Sun, et al.            Expires September 28, 2013               [Page 8]

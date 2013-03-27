@@ -276,13 +276,21 @@
     20.1.1 of <xref target="RFC3315"/>.</t>
 
     <t>Additionally, the DHCPv6 relay agent MAY allow the configuration of a dedicated
-    DHCPv4 over DHCPv6 specfic destination addresses, differing from the 
-    addresses of the DHCPv6 only server(s). In order to implement this function, 
-    the DHCPv6 relay agent MUST check the contents of a received DHCP packet 
-    for the presence of the BOOTREQUESTV6 option. If one is found, then the DHCPv6
-    packet MUST be duplicated, with one DHCP request being forwarded to the DHCPv6
-    only destination address and the second being sent to the DHCPv4 aware unified
-    server.</t>
+    DHCPv4 over DHCPv6 specific destination addresses, differing from the 
+    addresses of the DHCPv6 only server(s). To implement this function, the relay 
+    checks the received DHCPv6 message type and forwards according to the following
+    logic:</t>
+    <t>
+      <list style="numbers">
+          <t>If the message type is BOOTREQUESTV6, then the DHCPv6 request is relayed to
+            the configured DHCPv4 aware unified server's address(es).</t>
+          <t>For any other DHCPv6 message type, forward according to section
+            20 of <xref target="RFC3315"/>.</t>
+      </list>
+    </t>
+    <t>The above logic only allows for separate relay destinations configured on
+     the relay agent closest to the client (single relay hop). Multiple relaying hops
+     are not considered in this document.</t>
 
 <!--
       <t>The DHCP relay agent will receive the DHCPv6 message containing
