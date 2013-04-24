@@ -1,6 +1,7 @@
 
 
 
+
 DHC Working Group                                                 Q. Sun
 Internet-Draft                                                    Y. Cui
 Intended status: Standards Track                     Tsinghua University
@@ -22,7 +23,7 @@ Abstract
    other parameters in IPv6 networks by carrying DHCPv4 messages over
    DHCPv6 transport.
 
-Status of this Memo
+Status of This Memo
 
    This Internet-Draft is submitted in full conformance with the
    provisions of BCP 78 and BCP 79.
@@ -62,56 +63,23 @@ Internet-Draft             DHCPv4 over DHCPv6                 April 2013
    the Trust Legal Provisions and are provided without warranty as
    described in the Simplified BSD License.
 
-
 Table of Contents
 
-   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . . . 3
-   2.  Requirements Language . . . . . . . . . . . . . . . . . . . . . 3
-   3.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . . . 3
-   4.  Architecture Overview . . . . . . . . . . . . . . . . . . . . . 4
-   5.  BOOTP Message Option Format . . . . . . . . . . . . . . . . . . 5
-   6.  Client Behavior . . . . . . . . . . . . . . . . . . . . . . . . 6
-   7.  Relay Agent Behavior  . . . . . . . . . . . . . . . . . . . . . 6
-   8.  Server Behavior . . . . . . . . . . . . . . . . . . . . . . . . 7
-   9.  Security Considerations . . . . . . . . . . . . . . . . . . . . 7
-   10. IANA Considerations . . . . . . . . . . . . . . . . . . . . . . 7
-   11. Contributors List . . . . . . . . . . . . . . . . . . . . . . . 8
-   12. References  . . . . . . . . . . . . . . . . . . . . . . . . . . 8
-     12.1.  Normative References . . . . . . . . . . . . . . . . . . . 8
-     12.2.  Informative References . . . . . . . . . . . . . . . . . . 8
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . . . 8
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Sun, et al.             Expires October 26, 2013                [Page 2]
-
-Internet-Draft             DHCPv4 over DHCPv6                 April 2013
-
+   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
+   2.  Requirements Language . . . . . . . . . . . . . . . . . . . .   2
+   3.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   3
+   4.  Architecture Overview . . . . . . . . . . . . . . . . . . . .   3
+   5.  BOOTP Message Option Format . . . . . . . . . . . . . . . . .   4
+   6.  Client Behavior . . . . . . . . . . . . . . . . . . . . . . .   5
+   7.  Relay Agent Behavior  . . . . . . . . . . . . . . . . . . . .   5
+   8.  Server Behavior . . . . . . . . . . . . . . . . . . . . . . .   6
+   9.  Security Considerations . . . . . . . . . . . . . . . . . . .   7
+   10. IANA Considerations . . . . . . . . . . . . . . . . . . . . .   7
+   11. Contributors List . . . . . . . . . . . . . . . . . . . . . .   7
+   12. References  . . . . . . . . . . . . . . . . . . . . . . . . .   7
+     12.1.  Normative References . . . . . . . . . . . . . . . . . .   7
+     12.2.  Informative References . . . . . . . . . . . . . . . . .   7
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   8
 
 1.  Introduction
 
@@ -123,22 +91,27 @@ Internet-Draft             DHCPv4 over DHCPv6                 April 2013
    addresses of IPv4-only services).
 
    By conveying DHCPv4 messages over DHCPv6 transport, this mechanism
-   can achieve dynamic provisioning of IPv4 address and configuration
-   parameters.  Besides, it is able to leverage infrastructure that
-   already exists for DHCPv4, e.g. failover, DNS updates, leasequery,
-   etc.  This mechanism is suitable for stateful allocation and
-   management of IPv4 addresses and configuration parameters across IPv6
-   networks.
+   can achieve dynamic provisioning of IPv4 address and other
+   configuration parameters.  In addition, it is able to leverage
+   existing infrastructure for DHCPv4, e.g.  failover, DNS updates,
+   leasequery, etc.  This mechanism is suitable for stateful allocation
+   and management of IPv4 addresses and configuration parameters across
+   IPv6 networks.
 
    Several approaches for provisioning such information have already
-   been proposed.  This document describes one such approach.
-
+   been proposed.  This document describes alternative approach.
 
 2.  Requirements Language
 
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
    document are to be interpreted as described in [RFC2119].
+
+
+
+Sun, et al.             Expires October 26, 2013                [Page 2]
+
+Internet-Draft             DHCPv4 over DHCPv6                 April 2013
 
 
 3.  Terminology
@@ -161,16 +134,7 @@ Internet-Draft             DHCPv4 over DHCPv6                 April 2013
                          a BOOTREPLYV6 message, contains a BOOTREPLY
                          message.  This contains the BOOTREQUEST
                          response corresponding to a client's
-
-
-
-Sun, et al.             Expires October 26, 2013                [Page 3]
-
-Internet-Draft             DHCPv4 over DHCPv6                 April 2013
-
-
                          BOOTREQUESTV6 message.
-
 
 4.  Architecture Overview
 
@@ -183,9 +147,8 @@ Internet-Draft             DHCPv4 over DHCPv6                 April 2013
 
    Although the purpose of this document is to address the problem of
    communication between DHCPv4 client and DHCPv4 server, the mechanism
-   it describes do not restrict the transported types of messages to
-   DHCPv4.  In additional, BOOTP messages can be transported using the
-   same mechanism.
+   it describes does not restrict the transported types of messages to
+   DHCPv4.  BOOTP messages can be transported using the same mechanism.
 
    DHCP clients can be running on CPE devices, end hosts or any other
    device which supports the DHCP client function.  At the time of
@@ -199,12 +162,20 @@ Internet-Draft             DHCPv4 over DHCPv6                 April 2013
    DHCPv6 messages.  Figure 1, below, illustrates one possible
    deployment architecture.
 
+
+
+
+Sun, et al.             Expires October 26, 2013                [Page 3]
+
+Internet-Draft             DHCPv4 over DHCPv6                 April 2013
+
+
    The DHCP client implements a new DHCPv6 message called BOOTREQUESTV6,
-   which contains a new option called the BOOTP Message Option.  The
-   format of the option is described in Section 5.  The client sends all
-   DHCPv6 packets, including DHCPv4 over DHCPv6 packets, to the well-
-   known All_DHCP_Relay_Agents_and_Servers multicast address on the
-   DHCPv6 server port (UDP port 547).
+   which contains a new option called BOOTP Message Option.  The format
+   of the option is described in Section 5.  The client sends all DHCPv6
+   packets, including DHCPv4 over DHCPv6 packets, to the well-known
+   All_DHCP_Relay_Agents_and_Servers multicast address on the DHCPv6
+   server port (UDP port 547).
 
    The DHCPv6 packet can be transmitted either via Relay Agents or
    directly to the server.  The server is referred in this document as a
@@ -220,25 +191,22 @@ Internet-Draft             DHCPv4 over DHCPv6                 April 2013
 
 
 
-Sun, et al.             Expires October 26, 2013                [Page 4]
-
-Internet-Draft             DHCPv4 over DHCPv6                 April 2013
 
 
-                   _____________             _____________
-                  /             \           /             \
-                  |             |           |             |
-         +--------+-+  IPv6   +-+-----------+-+  IPv6   +-+--------+
-         |   DHCP   | network |     DHCP      | network | Unified  |
-         |  Client  +---------+  Relay Agent  +---------+  Server  |
-         | (on CPE) |         |               |         |          |
-         +--------+-+         +-+-----------+-+         +-+--------+
-                  |             |           |             |
-                  \_____________/           \_____________/
+
+                  _____________             _____________
+                 /             \           /             \
+                 |             |           |             |
+        +--------+-+  IPv6   +-+-----------+-+  IPv6   +-+--------+
+        |   DHCP   | network |     DHCP      | network | Unified  |
+        |  Client  +---------+  Relay Agent  +---------+  Server  |
+        | (on CPE) |         |               |         |          |
+        +--------+-+         +-+-----------+-+         +-+--------+
+                 |             |           |             |
+                 \_____________/           \_____________/
 
 
                       Figure 1: Architecture Overview
-
 
 5.  BOOTP Message Option Format
 
@@ -250,6 +218,14 @@ Internet-Draft             DHCPv4 over DHCPv6                 April 2013
 
      0                   1                   2                   3
      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+
+
+
+Sun, et al.             Expires October 26, 2013                [Page 4]
+
+Internet-Draft             DHCPv4 over DHCPv6                 April 2013
+
+
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      |        OPTION_BOOTP_MSG       |           option-len          |
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -271,15 +247,6 @@ Internet-Draft             DHCPv4 over DHCPv6                 April 2013
                    message sent by client.  In a BOOTREPLYV6 message it
                    contains a BOOTREPLY message sent by a server in
                    response to a client.
-
-
-
-
-
-Sun, et al.             Expires October 26, 2013                [Page 5]
-
-Internet-Draft             DHCPv4 over DHCPv6                 April 2013
-
 
 6.  Client Behavior
 
@@ -304,8 +271,15 @@ Internet-Draft             DHCPv4 over DHCPv6                 April 2013
 
    The IPv4 address allocated from the server MAY be assigned to a
    different interface from the IPv6 interface requesting the
-   information.  Further documents depending on this memo MUST specify
-   which IPv6 interface is to be used by the client for the purpose.
+   information.  Future documents depending on this memo MUST specify
+   which IPv6 interface is to be used by the client for that purpose.
+
+
+
+
+Sun, et al.             Expires October 26, 2013                [Page 5]
+
+Internet-Draft             DHCPv4 over DHCPv6                 April 2013
 
 
 7.  Relay Agent Behavior
@@ -329,6 +303,33 @@ Internet-Draft             DHCPv4 over DHCPv6                 April 2013
    2.  For any other DHCPv6 message type, forward according to section
        20 of [RFC3315].
 
+   The above logic only allows for separate relay destinations
+   configured on the relay agent closest to the client (single relay
+   hop).  Multiple relaying hops are not considered in this document.
+
+8.  Server Behavior
+
+   When server receives a BOOTREQUESTV6 message from a client, it
+   searches for a BOOTP Message Option.  If this option is missing, the
+   server discards the packet.  The server MAY notify an administrator
+   about the receipt of a malformed packet.  The mechanism for this
+   notification is out of scope for this document
+
+   If the server finds a valid BOOTP Message Option, it extracts the
+   original DHCPv4 message sent by the client.  This message is passed
+   to the DHCPv4 server engine, which generates a response to the client
+   as specified in [RFC2131].  This engine can be implemented as a
+   built-in DHCPv4 server function of the Unified Server, or it can be a
+   separate DHCPv4 server instance.  Discussion regarding communication
+   between the Unified Server and a DHCPv4 server engine is out of scope
+   for this document.
+
+   When appropriate DHCPv4 respose is generated, Unified Server places
+   it in the payload of a BOOTP Message Option, which it puts into the
+   BOOTREPLYV6 message.
+
+   If the BOOTREQUESTV6 message was received directly by the server, the
+   BOOTREPLYV6 message MUST be unicast from the interface on which the
 
 
 
@@ -337,30 +338,6 @@ Sun, et al.             Expires October 26, 2013                [Page 6]
 Internet-Draft             DHCPv4 over DHCPv6                 April 2013
 
 
-   The above logic only allows for separate relay destinations
-   configured on the relay agent closest to the client (single relay
-   hop).  Multiple relaying hops are not considered in this document.
-
-
-8.  Server Behavior
-
-   When a Unified Server receives a BOOTREQUESTV6 message from a client,
-   it searches for a BOOTP Message Option.  If this option is missing,
-   the server discards the packet.  The Server MAY notify an
-   administrator about the receipt of a malformed packet.  The mechanism
-   for this notification is out of scope for this document
-
-   If the server finds a valid BOOTP Message Option, it extracts the
-   original DHCPv4 message sent by the client.  This message is passed
-   to the DHCPv4 server engine, which generates a response to the client
-   as specified in [RFC2131].  The server places the DHCPv4 response
-   message, in the payload of a BOOTP Message Option, which it puts into
-   the BOOTREPLYV6 message.  The 'DHCPv4 server engine' may be a DHCPv4-
-   server function of the server, or a separated DHCPv4 server.  Related
-   discussions are out of scope of this document.
-
-   If the BOOTREQUESTV6 message was received directly by the server, the
-   BOOTREPLYV6 message MUST be unicast from the interface on which the
    original message was received.
 
    If the BOOTREQUESTV6 message was received in a Relay-forward message,
@@ -370,38 +347,26 @@ Internet-Draft             DHCPv4 over DHCPv6                 April 2013
    unicasts the Relay-reply message directly to the IP address of the
    relay agent from which the Relay-forward message was received.
 
-
 9.  Security Considerations
 
    In this specification, DHCPv4 messages are encapsulated in the newly
    defined option and messages.  This is similar to handling the current
    relay agent messages.  In order to bypass firewalls or network
    authentication gateways, a malicious attacker may leverage this
-   feature to convey other messages using DHCPv6, i.e. use DHCPv6 as a
+   feature to convey other messages using DHCPv6, i.e.  use DHCPv6 as a
    form of encapsulation.  However, the potential risk from this is no
    greater than that with current DHCPv4 and DHCPv6 practice.
-
 
 10.  IANA Considerations
 
    IANA is kindly requested to allocate one DHCPv6 option code to the
-
-
-
-Sun, et al.             Expires October 26, 2013                [Page 7]
-
-Internet-Draft             DHCPv4 over DHCPv6                 April 2013
-
-
    OPTION_BOOTP_MSG and two DHCPv6 message type codes to the
    BOOTREQUESTV6 and BOOTREPLYV6.
-
 
 11.  Contributors List
 
    Many thanks to Ted Lemon, Bernie Volz, Tomek Mrugalski, Yuchi Chen
    and Cong Liu, for their great contributions to the draft.
-
 
 12.  References
 
@@ -410,8 +375,8 @@ Internet-Draft             DHCPv4 over DHCPv6                 April 2013
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119, March 1997.
 
-   [RFC2131]  Droms, R., "Dynamic Host Configuration Protocol",
-              RFC 2131, March 1997.
+   [RFC2131]  Droms, R., "Dynamic Host Configuration Protocol", RFC
+              2131, March 1997.
 
    [RFC3315]  Droms, R., Bound, J., Volz, B., Lemon, T., Perkins, C.,
               and M. Carney, "Dynamic Host Configuration Protocol for
@@ -421,13 +386,20 @@ Internet-Draft             DHCPv4 over DHCPv6                 April 2013
               Identifiers for Dynamic Host Configuration Protocol
               Version Four (DHCPv4)", RFC 4361, February 2006.
 
+
+
+
+Sun, et al.             Expires October 26, 2013                [Page 7]
+
+Internet-Draft             DHCPv4 over DHCPv6                 April 2013
+
+
 12.2.  Informative References
 
    [I-D.ietf-dhc-dhcpv4-over-ipv6]
               Cui, Y., Wu, P., Wu, J., and T. Lemon, "DHCPv4 over IPv6
               Transport", draft-ietf-dhc-dhcpv4-over-ipv6-06 (work in
               progress), March 2013.
-
 
 Authors' Addresses
 
@@ -439,14 +411,6 @@ Authors' Addresses
 
    Phone: +86-10-6278-5822
    Email: sunqi@csnet1.cs.tsinghua.edu.cn
-
-
-
-
-
-Sun, et al.             Expires October 26, 2013                [Page 8]
-
-Internet-Draft             DHCPv4 over DHCPv6                 April 2013
 
 
    Yong Cui
@@ -472,6 +436,18 @@ Internet-Draft             DHCPv4 over DHCPv6                 April 2013
    Ericsson
 
    Email: suresh.krishnan@ericsson.com
+
+
+
+
+
+
+
+
+
+Sun, et al.             Expires October 26, 2013                [Page 8]
+
+Internet-Draft             DHCPv4 over DHCPv6                 April 2013
 
 
    Ian Farrer
@@ -500,5 +476,28 @@ Internet-Draft             DHCPv4 over DHCPv6                 April 2013
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 Sun, et al.             Expires October 26, 2013                [Page 9]
-
