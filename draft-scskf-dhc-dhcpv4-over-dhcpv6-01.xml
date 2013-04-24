@@ -83,13 +83,13 @@
       </address>
     </author>
 
-  
+
   <date year="2013"/>
 
   <workgroup>DHC Working Group</workgroup>
 
   <abstract>
-      <t>This document describes a mechanism for obtaining IPv4 address 
+      <t>This document describes a mechanism for obtaining IPv4 address
       and other parameters in IPv6 networks by carrying DHCPv4 messages
       over DHCPv6 transport.
       </t>
@@ -99,21 +99,21 @@
 <middle>
     <section title="Introduction">
       <t>As the migration towards IPv6 continues, IPv6 only networks
-      will become more prevalent. However, IPv4 connectivity will continue 
+      will become more prevalent. However, IPv4 connectivity will continue
       to be provided as a service over these IPv6 only networks. In addition
       to providing IPv4 addresses for clients of this service, other
-      IPv4 configuration parameters may also need to be provided, (e.g. 
+      IPv4 configuration parameters may also need to be provided, (e.g.
       addresses of IPv4-only services).</t>
 
       <t>By conveying DHCPv4 messages over DHCPv6 transport, this mechanism
-      can achieve dynamic provisioning of IPv4 address and configuration parameters.
-      Besides, it is able to leverage infrastructure that already exists for DHCPv4,
+      can achieve dynamic provisioning of IPv4 address and other configuration parameters.
+      In addition, it is able to leverage existing infrastructure for DHCPv4,
       e.g. failover, DNS updates, leasequery, etc. This mechanism is suitable
       for stateful allocation and management of IPv4 addresses and configuration
       parameters across IPv6 networks. </t>
 
-      <t>Several approaches for provisioning such information have 
-       already been proposed. This document describes one such approach.
+      <t>Several approaches for provisioning such information have
+      already been proposed. This document describes alternative approach.
       </t>
     </section>
 
@@ -154,9 +154,8 @@
 
       <t>Although the purpose of this document is to address the problem of
       communication between DHCPv4 client and DHCPv4 server, the mechanism
-      it describes do not restrict the transported types of messages to
-      DHCPv4. In additional, BOOTP messages can be transported using the same
-      mechanism.</t>
+      it describes does not restrict the transported types of messages to
+      DHCPv4. BOOTP messages can be transported using the same mechanism.</t>
 
       <t>DHCP clients can be running on CPE devices, end hosts or any other device
       which supports the DHCP client function. At the time of writing, DHCP 
@@ -171,7 +170,7 @@
       illustrates one possible deployment architecture.</t>
 
       <t>The DHCP client implements a new DHCPv6 message called BOOTREQUESTV6,
-      which contains a new option called the BOOTP Message Option. The format 
+      which contains a new option called BOOTP Message Option. The format 
       of the option is described in <xref target="bootp-message-option"/>.
       The client sends all DHCPv6 packets, including DHCPv4 over DHCPv6 packets,
       to the well-known All_DHCP_Relay_Agents_and_Servers multicast address
@@ -279,9 +278,9 @@
       identifies itself.</t>
 
       <t>The IPv4 address allocated from the server MAY be assigned to a different
-      interface from the IPv6 interface requesting the information. Further documents
+      interface from the IPv6 interface requesting the information. Future documents
       depending on this memo MUST specify which IPv6 interface is to be used by the
-      client for the purpose.</t>
+      client for that purpose.</t>
     </section>
 
     <section title="Relay Agent Behavior">
@@ -320,20 +319,24 @@
     </section>
 
     <section title="Server Behavior">
-      <t>When a Unified Server receives a BOOTREQUESTV6 message from a 
+      <t>When server receives a BOOTREQUESTV6 message from a 
       client, it searches for a BOOTP Message Option. If this option 
-      is missing, the server discards the packet. The Server MAY notify 
+      is missing, the server discards the packet. The server MAY notify 
       an administrator about the receipt of a malformed packet. The 
       mechanism for this notification is out of scope for this document</t>
 
       <t>If the server finds a valid BOOTP Message Option, it extracts the
       original DHCPv4 message sent by the client. This message is
       passed to the DHCPv4 server engine, which generates a response to
-      the client as specified in <xref target="RFC2131"/>. The server places the
-      DHCPv4 response message, in the payload of a BOOTP Message Option, 
-      which it puts into the BOOTREPLYV6 message. The 'DHCPv4 server engine'
-      may be a DHCPv4-server function of the server, or a separated DHCPv4
-      server. Related discussions are out of scope of this document.</t>
+      the client as specified in <xref target="RFC2131"/>. This engine can
+      be implemented as a built-in DHCPv4 server function of the Unified Server,
+      or it can be a separate DHCPv4 server instance. Discussion regarding
+      communication between the Unified Server and a DHCPv4 server engine is
+      out of scope for this document.</t>
+
+      <t>When appropriate DHCPv4 respose is generated, Unified Server places it
+      in the payload of a BOOTP Message Option, which it puts into the BOOTREPLYV6
+      message.</t>
 
       <t>If the BOOTREQUESTV6 message was received directly by the server,
        the BOOTREPLYV6 message MUST be unicast from the interface on which
