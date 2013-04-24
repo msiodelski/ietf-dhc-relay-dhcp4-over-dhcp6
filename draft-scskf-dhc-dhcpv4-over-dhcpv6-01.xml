@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="US-ASCII"?>
 
 <?rfc toc="yes"?>
-<?rfc tocompact="yes"?>
+<?rfc compact="yes"?>
 <?rfc tocdepth="6"?>
 <?rfc symrefs="yes"?>
 <?rfc sortrefs="yes"?>
@@ -14,7 +14,7 @@
 <!ENTITY rfc4361 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4361.xml">
 ]>
 
-<rfc category="std" docName="draft-scskf-dhc-dhcpv4-over-dhcpv6-01" ipr="trust200902">
+<rfc category="std" docName="draft-ietf-dhc-dhcpv4-over-dhcpv6-00" ipr="trust200902">
 
 <front>
   <title abbrev="DHCPv4 over DHCPv6">DHCPv4 over DHCPv6 Transport</title>
@@ -83,15 +83,15 @@
       </address>
     </author>
 
-
-
-
-
+  
   <date year="2013"/>
 
+  <workgroup>DHC Working Group</workgroup>
+
   <abstract>
-      <t>This document describes a mechanism for obtaining IPv4 parameters
-      in IPv6 networks by carrying DHCPv4 messages over DHCPv6 transport.
+      <t>This document describes a mechanism for obtaining IPv4 address 
+      and other parameters in IPv6 networks by carrying DHCPv4 messages
+      over DHCPv6 transport.
       </t>
   </abstract>
 </front>
@@ -105,7 +105,14 @@
       IPv4 configuration parameters may also need to be provided, (e.g. 
       addresses of IPv4-only services).</t>
 
-      <t>Several approaches for provisioning such information have been 
+      <t>By conveying DHCPv4 messages over DHCPv6 transport, this mechanism
+      can achieve dynamic provisioning of IPv4 address and configuration parameters.
+      Besides, it is able to leverage infrastructure that already exists for DHCPv4,
+      e.g. failover, DNS updates, leasequery, etc. This mechanism is suitable
+      for stateful allocation and management of IPv4 addresses and configuration
+      parameters across IPv6 networks. </t>
+
+      <t>Several approaches for provisioning such information have 
        already been proposed. This document describes one such approach.
       </t>
     </section>
@@ -146,7 +153,7 @@
       underlying transport protocol.</t>
 
       <t>Although the purpose of this document is to address the problem of
-      communication between DHCPv4 client and DHCPv4 server, the mechanisms
+      communication between DHCPv4 client and DHCPv4 server, the mechanism
       it describes do not restrict the transported types of messages to
       DHCPv4. In additional, BOOTP messages can be transported using the same
       mechanism.</t>
@@ -181,6 +188,10 @@
       <figure align="center" anchor="architecture-overview"
               title="Architecture Overview">
       <artwork><![CDATA[
+
+
+
+
 
 
 
@@ -266,6 +277,11 @@
       <t>As the DHCPv4 and DHCPv6 clients are running on the same host, the client 
       MUST implement <xref target="RFC4361"/> to ensure that the device correctly
       identifies itself.</t>
+
+      <t>The IPv4 address allocated from the server MAY be assigned to a different
+      interface from the IPv6 interface requesting the information. Further documents
+      depending on this memo MUST specify which IPv6 interface is to be used by the
+      client for the purpose.</t>
     </section>
 
     <section title="Relay Agent Behavior">
@@ -313,9 +329,11 @@
       <t>If the server finds a valid BOOTP Message Option, it extracts the
       original DHCPv4 message sent by the client. This message is
       passed to the DHCPv4 server engine, which generates a response to
-      the as specified in <xref target="RFC2131"/>. The server places the
+      the client as specified in <xref target="RFC2131"/>. The server places the
       DHCPv4 response message, in the payload of a BOOTP Message Option, 
-      which it puts into the BOOTREPLYV6 message.</t>
+      which it puts into the BOOTREPLYV6 message. The 'DHCPv4 server engine'
+      may be a DHCPv4-server function of the server, or a separated DHCPv4
+      server. Related discussions are out of scope of this document.</t>
 
       <t>If the BOOTREQUESTV6 message was received directly by the server,
        the BOOTREPLYV6 message MUST be unicast from the interface on which
@@ -332,12 +350,13 @@
     </section>
 
   <section title="Security Considerations">
-    <t>In this specification, DHCPv6 is made a 'transport protocol' for DHCPv4
-    messages over an IPv6 network. In order to bypass firewalls or network 
+    <t>In this specification, DHCPv4 messages are encapsulated in the newly
+    defined option and messages. This is similar to handling the current
+    relay agent messages. In order to bypass firewalls or network 
     authentication gateways, a malicious attacker may leverage this 
     feature to convey other messages using DHCPv6, i.e. use DHCPv6
-    as a type of tunnel. However, the potential risk from this is no greater
-    than with current DHCPv4 and DHCPv6 practice.</t>
+    as a form of encapsulation. However, the potential risk from this is no greater
+    than that with current DHCPv4 and DHCPv6 practice.</t>
   </section>
 
   <section title="IANA Considerations">
@@ -426,13 +445,13 @@
 <back>
 
   <references title="Normative References">
+    &rfc2119;
     &rfc2131;
     &rfc3315;
     &rfc4361;
   </references>
 
   <references title="Informative References">
-    &rfc2119;
     <?rfc include="reference.I-D.ietf-dhc-dhcpv4-over-ipv6" ?>
   </references>
 
