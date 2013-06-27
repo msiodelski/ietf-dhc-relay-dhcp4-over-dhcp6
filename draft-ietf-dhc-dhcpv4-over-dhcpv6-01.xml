@@ -14,7 +14,7 @@
 <!ENTITY rfc4361 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4361.xml">
 ]>
 
-<rfc category="std" docName="draft-ietf-dhc-dhcpv4-over-dhcpv6-00" ipr="trust200902">
+<rfc category="std" docName="draft-ietf-dhc-dhcpv4-over-dhcpv6-01" ipr="trust200902">
 
 <front>
   <title abbrev="DHCPv4 over DHCPv6">DHCPv4 over DHCPv6 Transport</title>
@@ -112,9 +112,6 @@
       for stateful allocation and management of IPv4 addresses and configuration
       parameters across IPv6 networks. </t>
 
-      <t>Several approaches for provisioning such information have
-      already been proposed. This document describes alternative approach.
-      </t>
     </section>
 
     <section title="Requirements Language">
@@ -128,18 +125,33 @@
     <section title="Terminology">
       <t>This document makes use of the following terms:
       <list hangIndent="22" style="hanging">
-        <t hangText="BOOTREQUESTV6 (TBD):">A new type of DHCPv6 Client/Server message defined
-        in this document. A client sends a BOOTREQUESTV6 message to a server,
-        which contains a BOOTP Message Option. Each BOOTP Message Option contains
+        <t hangText="DHCP client:">The 'DHCP client' in this document consists of both
+        DHCPv4 and DHCPv6 client engines. The client is able to request IPv6 information
+        through DHCPv6, as well as to request IPv4 information using DHCPv4-over-DHCPv6
+        transport.</t>
+
+        <t hangText="Unified Server:">A DHCP server that consists of DHCPv4 and DHCPv6
+        server engines. A Unified Server is capable of processing regular DHCPv6
+        traffic as well as DHCPv4 packets wrapped in the BOOTP Message Option (defined below). 
+        </t>
+      </list>
+      </t>
+    </section>
+
+    <section title="New DHCPv6 Messages">
+      <t>The following new DHCPv6 Client/Server messages are defined by this document.
+      These are formatted as specified in Section 6 of <xref target="RFC3315"/>.
+      <list hangIndent="22" style="hanging">
+        <t hangText="BOOTREQUESTV6 (TBD):"> A client sends a BOOTREQUESTV6 message to a server,
+        which contains a BOOTP Message Option. The BOOTP Message Option contains
         a BOOTREQUEST message that the client uses to request IPv4 configuration
         parameters from the server.</t>
 
-        <t hangText="BOOTREPLYV6 (TBD):">A new type of DHCPv6 Client/Server
-         message defined in this document. A server sends a BOOTREPLYV6 message 
+        <t hangText="BOOTREPLYV6 (TBD):">A server sends a BOOTREPLYV6 message 
          containing a BOOTP Message Option in response to a client's BOOTREQUESTV6 message.
-        Each BOOTP Message Option, wrapped in a BOOTREPLYV6 message, contains a 
-        BOOTREPLY message. This contains the BOOTREQUEST response corresponding
-        to a client's BOOTREQUESTV6 message.</t>
+         The BOOTP Message Option contains a BOOTREPLY message in response to a BOOTREQUEST 
+         received by the server in the BOOTP Message Option of a BOOTREQUESTV6 message.
+        </t>
       </list>
       </t>
     </section>
@@ -177,25 +189,13 @@
       on the DHCPv6 server port (UDP port 547).</t>
 
       <t>The DHCPv6 packet can be transmitted either via Relay Agents or
-      directly to the server. The server is referred in this document as
-      a "Unified Server" for its capability of processing regular DHCPv6
-      traffic as well as DHCPv4 packets wrapped in the BOOTP Message
-      Option. Server replies with a relevant DHCPv6 packet carrying
-      DHCPv4 response wrapped with the BOOTP Message Option. Clients
-      receive a response on UDP port 546. </t>
+      directly to the Unified Server. The Unified Server replies with a relevant
+      DHCPv6 packet carrying DHCPv4 response wrapped with the BOOTP Message Option. 
+      Clients receive a response on UDP port 546. </t>
 
       <figure align="center" anchor="architecture-overview"
               title="Architecture Overview">
       <artwork><![CDATA[
-
-
-
-
-
-
-
-
-
            _____________             _____________
           /             \           /             \
           |             |           |             |
@@ -262,9 +262,8 @@
       parameters, it MUST generate a DHCPv4 message to obtain them from a DHCP server.
       This message is stored verbatim in the BOOTP Message Option carried by the
       BOOTREQUESTV6 message. A Client MUST put exactly one BOOTP Message Option into a
-      single BOOTREQUESTV6 message. The Client sends out the BOOTREQUESTV6 message to the
-      Well-Known multicast address, i.e. All_DHCP_Relay_Agents_and_Servers on multicast
-      address defined in <xref target="RFC3315"/>. </t>
+      single BOOTREQUESTV6 message. The client transmits the BOOTREQUESTV6 message as
+      specified in Section 13 of <xref target="RFC3315"/>. </t>
 
       <t>When a client receives a BOOTREPLYV6 message, it MUST look for the
       BOOTP Message Option within this message. If this option is not found, the
@@ -272,6 +271,12 @@
       the client extracts the DHCPv4 message it contains and processes it as 
       described in section 4.4 of <xref target="RFC2131"/>.
       </t>
+
+      <t>DHCP clients are responsible for the retransmission of messages. When
+      requesting IPv4 information, the client SHOULD follow the normal DHCPv4 
+      retransmission requirements and strategy as specified in section 4.1 of 
+      <xref target="RFC2131"/>. As a result there are no explicit transmission 
+      parameters associated with a BOOTPREQUESTV6 message.</t>
 
       <t>As the DHCPv4 and DHCPv6 clients are running on the same host, the client 
       MUST implement <xref target="RFC4361"/> to ensure that the device correctly
@@ -285,7 +290,8 @@
 
     <section title="Relay Agent Behavior">
     <t>When a DHCPv6 relay agent receives a BOOTREQUESTV6 message, it MUST 
-    handle the message as described in section 20.1.1 of <xref target="RFC3315"/>.</t>
+    handle the message as described in section 4 of 
+    <xref target="I-D.ietf-dhc-dhcpv6-unknown-msg"/>.</t>
 
     <t>A DHCPv6 relay agent MUST implement the Relay behaviour described in section 
     20.1.1 of <xref target="RFC3315"/>.</t>
@@ -298,14 +304,14 @@
     <t>
       <list style="numbers">
           <t>If the message type is BOOTREQUESTV6, then the DHCPv6 request is relayed to
-            the configured DHCPv4 aware unified server's address(es).</t>
+            the configured DHCPv4 aware Unified Server's address(es).</t>
           <t>For any other DHCPv6 message type, forward according to section
             20 of <xref target="RFC3315"/>.</t>
       </list>
     </t>
     <t>The above logic only allows for separate relay destinations configured on
      the relay agent closest to the client (single relay hop). Multiple relaying hops
-     are not considered in this document.</t>
+     are not considered in the case of separate relay destinations.</t>
 
 <!--
       <t>The DHCP relay agent will receive the DHCPv6 message containing
@@ -345,11 +351,8 @@
 
       <t>If the BOOTREQUESTV6 message was received in a Relay-forward
       message, the server creates a Relay-reply message with the
-      BOOTREPLYV6 message in the payload of a Relay Message Option. This is
-      analogous to other types of DHCPv6 messages as described in
-      <xref target="RFC3315"/>. The server unicasts the Relay-reply
-      message directly to the IP address of the relay agent from which
-      the Relay-forward message was received.</t>
+      BOOTREPLYV6 message in the payload of a Relay Message Option, and responds
+      as described in section 20.3 of <xref target="RFC3315"/>. </t>
     </section>
 
   <section title="Security Considerations">
@@ -452,6 +455,7 @@
     &rfc2131;
     &rfc3315;
     &rfc4361;
+    <?rfc include="reference.I-D.ietf-dhc-dhcpv6-unknown-msg" ?>
   </references>
 
   <references title="Informative References">
