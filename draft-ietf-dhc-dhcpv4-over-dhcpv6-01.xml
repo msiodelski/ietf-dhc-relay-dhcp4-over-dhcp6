@@ -142,15 +142,14 @@
       <t>The following new DHCPv6 Client/Server messages are defined by this document.
       These are formatted as specified in Section 6 of <xref target="RFC3315"/>.
       <list hangIndent="22" style="hanging">
-        <t hangText="BOOTREQUESTV6 (TBD):"> A client sends a BOOTREQUESTV6 message to a server,
-        which contains a BOOTP Message Option. The BOOTP Message Option contains
-        a BOOTREQUEST message that the client uses to request IPv4 configuration
-        parameters from the server.</t>
+        <t hangText="BOOTREQUESTV6 (TBD):"> A message sent by a client to a server.
+        This message carries a BOOTP Message Option which contains a BOOTREQUEST message
+        that the client uses to request IPv4 configuration parameters from the server.</t>
 
-        <t hangText="BOOTREPLYV6 (TBD):">A server sends a BOOTREPLYV6 message 
-         containing a BOOTP Message Option in response to a client's BOOTREQUESTV6 message.
-         The BOOTP Message Option contains a BOOTREPLY message in response to a BOOTREQUEST 
-         received by the server in the BOOTP Message Option of a BOOTREQUESTV6 message.
+        <t hangText="BOOTREPLYV6 (TBD):"> A message sent by a server to a client in
+        response to client's BOOSTREQUESTV6 message. It carries BOOTP Message Option which
+        contains a BOOTREPLY message in response to a BOOTREQUEST received by the server
+        in the BOOTP Message Option of a BOOTREQUESTV6 message.
         </t>
       </list>
       </t>
@@ -261,7 +260,7 @@
       <t>When a client requires an IPv4 address and/or other IPv4 configuration
       parameters, it MUST generate a DHCPv4 message to obtain them from a DHCP server.
       This message is stored verbatim in the BOOTP Message Option carried by the
-      BOOTREQUESTV6 message. A Client MUST put exactly one BOOTP Message Option into a
+      BOOTREQUESTV6 message. A client MUST put exactly one BOOTP Message Option into a
       single BOOTREQUESTV6 message. The client transmits the BOOTREQUESTV6 message as
       specified in Section 13 of <xref target="RFC3315"/>. </t>
 
