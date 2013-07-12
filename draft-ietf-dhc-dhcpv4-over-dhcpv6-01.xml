@@ -130,10 +130,12 @@
         through DHCPv6, as well as to request IPv4 information using DHCPv4-over-DHCPv6
         transport.</t>
 
-        <t hangText="Unified Server:">A DHCP server that consists of DHCPv4 and DHCPv6
-        server engines. A Unified Server is capable of processing regular DHCPv6
-        traffic as well as DHCPv4 packets wrapped in the BOOTP Message Option (defined below). 
+        <t hangText="4o6 Server:">A DHCP server capable of processing DHCPv4 packets
+        wrapped in the BOOTP Message Option (defined below).
         </t>
+
+        <t hangText="DHCPv4-over-DHCPv6:">A protocol described in this document, which
+        is used to carry DHCPv4 messages encapsulated in DHCPv6 messages.</t>
       </list>
       </t>
     </section>
@@ -181,17 +183,18 @@
       DHCPv6 messages. <xref target="architecture-overview"/>, below,
       illustrates one possible deployment architecture.</t>
 
+      <!-- Removed pieces of text talking about multicast addresses because
+      extended dicussion regarding multi and unicast is further in this
+      section-->
       <t>The DHCP client implements a new DHCPv6 message called BOOTREQUESTV6,
       which contains a new option called BOOTP Message Option. The format 
       of the option is described in <xref target="bootp-message-option"/>.
-      The client sends all DHCPv6 packets, including DHCPv4 over DHCPv6 packets,
-      to the well-known All_DHCP_Relay_Agents_and_Servers multicast address
-      on the DHCPv6 server port (UDP port 547).</t>
+      </t>
 
       <t>The DHCPv6 packet can be transmitted either via Relay Agents or
-      directly to the Unified Server. The Unified Server replies with a relevant
-      DHCPv6 packet carrying DHCPv4 response wrapped with the BOOTP Message Option. 
-      Clients receive a response on UDP port 546. </t>
+      directly to the 4o6 Server. The server replies with a relevant
+      DHCPv6 packet carrying DHCPv4 response wrapped with the BOOTP Message Option.
+      </t>
 
       <figure align="center" anchor="architecture-overview"
               title="Architecture Overview">
@@ -200,7 +203,7 @@
           /             \           /             \
           |             |           |             |
  +--------+-+  IPv6   +-+-----------+-+  IPv6   +-+--------+
- |   DHCP   | network |     DHCP      | network | Unified  |
+ |   DHCP   | network |     DHCP      | network |   4o6    |
  |  Client  +---------+  Relay Agent  +---------+  Server  |
  | (on CPE) |         |               |         |          |
  +--------+-+         +-+-----------+-+         +-+--------+
@@ -210,35 +213,23 @@
       ]]></artwork>
       </figure>
 
-    <t>The functionality of DHCPv4-over-DHCPv6 should be enabled on the client by
-    the DHCPv4-over-DHCPv6 Flag Option, the format of which is described in
-    <xref target="dhcp4odhcp6-flag-option"/>. This means the functionality is not active
-    on the client side by default. </t>
 
-    <t>Besides multicast, the client is also able to communicate to dedicated 
-    Unified Servers using unicast, which can separate Unified Servers from DHCPv6 only
-    servers. This is achieved through the Unified Server Address Option, which 
-    contains the unicast IPv6 address(es) of the Unified Server(s), or the well-known
-    multicast address. The addresses are presented in the order of preference.</t>
+    <t>The DHCPv4-over-DHCPv6 is by default disabled on the client. Before client
+    can use this protocol it MUST obtain configuration using DHCPv6 as
+    described in <xref target="RFC3315"/>. During this configuration, server MAY
+    include DHCPv4-over-DHCPv6 Enable Option in its Reply message to indicate that
+    client should use DHCPv4-over-DHCPv6 protocol to obtain additional configuration.
+    The format of the DHCPv4-over-DHCPv6 Enable Option is described in
+    <xref target="dhcp4o6-enable-option"/></t>
 
-    <t>The client can use the presence / absence of the two options to determine how
-    to launch the DHCPv4 over DHCPv6 function: </t>
-    
-    <t>
-     <list style="symbols">
-       <t>If the client doesn't receive the DHCPv4-over-DHCPv6 Flag Option, it SHOULD NOT
-       enable the DHCPv4 over DHCPv6 function. </t>
+    <t>Typically, client communicates with the 4o6 Servers using well known
+    All_DHCP_Relay_Agents_and_Servers multicast address. If DHCPv6 server is configured to
+    do so, it MAY send unicast addresses of the 4o6 Servers to the client during
+    client's configuration using DHCPv6. The unicast addresses are carried in the
+    4o6 Server Addresses Option encapsulated in the Reply message. The 4o6
+    Server Addresses Option's format is defined in <xref target="dhcp4o6-server-addr-option"/>.</t>
 
-       <t>If the client receives the DHCPv4-over-DHCPv6 Flag Option but no
-       Unified Server Address Option, it SHOULD enable the DHCPv4 over DHCPv6 function, 
-       but use IPv6 multicast to communicate with the servers or relays as described
-       above.</t>
-
-       <t>If the client receives both options, it SHOULD enable the DHCPv4 over DHCPv6
-       function, and send requests to the preferred address conveyed by the Unified Server
-       Address Option. </t>
-     </list>
-    </t>
+<!-- This reminder of this section belogs to Client's Behaviour-->
 
     </section>
 
@@ -280,54 +271,47 @@
       </t>
       </section>
 
-      <section title="DHCPv4-over-DHCPv6 Flag Option Format" anchor="dhcp4odhcp6-flag-option">
-        <t>The DHCPv4-over-DHCPv6 Flag Option indicates that the client 
-        should turn on the DHCPv4 over DHCPv6 function. </t>
+      <section title="DHCPv4-over-DHCPv6 Enable Option Format"
+               anchor="dhcp4o6-enable-option">
+        <t>The DHCPv4-over-DHCPv6 Enable Option indicates that the client 
+        should enable the DHCPv4-over-DHCPv6 function.</t>
 
-        <t>The format of the DHCPv4-over-DHCPv6 Flag Option is: </t>
+        <t>The format of the DHCPv4-over-DHCPv6 Enable Option is: </t>
   
-        <figure align="center" anchor="option-dhcp4odhcp6-flag"
-              title="DHCPv4-over-DHCPv6 Flag Option Format">
+        <figure align="center" anchor="option-dhcp4o6-enable"
+              title="DHCPv4-over-DHCPv6 Enable Option Format">
         <artwork><![CDATA[
 0                   1                   2                   3
 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|    OPTION_DHCP4ODHCP6_FLAG    |           option-len          |
+|    OPTION_DHCP4O6_ENABLE      |           option-len          |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|  Reserved   |F|
-+-+-+-+-+-+-+-+-+
 
         ]]></artwork>
         </figure>
       <t>
         <list hangIndent="16" style="hanging">
-          <t hangText="option-code">OPTION_DHCP4ODHCP6_FLAG (TBD)</t>
-          <t hangText="option-len"> 1 </t>
-          <t hangText="Reserved"> Must be ZERO (reserved for future use).</t>
-          <t hangText="F"> 1 bit field that specifies the flag: '1' means
-                   the client MUST turn on the DHCPv4 over DHCPv6 function.
-                   </t>
+          <t hangText="option-code">OPTION_DHCP4O6_ENABLE (TBD)</t>
+          <t hangText="option-len"> 0</t>
         </list>
       </t> 
 
       </section>
 
-      <section title="Unified Server Address Option Format" anchor="unified-server-addr-option">
-        <t>The Unified Server Address Option carries an IPv6 address of the
-        Unified Server. The address can be a global unicast IPv6 address, or 
-        the the well-known All_DHCP_Relay_Agents_and_Servers multicast address.
-        If multiple IPv6 addresses are required to offer, they SHOULD be presented
-        in the order of preference. </t>
+      <section title="4o6 Servers Address Option Format"
+               anchor="dhcp4o6-server-addr-option">
+        <t>The 4o6 Servers Address Option carries unicast IPv6 addresses of the
+        4o6 Servers.</t>
 
-        <t>The format of the Unified Server Address Option is: </t>
+        <t>The format of the 4o6 Servers Address Option is: </t>
   
-        <figure align="center" anchor="option-userver"
-              title="Unified Server Address Option Format">
+        <figure align="center" anchor="option-4o6-servers"
+              title="4o6 Servers Address Option Format">
         <artwork><![CDATA[
 0                   1                   2                   3
 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|        OPTION_USERVER         |           option-len          |
+|      OPTION_4O6_SERVERS       |           option-len          |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                                                               |
 .                        IPv6 Address(es)                       .
@@ -339,14 +323,10 @@
         </figure>
       <t>
         <list hangIndent="16" style="hanging">
-          <t hangText="option-code">OPTION_USERVER (TBD)</t>
+          <t hangText="option-code">OPTION_4O6_SERVERS (TBD)</t>
           <t hangText="option-len"> Length of the IPv6 address(es), i.e.
                         integer times of 16.</t>
-          <t hangText="IPv6 Address">The IPv6 address(es) of the Unified Server(s).
-                        The address(es) can be a global unicast IPv6 address(es), or 
-                        the the well-known All_DHCP_Relay_Agents_and_Servers 
-                        multicast address. Multiple IPv6 addresses SHOULD be presented
-                        in the order of preference.</t>
+          <t hangText="IPv6 Address">The IPv6 address(es) of the 4o6 Server(s).</t>
         </list>
       </t>
       </section>
@@ -362,13 +342,47 @@
 -->
 
     <section title="Client Behavior">
-      <t>When a client requires an IPv4 address and/or other IPv4 configuration
-      parameters, it MUST generate a DHCPv4 message to obtain them from a DHCP server.
-      This message is stored verbatim in the BOOTP Message Option carried by the
-      BOOTREQUESTV6 message. A Client MUST put exactly one BOOTP Message Option into a
-      single BOOTREQUESTV6 message. The client transmits the BOOTREQUESTV6 message as
-      specified in Section 13 of <xref target="RFC3315"/>. </t>
 
+      <t>The DHCP client SHOULD request the DHCPv4-over-DHCPv6 Enable Option and
+      the 4o6 Server Addressed Option in the Option Request Option (ORO) to 
+      launch the DHCPv4-over-DHCPv6 function.</t>
+
+      <t>Client MUST NOT initiate communication with 4o6 Servers before it obtains configuration
+      using DHCPv6 as described in <xref target="RFC3315"/>. If client supports DHCPv4-over-DHCPv6
+      function it should request the DHCPv4-over-DHCPv6 Enable Option and 4o6 Server Addresses
+      Option in the Option Request Option (ORO). DHCPv6 server may include these options in
+      Reply message sent to the client. The client determines how to launch the DHCPv4-over-DHCPv6 function
+      using the presence / absence of these two options: </t>
+      <t>
+        <list style="symbols">
+          <t>If the client doesn't receive the DHCPv4-over-DHCPv6 Enable Option, it SHOULD NOT
+          enable the DHCPv4 over DHCPv6 function. </t>
+
+          <t>If the client receives the DHCPv4-over-DHCPv6 Enable Option but no
+          4o6 Servers Address Option, it SHOULD enable the DHCPv4-over-DHCPv6 function,
+          but use IPv6 multicast to communicate with the servers or relays as described
+          above.</t>
+
+          <t>If the client receives both options, it SHOULD enable the DHCPv4-over-DHCPv6
+          function, and send requests to all unicast addresses conveyed by the 4o6 Server
+          Addresses Option. </t>
+        </list>
+      </t>
+
+      <t>If client is instructed by the DHCPv6 server to use DHCPv4-over-DHCPv6 function
+      it MUST generate a DHCPv4 message to obtain configuration from the 4o6 Server.
+      This message is stored verbatim in the BOOTP Message Option carried by the
+      BOOTREQUESTV6 message. Client MUST put exactly one BOOTP Message Option into a
+      single BOOTREQUESTV6 message.</t>
+
+<!-- Here starts the tricky part. Since we allow the use of unicast to multiple servers
+we have to deal with sending multiple packets, each going to a different server. That will
+complicate an implementation and also this text. This part will need to be extended.-->
+      <t>If client did not receive a 4o6 Server Addresses Option from the DHCPv6 server,
+      it transmits the BOOTREQUESTV6 message as specified in Section 13 of
+      <xref target="RFC3315"/>. If client received this option it MUST send BOOTREQUESTV6
+      message to all unicast addresses listed in the received option.</t>
+ 
       <t>When a client receives a BOOTREPLYV6 message, it MUST look for the
       BOOTP Message Option within this message. If this option is not found, the
       BOOTREPLYV6 message is discarded. If the BOOTP Message Option is found,
@@ -376,10 +390,8 @@
       described in section 4.4 of <xref target="RFC2131"/>.
       </t>
 
-      <t>The DHCP client SHOULD request the DHCPv4-over-DHCPv6 Flag Option and
-      the Unified Server Address Option in the Option Request Option (ORO) to 
-      launch the DHCPv4 over DHCPv6 function.</t>
-
+<!-- We should not reference to the RFC2131 because we are now communicating with
+the unified server -->
       <t>DHCP clients are responsible for the retransmission of messages. When
       requesting IPv4 information, the client SHOULD follow the normal DHCPv4 
       retransmission requirements and strategy as specified in section 4.1 of 
@@ -412,7 +424,7 @@
     <t>
       <list style="numbers">
           <t>If the message type is BOOTREQUESTV6, then the DHCPv6 request is relayed to
-            the configured DHCPv4 aware Unified Server's address(es).</t>
+            the configured DHCPv4 aware 4o6 Server's address(es).</t>
           <t>For any other DHCPv6 message type, forward according to section
             20 of <xref target="RFC3315"/>.</t>
       </list>
@@ -443,12 +455,12 @@
       original DHCPv4 message sent by the client. This message is
       passed to the DHCPv4 server engine, which generates a response to
       the client as specified in <xref target="RFC2131"/>. This engine can
-      be implemented as a built-in DHCPv4 server function of the Unified Server,
+      be implemented as a built-in DHCPv4 server function of the 4o6 Server,
       or it can be a separate DHCPv4 server instance. Discussion regarding
-      communication between the Unified Server and a DHCPv4 server engine is
+      communication between the 4o6 Server and a DHCPv4 server engine is
       out of scope for this document.</t>
 
-      <t>When appropriate DHCPv4 response is generated, Unified Server places it
+      <t>When appropriate DHCPv4 response is generated, 4o6 Server places it
       in the payload of a BOOTP Message Option, which it puts into the BOOTREPLYV6
       message.</t>
 
