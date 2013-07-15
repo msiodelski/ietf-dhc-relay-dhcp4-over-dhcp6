@@ -218,7 +218,7 @@
     can use this protocol it MUST obtain configuration using DHCPv6 as
     described in <xref target="RFC3315"/>. During this configuration, server MAY
     include DHCPv4-over-DHCPv6 Enable Option in its Reply message to indicate that
-    client should use DHCPv4-over-DHCPv6 protocol to obtain additional configuration.
+    client SHOULD use DHCPv4-over-DHCPv6 protocol to obtain additional configuration.
     The format of the DHCPv4-over-DHCPv6 Enable Option is described in
     <xref target="dhcp4o6-enable-option"/></t>
 
@@ -228,8 +228,6 @@
     client's configuration using DHCPv6. The unicast addresses are carried in the
     4o6 Server Addresses Option encapsulated in the Reply message. The 4o6
     Server Addresses Option's format is defined in <xref target="dhcp4o6-server-addr-option"/>.</t>
-
-<!-- This reminder of this section belogs to Client's Behaviour-->
 
     </section>
 
@@ -274,7 +272,7 @@
       <section title="DHCPv4-over-DHCPv6 Enable Option Format"
                anchor="dhcp4o6-enable-option">
         <t>The DHCPv4-over-DHCPv6 Enable Option indicates that the client 
-        should enable the DHCPv4-over-DHCPv6 function.</t>
+        SHOULD enable the DHCPv4-over-DHCPv6 function.</t>
 
         <t>The format of the DHCPv4-over-DHCPv6 Enable Option is: </t>
   
@@ -284,14 +282,14 @@
 0                   1                   2                   3
 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|    OPTION_DHCP4O6_ENABLE      |           option-len          |
+|  OPTION_DHCP4_O_DHCP6_ENABLE  |           option-len          |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
         ]]></artwork>
         </figure>
       <t>
         <list hangIndent="16" style="hanging">
-          <t hangText="option-code">OPTION_DHCP4O6_ENABLE (TBD)</t>
+          <t hangText="option-code">OPTION_DHCP4_O_DHCP6_ENABLE (TBD)</t>
           <t hangText="option-len"> 0</t>
         </list>
       </t> 
@@ -311,7 +309,7 @@
 0                   1                   2                   3
 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|      OPTION_4O6_SERVERS       |           option-len          |
+| OPTION_DHCP4_O_DHCP6_SERVERS  |           option-len          |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                                                               |
 .                        IPv6 Address(es)                       .
@@ -323,8 +321,8 @@
         </figure>
       <t>
         <list hangIndent="16" style="hanging">
-          <t hangText="option-code">OPTION_4O6_SERVERS (TBD)</t>
-          <t hangText="option-len"> Length of the IPv6 address(es), i.e.
+          <t hangText="option-code">OPTION_DHCP4_O_DHCP6_SERVERS (TBD)</t>
+          <t hangText="option-len">Length of the IPv6 address(es), i.e.
                         integer times of 16.</t>
           <t hangText="IPv6 Address">The IPv6 address(es) of the 4o6 Server(s).</t>
         </list>
@@ -344,13 +342,13 @@
     <section title="Client Behavior">
 
       <t>The DHCP client SHOULD request the DHCPv4-over-DHCPv6 Enable Option and
-      the 4o6 Server Addressed Option in the Option Request Option (ORO) to 
+      the 4o6 Server Addresses Option in the Option Request Option (ORO) to 
       launch the DHCPv4-over-DHCPv6 function.</t>
 
       <t>Client MUST NOT initiate communication with 4o6 Servers before it obtains configuration
       using DHCPv6 as described in <xref target="RFC3315"/>. If client supports DHCPv4-over-DHCPv6
-      function it should request the DHCPv4-over-DHCPv6 Enable Option and 4o6 Server Addresses
-      Option in the Option Request Option (ORO). DHCPv6 server may include these options in
+      function it SHOULD request the DHCPv4-over-DHCPv6 Enable Option and 4o6 Server Addresses
+      Option in the Option Request Option (ORO). DHCPv6 server MAY include these options in
       Reply message sent to the client. The client determines how to launch the DHCPv4-over-DHCPv6 function
       using the presence / absence of these two options: </t>
       <t>
@@ -488,8 +486,8 @@ the unified server -->
   <section title="IANA Considerations">
 
     <t>IANA is kindly requested to allocate three DHCPv6 option codes to the
-    OPTION_BOOTP_MSG, OPTION_DHCP4ODHCP6_FLAG and OPTION_USERVER, and two DHCPv6 
-    message type codes to the BOOTREQUESTV6 and BOOTREPLYV6. </t>
+    OPTION_BOOTP_MSG, OPTION_DHCP4_O_DHCP6_ENABLE and OPTION_DHCP4_O_DHCP6_SERVERS,
+    and two DHCPv6 message type codes to the BOOTREQUESTV6 and BOOTREPLYV6. </t>
 
   </section>
 
