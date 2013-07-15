@@ -5,13 +5,13 @@
 DHC Working Group                                                 Q. Sun
 Internet-Draft                                                    Y. Cui
 Intended status: Standards Track                     Tsinghua University
-Expires: January 13, 2014                                   M. Siodelski
+Expires: January 16, 2014                                   M. Siodelski
                                                                      ISC
                                                              S. Krishnan
                                                                 Ericsson
                                                                I. Farrer
                                                      Deutsche Telekom AG
-                                                           July 12, 2013
+                                                           July 15, 2013
 
 
                       DHCPv4 over DHCPv6 Transport
@@ -38,7 +38,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on January 13, 2014.
+   This Internet-Draft will expire on January 16, 2014.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Sun, et al.             Expires January 13, 2014                [Page 1]
+Sun, et al.             Expires January 16, 2014                [Page 1]
 
 Internet-Draft             DHCPv4 over DHCPv6                  July 2013
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Sun, et al.             Expires January 13, 2014                [Page 2]
+Sun, et al.             Expires January 16, 2014                [Page 2]
 
 Internet-Draft             DHCPv4 over DHCPv6                  July 2013
 
@@ -165,7 +165,7 @@ Internet-Draft             DHCPv4 over DHCPv6                  July 2013
 
 
 
-Sun, et al.             Expires January 13, 2014                [Page 3]
+Sun, et al.             Expires January 16, 2014                [Page 3]
 
 Internet-Draft             DHCPv4 over DHCPv6                  July 2013
 
@@ -214,14 +214,14 @@ Internet-Draft             DHCPv4 over DHCPv6                  July 2013
    client can use this protocol it MUST obtain configuration using
    DHCPv6 as described in [RFC3315].  During this configuration, server
    MAY include DHCPv4-over-DHCPv6 Enable Option in its Reply message to
-   indicate that client should use DHCPv4-over-DHCPv6 protocol to obtain
+   indicate that client SHOULD use DHCPv4-over-DHCPv6 protocol to obtain
    additional configuration.  The format of the DHCPv4-over-DHCPv6
    Enable Option is described in Section 6.2
 
 
 
 
-Sun, et al.             Expires January 13, 2014                [Page 4]
+Sun, et al.             Expires January 16, 2014                [Page 4]
 
 Internet-Draft             DHCPv4 over DHCPv6                  July 2013
 
@@ -270,14 +270,14 @@ Internet-Draft             DHCPv4 over DHCPv6                  July 2013
 
 6.2.  DHCPv4-over-DHCPv6 Enable Option Format
 
-   The DHCPv4-over-DHCPv6 Enable Option indicates that the client should
+   The DHCPv4-over-DHCPv6 Enable Option indicates that the client SHOULD
    enable the DHCPv4-over-DHCPv6 function.
 
    The format of the DHCPv4-over-DHCPv6 Enable Option is:
 
 
 
-Sun, et al.             Expires January 13, 2014                [Page 5]
+Sun, et al.             Expires January 16, 2014                [Page 5]
 
 Internet-Draft             DHCPv4 over DHCPv6                  July 2013
 
@@ -285,13 +285,13 @@ Internet-Draft             DHCPv4 over DHCPv6                  July 2013
      0                   1                   2                   3
      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-     |    OPTION_DHCP4O6_ENABLE      |           option-len          |
+     |  OPTION_DHCP4_O_DHCP6_ENABLE  |           option-len          |
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
 
              Figure 3: DHCPv4-over-DHCPv6 Enable Option Format
 
-   option-code     OPTION_DHCP4O6_ENABLE (TBD)
+   option-code     OPTION_DHCP4_O_DHCP6_ENABLE (TBD)
 
    option-len      0
 
@@ -305,7 +305,7 @@ Internet-Draft             DHCPv4 over DHCPv6                  July 2013
      0                   1                   2                   3
      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-     |      OPTION_4O6_SERVERS       |           option-len          |
+     | OPTION_DHCP4_O_DHCP6_SERVERS  |           option-len          |
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      |                                                               |
      .                        IPv6 Address(es)                       .
@@ -316,7 +316,7 @@ Internet-Draft             DHCPv4 over DHCPv6                  July 2013
 
                 Figure 4: 4o6 Servers Address Option Format
 
-   option-code     OPTION_4O6_SERVERS (TBD)
+   option-code     OPTION_DHCP4_O_DHCP6_SERVERS (TBD)
 
    option-len      Length of the IPv6 address(es), i.e.  integer times
                    of 16.
@@ -326,22 +326,22 @@ Internet-Draft             DHCPv4 over DHCPv6                  July 2013
 7.  Client Behavior
 
    The DHCP client SHOULD request the DHCPv4-over-DHCPv6 Enable Option
-   and the 4o6 Server Addressed Option in the Option Request Option
+   and the 4o6 Server Addresses Option in the Option Request Option
    (ORO) to launch the DHCPv4-over-DHCPv6 function.
 
    Client MUST NOT initiate communication with 4o6 Servers before it
 
 
 
-Sun, et al.             Expires January 13, 2014                [Page 6]
+Sun, et al.             Expires January 16, 2014                [Page 6]
 
 Internet-Draft             DHCPv4 over DHCPv6                  July 2013
 
 
    obtains configuration using DHCPv6 as described in [RFC3315].  If
-   client supports DHCPv4-over-DHCPv6 function it should request the
+   client supports DHCPv4-over-DHCPv6 function it SHOULD request the
    DHCPv4-over-DHCPv6 Enable Option and 4o6 Server Addresses Option in
-   the Option Request Option (ORO).  DHCPv6 server may include these
+   the Option Request Option (ORO).  DHCPv6 server MAY include these
    options in Reply message sent to the client.  The client determines
    how to launch the DHCPv4-over-DHCPv6 function using the presence /
    absence of these two options:
@@ -389,7 +389,7 @@ Internet-Draft             DHCPv4 over DHCPv6                  July 2013
 
 
 
-Sun, et al.             Expires January 13, 2014                [Page 7]
+Sun, et al.             Expires January 16, 2014                [Page 7]
 
 Internet-Draft             DHCPv4 over DHCPv6                  July 2013
 
@@ -445,7 +445,7 @@ Internet-Draft             DHCPv4 over DHCPv6                  July 2013
 
 
 
-Sun, et al.             Expires January 13, 2014                [Page 8]
+Sun, et al.             Expires January 16, 2014                [Page 8]
 
 Internet-Draft             DHCPv4 over DHCPv6                  July 2013
 
@@ -476,8 +476,9 @@ Internet-Draft             DHCPv4 over DHCPv6                  July 2013
 11.  IANA Considerations
 
    IANA is kindly requested to allocate three DHCPv6 option codes to the
-   OPTION_BOOTP_MSG, OPTION_DHCP4ODHCP6_FLAG and OPTION_USERVER, and two
-   DHCPv6 message type codes to the BOOTREQUESTV6 and BOOTREPLYV6.
+   OPTION_BOOTP_MSG, OPTION_DHCP4_O_DHCP6_ENABLE and
+   OPTION_DHCP4_O_DHCP6_SERVERS, and two DHCPv6 message type codes to
+   the BOOTREQUESTV6 and BOOTREPLYV6.
 
 12.  Contributors List
 
@@ -497,14 +498,15 @@ Internet-Draft             DHCPv4 over DHCPv6                  July 2013
               Requirement Levels", BCP 14, RFC 2119, March 1997.
 
    [RFC2131]  Droms, R., "Dynamic Host Configuration Protocol", RFC
-              2131, March 1997.
 
 
 
-Sun, et al.             Expires January 13, 2014                [Page 9]
+Sun, et al.             Expires January 16, 2014                [Page 9]
 
 Internet-Draft             DHCPv4 over DHCPv6                  July 2013
 
+
+              2131, March 1997.
 
    [RFC3315]  Droms, R., Bound, J., Volz, B., Lemon, T., Perkins, C.,
               and M. Carney, "Dynamic Host Configuration Protocol for
@@ -555,9 +557,7 @@ Authors' Addresses
 
 
 
-
-
-Sun, et al.             Expires January 13, 2014               [Page 10]
+Sun, et al.             Expires January 16, 2014               [Page 10]
 
 Internet-Draft             DHCPv4 over DHCPv6                  July 2013
 
@@ -613,4 +613,4 @@ Internet-Draft             DHCPv4 over DHCPv6                  July 2013
 
 
 
-Sun, et al.             Expires January 13, 2014               [Page 11]
+Sun, et al.             Expires January 16, 2014               [Page 11]
