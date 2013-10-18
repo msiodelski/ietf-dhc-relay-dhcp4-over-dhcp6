@@ -5,13 +5,13 @@
 DHC Working Group                                                 Q. Sun
 Internet-Draft                                                    Y. Cui
 Intended status: Standards Track                     Tsinghua University
-Expires: April 13, 2014                                     M. Siodelski
+Expires: April 21, 2014                                     M. Siodelski
                                                                      ISC
                                                              S. Krishnan
                                                                 Ericsson
                                                                I. Farrer
                                                      Deutsche Telekom AG
-                                                        October 10, 2013
+                                                        October 18, 2013
 
 
                       DHCPv4 over DHCPv6 Transport
@@ -19,13 +19,13 @@ Expires: April 13, 2014                                     M. Siodelski
 
 Abstract
 
-   IPv4 connectivity is still in need when networks migrate towards
-   IPv6.  This document describes a mechanism for obtaining IPv4 address
-   and other parameters in IPv6 networks by carrying DHCPv4 messages
-   over DHCPv6 transport.  This document defines two new DHCPv6 messages
-   as well as a new DHCPv6 option for the purpose of conveying DHCPv4
-   messages.  With one infrastructure, both DHCPv4 and DHCPv6 can be
-   supported.
+   IPv4 connectivity is still needed as networks migrate towards IPv6.
+   Users require IPv4 configuration even if the uplink to their service
+   provider supports IPv6 only.  This document describes a mechanism for
+   obtaining IPv4 configuration information dynamically in IPv6 networks
+   by carrying DHCPv4 messages over DHCPv6 transport.  Two new DHCPv6
+   messages as well as a new DHCPv6 option are defined for the purpose
+   of conveying DHCPv4 messages through IPv6 networks.
 
 Status of This Memo
 
@@ -42,7 +42,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on April 13, 2014.
+   This Internet-Draft will expire on April 21, 2014.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Sun, et al.              Expires April 13, 2014                 [Page 1]
+Sun, et al.              Expires April 21, 2014                 [Page 1]
 
 Internet-Draft             DHCPv4 over DHCPv6               October 2013
 
@@ -81,11 +81,11 @@ Table of Contents
    6.  DHCPv6 Options  . . . . . . . . . . . . . . . . . . . . . . .   6
      6.1.  BOOTP Message Option Format . . . . . . . . . . . . . . .   6
      6.2.  DHCPv4-over-DHCPv6 Enable Option Format . . . . . . . . .   7
-     6.3.  4o6 Servers Address Option Format . . . . . . . . . . . .   7
+     6.3.  4o6 Servers Address Option Format . . . . . . . . . . . .   8
    7.  Use of the Boot-request-v6 Unicast Flag . . . . . . . . . . .   8
    8.  Client Behavior . . . . . . . . . . . . . . . . . . . . . . .   9
    9.  Relay Agent Behavior  . . . . . . . . . . . . . . . . . . . .  10
-   10. 4o6 Server Behavior . . . . . . . . . . . . . . . . . . . . .  10
+   10. 4o6 Server Behavior . . . . . . . . . . . . . . . . . . . . .  11
    11. Security Considerations . . . . . . . . . . . . . . . . . . .  11
    12. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  11
    13. Contributors List . . . . . . . . . . . . . . . . . . . . . .  11
@@ -103,21 +103,21 @@ Table of Contents
    other IPv4 configuration parameters may also need to be provided
    (e.g.  addresses of IPv4-only services).
 
-   By conveying DHCPv4 messages over DHCPv6 transport, this mechanism
-   can achieve dynamic provisioning of IPv4 address and other
-   configuration parameters.  Besides, it is able to leverage existing
+   By conveying DHCPv4 messages over DHCPv6 transport, this document
+   describes a mechanism for the dynamic provisioning of IPv4 addresses
+   and other configuration parameters.  The mechanism leverages existing
 
 
 
-Sun, et al.              Expires April 13, 2014                 [Page 2]
+Sun, et al.              Expires April 21, 2014                 [Page 2]
 
 Internet-Draft             DHCPv4 over DHCPv6               October 2013
 
 
    infrastructure for DHCPv4, e.g. failover, DNS updates, leasequery,
    etc.  This mechanism is suitable for stateful allocation and
-   management of IPv4 addresses and configuration parameters across IPv6
-   networks.
+   management of IPv4 addresses (dynamic leasing) and other IPv4
+   configuration parameters across IPv6-only networks.
 
 2.  Requirements Language
 
@@ -141,8 +141,8 @@ Internet-Draft             DHCPv4 over DHCPv6               October 2013
                          DHCPv4-over-DHCPv6 transport.
 
    4o6 Server:           A DHCP server capable of processing DHCPv4
-                         packets wrapped in the BOOTP Message Option
-                         (defined below).
+                         packets wrapped in the DHCPv6 option: BOOTP
+                         Message Option (defined below).
 
 4.  Architecture Overview
 
@@ -155,32 +155,33 @@ Internet-Draft             DHCPv4 over DHCPv6               October 2013
 
    Although the purpose of this document is to address the problem of
    communication between DHCPv4 client and DHCPv4 server, the mechanism
-   it describes does not restrict the transported types of messages to
-   DHCPv4.  BOOTP messages can be transported using the same mechanism.
+   that it describes does not restrict the transported messages types
+   only to DHCPv4.  BOOTP messages can be transported using the same
+   mechanism.
 
    DHCP clients can be running on CPE devices, end hosts or any other
    device which supports the DHCP client function.  At the time of
-   writing, DHCP clients on CPE devices are relatively easier to modify
-   compared to those implemented on end hosts.  As a result, this
+   writing, DHCP clients on CPE devices are easier to modify compared to
 
 
 
-Sun, et al.              Expires April 13, 2014                 [Page 3]
+Sun, et al.              Expires April 21, 2014                 [Page 3]
 
 Internet-Draft             DHCPv4 over DHCPv6               October 2013
 
 
-   document uses the CPE as an example for describing the mechanism.
-   This doesn't preclude end hosts from implementing the mechanism in
-   the future.
+   those implemented on end hosts.  As a result, this document uses the
+   CPE as an example for describing the mechanism.  This does not
+   preclude any end-host, or other device requiring IPv4 configuration,
+   from implementing the mechanism in the future.
 
-   This mechanism works by carrying encapsulated DHCPv4 messages over
+   This mechanism works by carrying DHCPv4 messages encapsulated within
    DHCPv6 messages.  Figure 1, below, illustrates one possible
    deployment architecture.
 
    The DHCP client implements a new DHCPv6 message called Boot-
    request-v6, which contains a new option called BOOTP Message Option.
-   The format of the option is described in Section 6.1.
+   The format of this option is described in Section 6.1.
 
    The DHCPv6 packet can be transmitted either via Relay Agents or
    directly to the 4o6 Server.  The server replies with a DHCPv6
@@ -202,14 +203,14 @@ Internet-Draft             DHCPv4 over DHCPv6               October 2013
 
                       Figure 1: Architecture Overview
 
-   The DHCPv4-over-DHCPv6 is by default disabled on the client.  Before
-   a client can use this protocol it MUST obtain its IPv6 configuration.
-   If client is configured to use DHCPv6 to obtain its IPv6
-   configuration, the DHCPv6 server MAY include DHCPv4-over-DHCPv6
-   Enable Option in its Reply message to indicate that client SHOULD use
-   DHCPv4-over-DHCPv6 protocol to obtain additional configuration.  The
-   format of the DHCPv4-over-DHCPv6 Enable Option is described in
-   Section 6.2
+   By default, the DHCPv4-over-DHCPv6 is disabled on the client.  Before
+   a client can use this protocol it MUST obtain the necessary IPv6
+   configuration.  If the client is configured to use DHCPv6 to obtain
+   its IPv6 configuration, the DHCPv6 server MAY include the DHCPv4
+   -over-DHCPv6 Enable Option in its Reply message to indicate that
+   client SHOULD use the DHCPv4-over-DHCPv6 protocol to obtain
+   additional configuration.  The format of the DHCPv4-over-DHCPv6
+   Enable Option is described in Section 6.2.
 
    Typically, a client communicates with the 4o6 Servers using well
    known All_DHCP_Relay_Agents_and_Servers multicast address.  If a
@@ -217,14 +218,15 @@ Internet-Draft             DHCPv4 over DHCPv6               October 2013
    of the 4o6 Servers to the client during the client's configuration
    using DHCPv6.  The unicast addresses are carried in the 4o6 Server
    Addresses Option encapsulated in the Reply message.  The 4o6 Server
-   Addresses Option's format is defined in Section 6.3.
 
 
 
-Sun, et al.              Expires April 13, 2014                 [Page 4]
+Sun, et al.              Expires April 21, 2014                 [Page 4]
 
 Internet-Draft             DHCPv4 over DHCPv6               October 2013
 
+
+   Addresses Option's format is defined in Section 6.3.
 
 5.  New DHCPv6 Messages
 
@@ -272,15 +274,15 @@ Internet-Draft             DHCPv4 over DHCPv6               October 2013
    msg-type        Identifies message type.  It can be either
                    BOOTREQUESTV6 (TBD) or BOOTREPLYV6 (TBD) which
                    corresponds to the Boot-request-v6 or Boot-reply-v6
-                   respectively.
 
 
 
-
-Sun, et al.              Expires April 13, 2014                 [Page 5]
+Sun, et al.              Expires April 21, 2014                 [Page 5]
 
 Internet-Draft             DHCPv4 over DHCPv6               October 2013
 
+
+                   respectively.
 
    flags           Specifies flags which provide additional information
                    required by the server to process a DHCPv4 message
@@ -328,16 +330,16 @@ Internet-Draft             DHCPv4 over DHCPv6               October 2013
 
 6.1.  BOOTP Message Option Format
 
-   The BOOTP Message option carries a BOOTP message that is sent by the
-   client or the server.  Such BOOTP messages exclude any IP or UDP
 
 
 
-Sun, et al.              Expires April 13, 2014                 [Page 6]
+Sun, et al.              Expires April 21, 2014                 [Page 6]
 
 Internet-Draft             DHCPv4 over DHCPv6               October 2013
 
 
+   The BOOTP Message option carries a BOOTP message that is sent by the
+   client or the server.  Such BOOTP messages exclude any IP or UDP
    headers.
 
    The format of the BOOTP Message Option is:
@@ -384,15 +386,15 @@ Internet-Draft             DHCPv4 over DHCPv6               October 2013
 
    option-code     OPTION_DHCP4_O_DHCP6_ENABLE (TBD)
 
-   option-len      0
 
 
 
-
-Sun, et al.              Expires April 13, 2014                 [Page 7]
+Sun, et al.              Expires April 21, 2014                 [Page 7]
 
 Internet-Draft             DHCPv4 over DHCPv6               October 2013
 
+
+   option-len      0
 
 6.3.  4o6 Servers Address Option Format
 
@@ -440,16 +442,16 @@ Internet-Draft             DHCPv4 over DHCPv6               October 2013
    The DHCPv4-over-DHCPv6 protocol uses IPv6 to deliver DHCPv4 messages
    to the server.  There is no relation between the outer IPv6 address
    and the inner DHCPv4 message.  So the server is not able to know
-   whether the DHCPv4 messages should have been sent using broadcast or
-   unicast in IPv4 by checking the IPv6 address.  This is similar to the
 
 
 
-Sun, et al.              Expires April 13, 2014                 [Page 8]
+Sun, et al.              Expires April 21, 2014                 [Page 8]
 
 Internet-Draft             DHCPv4 over DHCPv6               October 2013
 
 
+   whether the DHCPv4 messages should have been sent using broadcast or
+   unicast in IPv4 by checking the IPv6 address.  This is similar to the
    case [RFC5010] handled.
 
    In order to allow the server to determine the client's state, the
@@ -497,15 +499,14 @@ Internet-Draft             DHCPv4 over DHCPv6               October 2013
 
    A client MUST set the Unicast flag as specified in Section 7.
 
-   If the client did not receive a 4o6 Server Addresses Option from the
 
 
-
-Sun, et al.              Expires April 13, 2014                 [Page 9]
+Sun, et al.              Expires April 21, 2014                 [Page 9]
 
 Internet-Draft             DHCPv4 over DHCPv6               October 2013
 
 
+   If the client has not received a 4o6 Server Addresses Option from the
    DHCPv6 server, it transmits the Boot-request-v6 message as specified
    in Section 13 of [RFC3315].  If the client received this option, it
    MUST send Boot-request-v6 message to all unicast addresses listed in
@@ -556,8 +557,7 @@ Internet-Draft             DHCPv4 over DHCPv6               October 2013
 
 
 
-
-Sun, et al.              Expires April 13, 2014                [Page 10]
+Sun, et al.              Expires April 21, 2014                [Page 10]
 
 Internet-Draft             DHCPv4 over DHCPv6               October 2013
 
@@ -595,28 +595,30 @@ Internet-Draft             DHCPv4 over DHCPv6               October 2013
 11.  Security Considerations
 
    In this specification, DHCPv4 messages are encapsulated in the newly
-   defined option and messages.  This is similar to handling the current
-   relay agent messages.  In order to bypass firewalls or network
-   authentication gateways, a malicious attacker may leverage this
-   feature to convey other messages using DHCPv6, i.e. use DHCPv6 as a
-   form of encapsulation.  However, the potential risk from this is no
-   greater than that with current DHCPv4 and DHCPv6 practice.
+   defined option and messages.  This is similar to the handling of the
+   current relay agent messages.  In order to bypass firewalls or
+   network authentication gateways, a malicious attacker may leverage
+   this feature to convey other messages using DHCPv6, i.e. use DHCPv6
+   as a form of encapsulation.  However, the potential risk from this is
+   not seen to be greater than that with current DHCPv4 and DHCPv6
+   practice.
 
 12.  IANA Considerations
 
-   IANA should allocate three DHCPv6 option codes to the
+   IANA is requested to allocate three DHCPv6 option codes for use by
    OPTION_BOOTP_MSG, OPTION_DHCP4_O_DHCP6_ENABLE and
-   OPTION_DHCP4_O_DHCP6_SERVERS, and two DHCPv6 message type codes to
+   OPTION_DHCP4_O_DHCP6_SERVERS, and two DHCPv6 message type codes for
    the BOOTREQUESTV6 and BOOTREPLYV6.
 
-13.  Contributors List
 
 
 
-Sun, et al.              Expires April 13, 2014                [Page 11]
+Sun, et al.              Expires April 21, 2014                [Page 11]
 
 Internet-Draft             DHCPv4 over DHCPv6               October 2013
 
+
+13.  Contributors List
 
    Many thanks to Ted Lemon, Bernie Volz, Tomek Mrugalski, Yuchi Chen
    and Cong Liu, for their great contributions to the draft.
@@ -657,6 +659,21 @@ Internet-Draft             DHCPv4 over DHCPv6               October 2013
 
 Authors' Addresses
 
+
+
+
+
+
+
+
+
+
+
+Sun, et al.              Expires April 21, 2014                [Page 12]
+
+Internet-Draft             DHCPv4 over DHCPv6               October 2013
+
+
    Qi Sun
    Tsinghua University
    Department of Computer Science, Tsinghua University
@@ -665,13 +682,6 @@ Authors' Addresses
 
    Phone: +86-10-6278-5822
    Email: sunqi@csnet1.cs.tsinghua.edu.cn
-
-
-
-
-Sun, et al.              Expires April 13, 2014                [Page 12]
-
-Internet-Draft             DHCPv4 over DHCPv6               October 2013
 
 
    Yong Cui
@@ -715,14 +725,4 @@ Internet-Draft             DHCPv4 over DHCPv6               October 2013
 
 
 
-
-
-
-
-
-
-
-
-
-
-Sun, et al.              Expires April 13, 2014                [Page 13]
+Sun, et al.              Expires April 21, 2014                [Page 13]
