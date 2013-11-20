@@ -153,16 +153,6 @@
         <t hangText="DHCPv4 over DHCPv6:"> A protocol described in this document, which
         is used to carry DHCPv4 messages in the payload of DHCPv6 messages.</t>
 
-        <t hangText="DHCPv4-only Client:"> A client which is unaware of the DHCPv4 over
-        DHCPv6 and it only supports DHCPv4 protocol described in <xref target="RFC2131"/>
-        and its extensions.
-        </t>
-
-        <t hangText="DHCPv6-only Client:"> A client which is unaware of the DHCPv4 over
-        DHCPv6 and it only supports DHCPv6 protocol described in <xref target="RFC3315"/>
-        and its extensions.
-        </t>
-        
       </list>
       </t>
     </section>
@@ -223,13 +213,13 @@
       </figure>
 
 
-    <t>By default, the DHCPv4 over DHCPv6 function MUST be disabled on the client. Before
+    <t>By default, the DHCPv4-over-DHCPv6 function MUST be disabled on the client. Before
     the client can use DHCPv4 over DHCPv6, it MUST obtain the IPv6 configuration. It requests
-    the DHCPv4 over DHCPv6 Enable option by sending its code in Option Request Option (ORO)
+    the DHCPv4-over-DHCPv6 Enable option by sending its code in Option Request Option (ORO)
     described in <xref target="RFC3315"/>.
-    The DHCPv6 server includes the DHCPv4 over DHCPv6 Enable option in response to a client's
+    The DHCPv6 server includes the DHCPv4-over-DHCPv6 Enable option in response to a client's
     request to instruct the client  to use DHCPv4 over DHCPv6 for IPv4 configuration.
-    The format of the DHCPv4 over DHCPv6 Enable option is described in <xref target="dhcp4o6-enable-option"/>. </t>
+    The format of the DHCPv4-over-DHCPv6 Enable option is described in <xref target="dhcp4o6-enable-option"/>. </t>
 
     <t>Typically, a 4o6 DHCP client communicates with the 4o6 DHCP servers using well known
     All_DHCP_Relay_Agents_and_Servers multicast address. Client MUST request the 4o6 Server
@@ -372,16 +362,16 @@
       </t>
       </section>
 
-      <section title="DHCPv4 over DHCPv6 Enable Option Format"
+      <section title="DHCPv4-over-DHCPv6 Enable Option Format"
                anchor="dhcp4o6-enable-option">
-        <t>The DHCPv4 over DHCPv6 Enable option is sent by the DHCPv6-only server
+        <t>The DHCPv4-over-DHCPv6 Enable option is sent by the DHCPv6-only server
         to signal that the client SHOULD use DHCPv4 over DHCPv6 to obtain IPv4 configuration.
         The server includes this option if it is requested by the client.</t>
 
-        <t>The format of the DHCPv4 over DHCPv6 Enable option is: </t>
+        <t>The format of the DHCPv4-over-DHCPv6 Enable option is: </t>
 
         <figure align="center" anchor="option-dhcp4o6-enable"
-              title="DHCPv4 over DHCPv6 Enable Option Format">
+              title="DHCPv4-over-DHCPv6 Enable Option Format">
         <artwork><![CDATA[
 0                   1                   2                   3
 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -483,43 +473,43 @@
 
     <section title="4o6 DHCP Client Behavior">
 
-      <t>The DHCPv4 over DHCPv6 function MUST be disabled by default. The client MUST
+      <t>The DHCPv4-over-DHCPv6 function MUST be disabled by default. The client MUST
       obtain its IPv6 configuration before using DHCPv4 over DHCPv6 to obtain the IPv4
       configuration. The client that intends to use DHCPv4 over DHCPv6 MUST request the
-      DHCPv4 over DHCPv6 Enable Option and the 4o6 Server Address Option in the Option
+      DHCPv4-over-DHCPv6 Enable Option and the 4o6 Server Address Option in the Option
       Request Option (ORO) in every Solicit, Request, Renew and Information-request messages.
-      The 4o6 DHCP client MUST NOT request the DHCPv4 over DHCPv6 Enable Option nor the
+      The 4o6 DHCP client MUST NOT request the DHCPv4-over-DHCPv6 Enable Option nor the
       4o6 Server Address Option in the Boot-request-v6 message. </t>
 
       <t>The DHCPv6 server MAY include these options in the responses to the client.
-      The client determines how to enable the DHCPv4 over DHCPv6 function based on the
+      The client determines how to enable the DHCPv4-over-DHCPv6 function based on the
       presence / absence of the two options: </t>
       <t>
         <list style="symbols">
-          <t>If the client doesn't receive the DHCPv4 over DHCPv6 Enable option,
+          <t>If the client doesn't receive the DHCPv4-over-DHCPv6 Enable option,
 
-          it MUST NOT enable the DHCPv4 over DHCPv6 function. In the case where the
+          it MUST NOT enable the DHCPv4-over-DHCPv6 function. In the case where the
           DHCPv4 over DHCPv6 service is running, the client MUST disable the function
           with a DHCPRELEASE message sent to the 4o6 DHCP Server.
           </t>
           
-          <t>If the client receives the DHCPv4 over DHCPv6 Enable Option but no
-          4o6 Servers Address Option, it SHOULD enable the DHCPv4 over DHCPv6 function,
+          <t>If the client receives the DHCPv4-over-DHCPv6 Enable Option but no
+          4o6 Servers Address Option, it SHOULD enable the DHCPv4-over-DHCPv6 function,
           and use IPv6 All_DHCP_Relay_Agents_and_Servers multicast address to
  
           communicate with servers and relays.</t>
 
-          <t>If the client receives both options, it SHOULD enable the DHCPv4 over DHCPv6
+          <t>If the client receives both options, it SHOULD enable the DHCPv4-over-DHCPv6
           function, and send requests to the unicast address(es) conveyed by the 4o6 Server
           Address Option. </t>
           
           <t>If the client only receives 4o6 Server Address Option, the client MUST ignore
-          the 4o6 Server Address Option and MUST NOT enable the DHCPv4 over DHCPv6 function.</t>
+          the 4o6 Server Address Option and MUST NOT enable the DHCPv4-over-DHCPv6 function.</t>
         </list>
       </t>
 
-      <t>The client supporting DHCPv4 over DHCPv6 protocol SHOULD use Information Refresh Time
-      Option <xref target="RFC4242"/> to refresh the status of DHCPv4 over DHCPv6 service
+      <t>The client supporting DHCPv4 over DHCPv6 SHOULD use Information Refresh Time
+      Option <xref target="RFC4242"/> to refresh the status of DHCPv4-over-DHCPv6 service
       as well as other DHCPv6 configuration data. </t>
 
       <t>If the client is signaled by the server to use DHCPv4 over DHCPv6, it SHOULD cease
