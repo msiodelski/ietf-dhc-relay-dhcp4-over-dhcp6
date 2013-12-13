@@ -453,7 +453,7 @@
     <section title="4o6 DHCP Client Behavior">
 
       <t>The DHCPv4-over-DHCPv6 function MUST be disabled by default. The client MUST
-      obtain its IPv6 configuration before using DHCPv4 over DHCPv6. The client that 
+      obtain its IPv6 configuration before using DHCPv4 over DHCPv6. A client that
 	  intends to use DHCPv4 over DHCPv6 MUST request the DHCPv4-over-DHCPv6 Enable Option 
 	  and SHOULD request the 4o6 Server Address Option in the Option Request Option (ORO) 
 	  in every Solicit, Request, Renew and Information-request messages.
