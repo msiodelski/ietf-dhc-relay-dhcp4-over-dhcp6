@@ -445,6 +445,9 @@
       have sent the message to the broadcast address in IPv4. The choice whether a  
       given message should be sent to a broadcast or unicast address is made based  
       on the <xref target="RFC2131"/> and its extensions.</t>
+      
+      <t>Note: The "Unicast" flag reflects the how the DHCPv4 packet would have been 
+      sent; not how the DHCPv6 packet itself is sent.</t>
     </section>
 
     <section title="4o6 DHCP Client Behavior">
@@ -485,7 +488,7 @@
       Option <xref target="RFC4242"/> to refresh the status of DHCPv4-over-DHCPv6 service
       as well as other DHCPv6 configuration data. </t>
 
-      <t>The client signaled by the server to use DHCPv4 over DHCPv6 SHOULD
+      <t>The client signaled by the server to use DHCPv4 over DHCPv6 MUST
       cease to send DHCPv4 messages using the DHCP protocol described in <xref target="RFC2131"/> 
 	  and use the DHCPv4 over DHCPv6 to request IPv4 configuration from the 4o6 DHCP Server. 
 	  The DHCPv4 message is stored verbatim in the BOOTP Message option carried by the 
@@ -511,7 +514,8 @@
       <t>When dealing with IPv4 configuration, the 4o6 DHCP client MUST follow the normal 
       DHCPv4 retransmission requirements and strategy as specified in section 4.1 of
       <xref target="RFC2131"/>. There are no explicit transmission parameters associated 
-	  with a Boot-request-v6 message.</t>
+	  with a Boot-request-v6 message, as this is governed by the DHCPv4 
+	  <xref target="RFC2131"/> "state machine".</t>
 
       <t>The 4o6 DHCP client MUST implement <xref target="RFC4361"/> to ensure that the 
 	  device correctly identifies itself.</t>
@@ -556,7 +560,7 @@
       <xref target="RFC2131"/> with the exception that the server SHOULD use the
       information carried in the "flags" field of the Boot-request-v6 message to
       find out whether the client's message would have been sent to the broadcast 
-	  or unicast address if DHCPv4 protocol was used. This is useful for the server
+	  or unicast address if IPv4 has been used. This is useful for the server
 	  to determine the state of the client. The use of the "flags" field is described 
 	  in detail in <xref target="uni_flag"/>.
       </t>
@@ -594,9 +598,13 @@
 
   <section title="IANA Considerations">
 
-    <t>IANA is requested to allocate three DHCPv6 option codes for use by
-    OPTION_BOOTP_MSG, OPTION_DHCP4_O_DHCP6_ENABLE and OPTION_DHCP4_O_DHCP6_SERVERS,
-    and two DHCPv6 message type codes for the BOOTREQUESTV6 and BOOTREPLYV6. </t>
+    <t>IANA is requested to allocate three DHCPv6 option codes for use by 
+    OPTION_BOOTP_MSG, OPTION_DHCP4_O_DHCP6_ENABLE and OPTION_DHCP4_O_DHCP6_SERVERS 
+    from the "DHCP Option Codes" table, and two DHCPv6 message type codes for
+    the BOOTREQUESTV6 and BOOTREPLYV6 from the "DHCP Message Codes" table of 
+    the Dynamic Host Configuration Protocol for IPv6 (DHCPv6) Registry. Both tables 
+    can be found at http://www.iana.org/assignments/dhcpv6-parameters/dhcpv6-parameters.xml. 
+    </t>
 
   </section>
 
