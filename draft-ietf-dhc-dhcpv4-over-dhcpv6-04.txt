@@ -5,13 +5,13 @@
 DHC Working Group                                                 Q. Sun
 Internet-Draft                                                    Y. Cui
 Intended status: Standards Track                     Tsinghua University
-Expires: June 16, 2014                                      M. Siodelski
+Expires: June 19, 2014                                      M. Siodelski
                                                                      ISC
                                                              S. Krishnan
                                                                 Ericsson
                                                                I. Farrer
                                                      Deutsche Telekom AG
-                                                       December 13, 2013
+                                                       December 16, 2013
 
 
                       DHCPv4 over DHCPv6 Transport
@@ -42,7 +42,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on June 16, 2014.
+   This Internet-Draft will expire on June 19, 2014.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Sun, et al.               Expires June 16, 2014                 [Page 1]
+Sun, et al.               Expires June 19, 2014                 [Page 1]
 
 Internet-Draft             DHCPv4 over DHCPv6              December 2013
 
@@ -76,12 +76,12 @@ Table of Contents
    5.  New DHCPv6 Messages . . . . . . . . . . . . . . . . . . . . .   5
      5.1.  Message Types . . . . . . . . . . . . . . . . . . . . . .   5
      5.2.  Message Formats . . . . . . . . . . . . . . . . . . . . .   5
-     5.3.  Boot-request-v6 Message Flags . . . . . . . . . . . . . .   6
-     5.4.  Boot-reply-v6 Message Flags . . . . . . . . . . . . . . .   6
+     5.3.  DHCPv4-query Message Flags  . . . . . . . . . . . . . . .   6
+     5.4.  DHCPv4-response Message Flags . . . . . . . . . . . . . .   6
    6.  New DHCPv6 Options  . . . . . . . . . . . . . . . . . . . . .   6
      6.1.  BOOTP Message Option Format . . . . . . . . . . . . . . .   6
      6.2.  4o6 Server Address Option Format  . . . . . . . . . . . .   7
-   7.  Use of the Boot-request-v6 Unicast Flag . . . . . . . . . . .   8
+   7.  Use of the DHCPv4-query Unicast Flag  . . . . . . . . . . . .   8
    8.  4o6 DHCP Client Behavior  . . . . . . . . . . . . . . . . . .   9
    9.  Relay Agent Behavior  . . . . . . . . . . . . . . . . . . . .  10
    10. 4o6 DHCP Server Behavior  . . . . . . . . . . . . . . . . . .  10
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Sun, et al.               Expires June 16, 2014                 [Page 2]
+Sun, et al.               Expires June 19, 2014                 [Page 2]
 
 Internet-Draft             DHCPv4 over DHCPv6              December 2013
 
@@ -165,7 +165,7 @@ Internet-Draft             DHCPv4 over DHCPv6              December 2013
 
 
 
-Sun, et al.               Expires June 16, 2014                 [Page 3]
+Sun, et al.               Expires June 19, 2014                 [Page 3]
 
 Internet-Draft             DHCPv4 over DHCPv6              December 2013
 
@@ -182,14 +182,15 @@ Internet-Draft             DHCPv4 over DHCPv6              December 2013
    DHCPv6 messages.  Figure 1, below, illustrates one possible
    deployment architecture.
 
-   The 4o6 DHCP client implements a new DHCPv6 message called Boot-
-   request-v6, which contains a new option called BOOTP Message option.
-   The format of this option is described in Section 6.1.
+   The 4o6 DHCP client implements a new DHCPv6 message called
+   DHCPv4-query, which contains a new option called BOOTP Message
+   option.  The format of this option is described in Section 6.1.
 
    The DHCPv6 message can be transmitted either via DHCPv6 Relay Agents
-   or directly to the 4o6 DHCP Server.  The server replies with a Boot-
-   reply-v6 message, which is a new DHCPv6 message type.  This message
-   carries the DHCPv4 response encapsulated in the BOOTP Message option.
+   or directly to the 4o6 DHCP Server.  The server replies with a
+   DHCPv4-response message, which is a new DHCPv6 message type.  This
+   message carries the DHCPv4 response encapsulated in the BOOTP Message
+   option.
 
               _____________             _____________
              /             \           /             \
@@ -213,43 +214,43 @@ Internet-Draft             DHCPv4 over DHCPv6              December 2013
    Server Address option in its response, it is an indication to the
    client to use DHCPv4 over DHCPv6 to obtain IPv4 configuration.
 
-   The 4o6 DHCP client obtains the address(es) of the 4o6 DHCP servers
+   The 4o6 DHCP client obtains the address(es) of the 4o6 DHCP server(s)
    from the 4o6 Server Address option and uses them to communicate with
    the 4o6 DHCP servers as described in Section 8.  If the 4o6 Server
    Address option contains no addresses (is empty), the 4o6 DHCP client
-   uses well known All_DHCP_Relay_Agents_and_Servers multicast address
 
 
 
-Sun, et al.               Expires June 16, 2014                 [Page 4]
+Sun, et al.               Expires June 19, 2014                 [Page 4]
 
 Internet-Draft             DHCPv4 over DHCPv6              December 2013
 
 
+   uses well known All_DHCP_Relay_Agents_and_Servers multicast address
    to communicate with the 4o6 DHCP server(s).
 
 5.  New DHCPv6 Messages
 
    There are two new DHCPv6 messages defined in this document which
    carry DHCPv4 messages between a client and a server using DHCPv6
-   protocol: Boot-request-v6 and Boot-reply-v6.  This section describes
+   protocol: DHCPv4-query and DHCPv4-response.  This section describes
    the structures of these messages.
 
 5.1.  Message Types
 
-   BOOTREQUESTV6 (TBD):  Identifies a Boot-request-v6 message.  A 4o6
-                         DHCP client sends this message to a 4o6 DHCP
-                         server.  The BOOTP Message Option carried by
-                         this message contains a BOOTREQUEST message
-                         that the 4o6 DHCP client uses to request IPv4
+   DHCPV4-QUERY (TBD):   Identifies a DHCPv4-query message.  A 4o6 DHCP
+                         client sends this message to a 4o6 DHCP server.
+                         The BOOTP Message Option carried by this
+                         message contains a BOOTREQUEST message that the
+                         4o6 DHCP client uses to request IPv4
                          configuration parameters from the server.
 
-   BOOTREPLYV6 (TBD):    Identifies a Boot-reply-v6 message.  A 4o6 DHCP
-                         server sends this message to a 4o6 DHCP client.
-                         It contains a BOOTP Message Option carrying a
-                         BOOTREPLY message in response to a BOOTREQUEST
-                         received by the server in the BOOTP Message
-                         Option of the Boot-request-v6 message.
+   DHCPv4-RESPONSE (TBD):  Identifies a DHCPv4-response message.  A 4o6
+                         DHCP server sends this message to a 4o6 DHCP
+                         client.  It contains a BOOTP Message Option
+                         carrying a BOOTREPLY message in response to a
+                         BOOTREQUEST received by the server in the BOOTP
+                         Message Option of the DHCPv4-query message.
 
 5.2.  Message Formats
 
@@ -270,31 +271,30 @@ Internet-Draft             DHCPv4 over DHCPv6              December 2013
                       Figure 2: Architecture Overview
 
    msg-type        Identifies the message type.  It can be either
-                   BOOTREQUESTV6 (TBD) or BOOTREPLYV6 (TBD) which
-                   corresponds to the Boot-request-v6 or Boot-reply-v6,
+                   DHCPV4-QUERY (TBD) or DHCPv4-RESPONSE (TBD) which
+                   corresponds to the DHCPv4-query or DHCPv4-response,
                    respectively.
 
 
 
-
-Sun, et al.               Expires June 16, 2014                 [Page 5]
+Sun, et al.               Expires June 19, 2014                 [Page 5]
 
 Internet-Draft             DHCPv4 over DHCPv6              December 2013
 
 
    flags           Specifies flags which provide additional information
                    required by the server to process a DHCPv4 message
-                   encapsulated in Boot-request-v6 message, or required
-                   by the client to process DHCPv4 message encapsulated
-                   in Boot-reply-v6 message.
+                   encapsulated in DHCPv4-query message, or required by
+                   the client to process DHCPv4 message encapsulated in
+                   DHCPv4-response message.
 
    options         The options carried by the message.  The BOOTP
                    Message Option described in Section 6.1 MUST be
                    carried by the message.
 
-5.3.  Boot-request-v6 Message Flags
+5.3.  DHCPv4-query Message Flags
 
-   The "flags" field of the Boot-request-v6 is used to carry additional
+   The "flags" field of the DHCPv4-query is used to carry additional
    information which may be used by the server to process the
    encapsulated DHCPv4 message.  Currently only one bit of this field is
    used.  Remaining bits are reserved for the future use.  The "flags"
@@ -306,10 +306,10 @@ Internet-Draft             DHCPv4 over DHCPv6              December 2013
    |U|                 Reserved                    |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
-                  Figure 3: Boot-request-v6 flags format
+                    Figure 3: DHCPv4-query flags format
 
    U               Unicast Flag.  If set to 1, it indicates that the
-                   DHCPv4 message encapsulated with the Boot-request-v6
+                   DHCPv4 message encapsulated with the DHCPv4-query
                    message would be sent to a unicast address if it was
                    sent using IPv4.  If this flag is set to 0, it
                    indicates that the DHCPv4 message would be sent to
@@ -318,10 +318,10 @@ Internet-Draft             DHCPv4 over DHCPv6              December 2013
    Reserved        Bits MUST be set to zero when sending and MUST be
                    ignored when receiving.
 
-5.4.  Boot-reply-v6 Message Flags
+5.4.  DHCPv4-response Message Flags
 
    This document introduces no flags to be carried in the "flags" field
-   of the Boot-reply-v6 message.  They are all reserved for the future
+   of the DHCPv4-response message.  They are all reserved for the future
    use.  The 4o6 Server MUST set all bits of this field to 0 and the 4o6
    client MUST ignore the content in this field.
 
@@ -333,7 +333,7 @@ Internet-Draft             DHCPv4 over DHCPv6              December 2013
 
 
 
-Sun, et al.               Expires June 16, 2014                 [Page 6]
+Sun, et al.               Expires June 19, 2014                 [Page 6]
 
 Internet-Draft             DHCPv4 over DHCPv6              December 2013
 
@@ -362,10 +362,10 @@ Internet-Draft             DHCPv4 over DHCPv6              December 2013
    option-len      Length of BOOTP message.
 
    BOOTP-message   The BOOTP message sent by the client or the server.
-                   In a Boot-request-v6 message it contains a
-                   BOOTREQUEST message sent by a client.  In a Boot-
-                   reply-v6 message it contains a BOOTREPLY message sent
-                   by a server in response to a client.
+                   In a DHCPv4-query message it contains a BOOTREQUEST
+                   message sent by a client.  In a DHCPv4-response
+                   message it contains a BOOTREPLY message sent by a
+                   server in response to a client.
 
 6.2.  4o6 Server Address Option Format
 
@@ -389,7 +389,7 @@ Internet-Draft             DHCPv4 over DHCPv6              December 2013
 
 
 
-Sun, et al.               Expires June 16, 2014                 [Page 7]
+Sun, et al.               Expires June 19, 2014                 [Page 7]
 
 Internet-Draft             DHCPv4 over DHCPv6              December 2013
 
@@ -417,7 +417,7 @@ Internet-Draft             DHCPv4 over DHCPv6              December 2013
    IPv6 Address    Zero or more IPv6 addresses of the 4o6 DHCP
                    Server(s).
 
-7.  Use of the Boot-request-v6 Unicast Flag
+7.  Use of the DHCPv4-query Unicast Flag
 
    A DHCPv4 client conforming to [RFC2131] may send its DHCPREQUEST
    message to either broadcast or unicast address depending on its
@@ -440,12 +440,12 @@ Internet-Draft             DHCPv4 over DHCPv6              December 2013
    case addressed by [RFC5010].
 
    In order to allow the server to determine the client's state, the
-   "Unicast" flag is carried in the Boot-request-v6 message.  The client
+   "Unicast" flag is carried in the DHCPv4-query message.  The client
    MUST set this flag to 1 when the DHCPv4 message would have been sent
 
 
 
-Sun, et al.               Expires June 16, 2014                 [Page 8]
+Sun, et al.               Expires June 19, 2014                 [Page 8]
 
 Internet-Draft             DHCPv4 over DHCPv6              December 2013
 
@@ -467,7 +467,7 @@ Internet-Draft             DHCPv4 over DHCPv6              December 2013
    the 4o6 Server Address option using Option Request option (ORO) in
    every Solicit, Request, Renew and Information-request message.  The
    4o6 DHCP client MUST NOT request the 4o6 Server Address option in the
-   Boot-request-v6 message.
+   DHCPv4-query message.
 
    The DHCPv6 server MAY include 4o6 Server Address option in its
    response to the client.  If the client receives this option it SHOULD
@@ -493,31 +493,31 @@ Internet-Draft             DHCPv4 over DHCPv6              December 2013
    to send DHCPv4 messages using the DHCP protocol described in
    [RFC2131] and use the DHCPv4 over DHCPv6 to request IPv4
    configuration from the 4o6 DHCP Server.  The DHCPv4 message is stored
-   verbatim in the BOOTP Message option carried by the Boot-request-v6
+   verbatim in the BOOTP Message option carried by the DHCPv4-query
    message.  The client MUST put exactly one BOOTP Message option into a
-   single Boot-request-v6 message.
+   single DHCPv4-query message.
 
    The client MUST follow rules defined in Section 7 when setting
 
 
 
-Sun, et al.               Expires June 16, 2014                 [Page 9]
+Sun, et al.               Expires June 19, 2014                 [Page 9]
 
 Internet-Draft             DHCPv4 over DHCPv6              December 2013
 
 
    Unicast flag based on the DHCPv4 destination.
 
-   On receiving a Boot-reply-v6 message, the client MUST look for the
+   On receiving a DHCPv4-response message, the client MUST look for the
    BOOTP Message option within this message.  If this option is not
-   found, the Boot-reply-v6 message is discarded.  If the BOOTP Message
-   Option is present, the client extracts the DHCPv4 message it contains
-   and processes it as described in section 4.4 of [RFC2131].
+   found, the DHCPv4-response message is discarded.  If the BOOTP
+   Message Option is present, the client extracts the DHCPv4 message it
+   contains and processes it as described in section 4.4 of [RFC2131].
 
    When dealing with IPv4 configuration, the 4o6 DHCP client MUST follow
    the normal DHCPv4 retransmission requirements and strategy as
    specified in section 4.1 of [RFC2131].  There are no explicit
-   transmission parameters associated with a Boot-request-v6 message, as
+   transmission parameters associated with a DHCPv4-query message, as
    this is governed by the DHCPv4 [RFC2131] "state machine".
 
    The 4o6 DHCP client MUST implement [RFC4361] to ensure that the
@@ -525,8 +525,8 @@ Internet-Draft             DHCPv4 over DHCPv6              December 2013
 
 9.  Relay Agent Behavior
 
-   When a DHCPv6 relay agent receives a Boot-request-v6 message, it may
-   not recognize this message.  It can just forward this message as in
+   When a DHCPv6 relay agent receives a DHCPv4-query message, it may not
+   recognize this message.  It can just forward this message as in
    [I-D.ietf-dhc-dhcpv6-unknown-msg].
 
    Additionally, the DHCPv6 relay agent MAY allow the configuration of a
@@ -535,9 +535,9 @@ Internet-Draft             DHCPv4 over DHCPv6              December 2013
    implement this function, the relay checks the received DHCPv6 message
    type and forwards according to the following logic:
 
-   1.  If the message type is BOOTREQUESTV6, the packet is relayed to
-       the configured 4o6 DHCP Server's address(es) in the form of
-       normal DHCPv6 packet (i.e. DHCPv6/UDP/IPv6).
+   1.  If the message type is DHCPV4-QUERY, the packet is relayed to the
+       configured 4o6 DHCP Server's address(es) in the form of normal
+       DHCPv6 packet (i.e. DHCPv6/UDP/IPv6).
 
    2.  For any other DHCPv6 message type, forward according to section
        20 of [RFC3315].
@@ -549,7 +549,7 @@ Internet-Draft             DHCPv4 over DHCPv6              December 2013
 
 10.  4o6 DHCP Server Behavior
 
-   When the server receives a Boot-request-v6 message from a client, it
+   When the server receives a DHCPv4-query message from a client, it
    searches for the BOOTP Message Option.  The server discards the
    packet without this option.  The server MAY notify an administrator
    about the receipt of a malformed packet.  The mechanism for this
@@ -557,35 +557,35 @@ Internet-Draft             DHCPv4 over DHCPv6              December 2013
 
 
 
-Sun, et al.               Expires June 16, 2014                [Page 10]
+Sun, et al.               Expires June 19, 2014                [Page 10]
 
 Internet-Draft             DHCPv4 over DHCPv6              December 2013
 
 
    If the server finds a valid BOOTP Message option, it extracts the
    original DHCPv4 message and the contents of the "flags" field carried
-   in the Boot-request-v6 message and uses them to generate the
-   appropriate DHCPv4 response (server to client message).  The response
-   is generated as described in [RFC2131] with the exception that the
+   in the DHCPv4-query message and uses them to generate the appropriate
+   DHCPv4 response (server to client message).  The response is
+   generated as described in [RFC2131] with the exception that the
    server SHOULD use the information carried in the "flags" field of the
-   Boot-request-v6 message to find out whether the client's message
-   would have been sent to the broadcast or unicast address if IPv4 has
-   been used.  This is useful for the server to determine the state of
-   the client.  The use of the "flags" field is described in detail in
+   DHCPv4-query message to find out whether the client's message would
+   have been sent to the broadcast or unicast address if IPv4 has been
+   used.  This is useful for the server to determine the state of the
+   client.  The use of the "flags" field is described in detail in
    Section 7.
 
    When appropriate DHCPv4 response is generated, the 4o6 Server places
    it in the payload of a BOOTP Message Option, which it puts into the
-   Boot-reply-v6 message.
+   DHCPv4-response message.
 
-   If the Boot-request-v6 message was received directly by the server,
-   the Boot-reply-v6 message MUST be unicast from the interface on which
+   If the DHCPv4-query message was received directly by the server, the
+   DHCPv4-response message MUST be unicast from the interface on which
    the original message was received.
 
-   If the Boot-request-v6 message was received in a Relay-forward
-   message, the server creates a Relay-reply message with the Boot-
-   reply-v6 message in the payload of a Relay Message option, and
-   responds as described in section 20.3 of [RFC3315].
+   If the DHCPv4-query message was received in a Relay-forward message,
+   the server creates a Relay-reply message with the DHCPv4-response
+   message in the payload of a Relay Message option, and responds as
+   described in section 20.3 of [RFC3315].
 
 11.  Security Considerations
 
@@ -609,18 +609,18 @@ Internet-Draft             DHCPv4 over DHCPv6              December 2013
    IANA is requested to allocate three DHCPv6 option codes for use by
    OPTION_BOOTP_MSG, OPTION_DHCP4_O_DHCP6_ENABLE and
    OPTION_DHCP4_O_DHCP6_SERVERS from the "DHCP Option Codes" table, and
-   two DHCPv6 message type codes for the BOOTREQUESTV6 and BOOTREPLYV6
+   two DHCPv6 message type codes for the DHCPV4-QUERY and
 
 
 
-Sun, et al.               Expires June 16, 2014                [Page 11]
+Sun, et al.               Expires June 19, 2014                [Page 11]
 
 Internet-Draft             DHCPv4 over DHCPv6              December 2013
 
 
-   from the "DHCP Message Codes" table of the Dynamic Host Configuration
-   Protocol for IPv6 (DHCPv6) Registry.  Both tables can be found at
-   http://www.iana.org/assignments/dhcpv6-parameters/
+   DHCPv4-RESPONSE from the "DHCP Message Codes" table of the Dynamic
+   Host Configuration Protocol for IPv6 (DHCPv6) Registry.  Both tables
+   can be found at http://www.iana.org/assignments/dhcpv6-parameters/
    dhcpv6-parameters.xml.
 
 13.  Contributors List
@@ -669,7 +669,7 @@ Authors' Addresses
 
 
 
-Sun, et al.               Expires June 16, 2014                [Page 12]
+Sun, et al.               Expires June 19, 2014                [Page 12]
 
 Internet-Draft             DHCPv4 over DHCPv6              December 2013
 
@@ -725,4 +725,4 @@ Internet-Draft             DHCPv4 over DHCPv6              December 2013
 
 
 
-Sun, et al.               Expires June 16, 2014                [Page 13]
+Sun, et al.               Expires June 19, 2014                [Page 13]
