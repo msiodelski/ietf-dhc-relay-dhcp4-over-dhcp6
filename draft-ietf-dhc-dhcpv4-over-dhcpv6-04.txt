@@ -5,13 +5,13 @@
 DHC Working Group                                                 Q. Sun
 Internet-Draft                                                    Y. Cui
 Intended status: Standards Track                     Tsinghua University
-Expires: June 19, 2014                                      M. Siodelski
+Expires: June 20, 2014                                      M. Siodelski
                                                                      ISC
                                                              S. Krishnan
                                                                 Ericsson
                                                                I. Farrer
                                                      Deutsche Telekom AG
-                                                       December 16, 2013
+                                                       December 17, 2013
 
 
                       DHCPv4 over DHCPv6 Transport
@@ -42,7 +42,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on June 19, 2014.
+   This Internet-Draft will expire on June 20, 2014.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Sun, et al.               Expires June 19, 2014                 [Page 1]
+Sun, et al.               Expires June 20, 2014                 [Page 1]
 
 Internet-Draft             DHCPv4 over DHCPv6              December 2013
 
@@ -84,7 +84,7 @@ Table of Contents
    7.  Use of the DHCPv4-query Unicast Flag  . . . . . . . . . . . .   8
    8.  4o6 DHCP Client Behavior  . . . . . . . . . . . . . . . . . .   9
    9.  Relay Agent Behavior  . . . . . . . . . . . . . . . . . . . .  10
-   10. 4o6 DHCP Server Behavior  . . . . . . . . . . . . . . . . . .  10
+   10. 4o6 DHCP Server Behavior  . . . . . . . . . . . . . . . . . .  11
    11. Security Considerations . . . . . . . . . . . . . . . . . . .  11
    12. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  12
    13. Contributors List . . . . . . . . . . . . . . . . . . . . . .  12
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Sun, et al.               Expires June 19, 2014                 [Page 2]
+Sun, et al.               Expires June 20, 2014                 [Page 2]
 
 Internet-Draft             DHCPv4 over DHCPv6              December 2013
 
@@ -165,7 +165,7 @@ Internet-Draft             DHCPv4 over DHCPv6              December 2013
 
 
 
-Sun, et al.               Expires June 19, 2014                 [Page 3]
+Sun, et al.               Expires June 20, 2014                 [Page 3]
 
 Internet-Draft             DHCPv4 over DHCPv6              December 2013
 
@@ -221,7 +221,7 @@ Internet-Draft             DHCPv4 over DHCPv6              December 2013
 
 
 
-Sun, et al.               Expires June 19, 2014                 [Page 4]
+Sun, et al.               Expires June 20, 2014                 [Page 4]
 
 Internet-Draft             DHCPv4 over DHCPv6              December 2013
 
@@ -277,7 +277,7 @@ Internet-Draft             DHCPv4 over DHCPv6              December 2013
 
 
 
-Sun, et al.               Expires June 19, 2014                 [Page 5]
+Sun, et al.               Expires June 20, 2014                 [Page 5]
 
 Internet-Draft             DHCPv4 over DHCPv6              December 2013
 
@@ -333,7 +333,7 @@ Internet-Draft             DHCPv4 over DHCPv6              December 2013
 
 
 
-Sun, et al.               Expires June 19, 2014                 [Page 6]
+Sun, et al.               Expires June 20, 2014                 [Page 6]
 
 Internet-Draft             DHCPv4 over DHCPv6              December 2013
 
@@ -389,7 +389,7 @@ Internet-Draft             DHCPv4 over DHCPv6              December 2013
 
 
 
-Sun, et al.               Expires June 19, 2014                 [Page 7]
+Sun, et al.               Expires June 20, 2014                 [Page 7]
 
 Internet-Draft             DHCPv4 over DHCPv6              December 2013
 
@@ -445,7 +445,7 @@ Internet-Draft             DHCPv4 over DHCPv6              December 2013
 
 
 
-Sun, et al.               Expires June 19, 2014                 [Page 8]
+Sun, et al.               Expires June 20, 2014                 [Page 8]
 
 Internet-Draft             DHCPv4 over DHCPv6              December 2013
 
@@ -476,13 +476,13 @@ Internet-Draft             DHCPv4 over DHCPv6              December 2013
    4o6 DHCP client MUST NOT request the 4o6 Server Address option in the
    DHCPv4-query message.
 
-   The DHCPv6 server MAY include 4o6 Server Address option in its
-   response to the client.  If the client receives this option it SHOULD
-   enable DHCPv4 over DHCPv6 function.  The client MUST NOT enable
-   DHCPv4-over-DHCPv6 function if the DHCPv6 server does not include the
-   4o6 Server Address option in its response.  If the client does not
-   receive 4o6 Server Address option and the DHCPv4 over DHCPv6 is
-   running, the client MUST disable DHCPv4-over-DHCPv6 function.
+   The DHCPv6 server MAY include the 4o6 Server Address option in its
+   response to the client.  If the client receives this option, it
+   SHOULD enable the DHCPv4-over-DHCPv6 function.  The client MUST NOT
+   enable the DHCPv4-over-DHCPv6 function if the DHCPv6 server does not
+   include the 4o6 Server Address option in its response.  If the client
+   does not receive 4o6 Server Address option and the DHCPv4 over DHCPv6
+   is running, the client MUST disable the DHCPv4-over-DHCPv6 function.
 
    If the received 4o6 Server Address option contains no IP addresses,
    i.e. the option is empty, the 4o6 DHCP client MUST send its requests
@@ -492,25 +492,31 @@ Internet-Draft             DHCPv4 over DHCPv6              December 2013
    addresses, the 4o6 DHCP client SHOULD send requests to each unique
    address carried by the option.
 
+   The 4o6 DHCP client MUST employ a source IPv6 address of a proper
+   scope to send the DHCPv4-query message.  When the client sends a
+   DHCPv4-query message to the multicast address, it MUST use a link-
+   local address as the source address as in RFC3315.  When the client
+   sends a DHCPv4-query message using unicast, the source address MUST
+   be the global IPv6 address acquired in advance.
+
+
+
+Sun, et al.               Expires June 20, 2014                 [Page 9]
+
+Internet-Draft             DHCPv4 over DHCPv6              December 2013
+
+
    A client supporting DHCPv4 over DHCPv6 SHOULD use Information Refresh
    Time Option [RFC4242] to refresh the status of DHCPv4-over-DHCPv6
    service as well as other DHCPv6 configuration data.
 
    A client signaled by the server to use DHCPv4 over DHCPv6 MUST cease
    to send DHCPv4 messages using the DHCP protocol described in
-
-
-
-Sun, et al.               Expires June 19, 2014                 [Page 9]
-
-Internet-Draft             DHCPv4 over DHCPv6              December 2013
-
-
-   [RFC2131] and use the DHCPv4 over DHCPv6 to request IPv4
-   configuration from the 4o6 DHCP Server.  The DHCPv4 message is stored
-   verbatim in the BOOTP Message option carried by the DHCPv4-query
-   message.  The client MUST put exactly one BOOTP Message option into a
-   single DHCPv4-query message.
+   [RFC2131] and use DHCPv4 over DHCPv6 to request IPv4 configuration
+   from the 4o6 DHCP Server.  The DHCPv4 message is stored verbatim in
+   the BOOTP Message option carried by the DHCPv4-query message.  The
+   client MUST put exactly one BOOTP Message option into a single
+   DHCPv4-query message.
 
    The client MUST follow rules defined in Section 7 when setting
    Unicast flag based on the DHCPv4 destination.
@@ -549,18 +555,17 @@ Internet-Draft             DHCPv4 over DHCPv6              December 2013
    2.  For any other DHCPv6 message type, forward according to section
        20 of [RFC3315].
 
+
+
+Sun, et al.               Expires June 20, 2014                [Page 10]
+
+Internet-Draft             DHCPv4 over DHCPv6              December 2013
+
+
    The above logic only allows for separate relay destinations
    configured on the relay agent closest to the client (single relay
    hop).  Multiple relaying hops are not considered in the case of
    separate relay destinations.
-
-
-
-
-Sun, et al.               Expires June 19, 2014                [Page 10]
-
-Internet-Draft             DHCPv4 over DHCPv6              December 2013
-
 
 10.  4o6 DHCP Server Behavior
 
@@ -605,19 +610,19 @@ Internet-Draft             DHCPv4 over DHCPv6              December 2013
    as a form of encapsulation.  However, the potential risk from this is
    no more severe than that with the current DHCPv4 and DHCPv6 practice.
 
+
+
+
+Sun, et al.               Expires June 20, 2014                [Page 11]
+
+Internet-Draft             DHCPv4 over DHCPv6              December 2013
+
+
    There are chances that a rogue DHCPv6 server may reply with a 4o6
    Server Address Option containing duplicated IPv6 addresses, which can
    cause an amplification attack.  To avoid this, the client MUST check
    if there are duplicate IPv6 addresses in a 4o6 Server Address Option
    when receiving one.  The client MUST ignore those duplicated IPv6
-
-
-
-Sun, et al.               Expires June 19, 2014                [Page 11]
-
-Internet-Draft             DHCPv4 over DHCPv6              December 2013
-
-
    addresses.
 
 12.  IANA Considerations
@@ -661,19 +666,19 @@ Internet-Draft             DHCPv4 over DHCPv6              December 2013
 14.2.  Informative References
 
    [I-D.ietf-dhc-dhcpv6-unknown-msg]
+
+
+
+Sun, et al.               Expires June 20, 2014                [Page 12]
+
+Internet-Draft             DHCPv4 over DHCPv6              December 2013
+
+
               Cui, Y., Sun, Q., and T. Lemon, "Handling Unknown DHCPv6
               Messages", draft-ietf-dhc-dhcpv6-unknown-msg-03 (work in
               progress), November 2013.
 
    [RFC5010]  Kinnear, K., Normoyle, M., and M. Stapp, "The Dynamic Host
-
-
-
-Sun, et al.               Expires June 19, 2014                [Page 12]
-
-Internet-Draft             DHCPv4 over DHCPv6              December 2013
-
-
               Configuration Protocol Version 4 (DHCPv4) Relay Agent
               Flags Suboption", RFC 5010, September 2007.
 
@@ -712,6 +717,19 @@ Authors' Addresses
    Email: suresh.krishnan@ericsson.com
 
 
+
+
+
+
+
+
+
+
+Sun, et al.               Expires June 20, 2014                [Page 13]
+
+Internet-Draft             DHCPv4 over DHCPv6              December 2013
+
+
    Ian Farrer
    Deutsche Telekom AG
    GTN-FM4,Landgrabenweg 151
@@ -725,4 +743,42 @@ Authors' Addresses
 
 
 
-Sun, et al.               Expires June 19, 2014                [Page 13]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Sun, et al.               Expires June 20, 2014                [Page 14]
