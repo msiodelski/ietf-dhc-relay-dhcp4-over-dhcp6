@@ -448,19 +448,22 @@
       DHCPv4-query message. </t>   
 
       <t>The DHCPv6 server MAY include the 4o6 Server Address option in its response to
-      the client. If the client receives this option, it SHOULD enable the DHCPv4-over-DHCPv6 
+      the client. If the client receives this option, it MUST enable the DHCPv4-over-DHCPv6 
       function. The client MUST NOT enable the DHCPv4-over-DHCPv6 function if the
       DHCPv6 server does not include the 4o6 Server Address option in its response.
-      If the client does not receive 4o6 Server Address option and the DHCPv4 over
-      DHCPv6 is running, the client MUST disable the DHCPv4-over-DHCPv6 function.</t>
+      If the client does not receive this option and DHCPv4 over DHCPv6 is running, the 
+      client MUST disable the DHCPv4-over-DHCPv6 function.</t>
+      
+      <t>In the case that the 4o6 DHCP client receives the 4o6 Server Address option but 
+      there is any DHCPv4 client running on the interface over which that DHCPv6 option
+      was received, it MUST stop the DHCPv4 client from sending messages using 
+      <xref target="RFC2131"/>.</t>
 
       <t>If the received 4o6 Server Address option contains no IP addresses, i.e. the
       option is empty, the 4o6 DHCP client MUST send its requests to the
-      All_DHCP_Relay_Agents_and_Servers multicast address.</t>
-
-      <t>If the received 4o6 Server Address option contains a list of IP addresses,
-      the 4o6 DHCP client SHOULD send requests to each unique address carried by
-      the option.</t>
+      All_DHCP_Relay_Agents_and_Servers multicast address. If there is a list of IP 
+      addresses in the option, the 4o6 DHCP client SHOULD send requests to each unique 
+      address carried by the option.</t>
       
       <t>The 4o6 DHCP client MUST employ a source IPv6 address of a proper scope to send the 
       DHCPv4-query message. When the client sends a DHCPv4-query message to the multicast 
@@ -469,15 +472,12 @@
       MUST be the global IPv6 address acquired in advance. </t>
 
       <t>A client supporting DHCPv4 over DHCPv6 SHOULD use Information Refresh Time
-      Option <xref target="RFC4242"/> to refresh the status of DHCPv4-over-DHCPv6 service
+      Option <xref target="RFC4242"/> to refresh the status of DHCPv4-over-DHCPv6 function
       as well as other DHCPv6 configuration data. </t>
-
-      <t>A client signaled by the server to use DHCPv4 over DHCPv6 MUST
-      cease to send DHCPv4 messages using the DHCP protocol described in <xref target="RFC2131"/> 
-	  and use DHCPv4 over DHCPv6 to request IPv4 configuration from the 4o6 DHCP Server. 
-	  The DHCPv4 message is stored verbatim in the BOOTP Message option carried by the 
-      DHCPv4-query message. The client MUST put exactly one BOOTP Message option into 
-	  a single DHCPv4-query message.
+      
+      <t>The client generates a DHCPv4 message and stores it verbatim in the BOOTP 
+      Message option carried by the DHCPv4-query message. The client MUST put exactly 
+      one BOOTP Message option into a single DHCPv4-query message.  
       </t>
 
       <t>The client MUST follow rules defined in <xref target="uni_flag"/> when setting 
