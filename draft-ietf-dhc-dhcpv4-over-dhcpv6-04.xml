@@ -281,8 +281,9 @@
             encapsulated in the DHCPv4-response message.</t>
             <t hangText="options">The options carried by the message. The BOOTP Message
             Option described in <xref target="bootp-message-option"/> MUST be carried by
-            the message. The options related to DHCPv6 configuration MUST NOT be 
-            included in this field. </t>
+            the message. Only DHCPv6 options for IPv4 configuration may be 
+            included in this field. It MUST NOT contain DHCPv6 options related 
+            IPv6, or IPv6-only service configuration.</t>
           </list>
         </t>
       </section>
