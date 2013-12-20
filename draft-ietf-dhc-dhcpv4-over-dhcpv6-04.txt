@@ -5,13 +5,13 @@
 DHC Working Group                                                 Q. Sun
 Internet-Draft                                                    Y. Cui
 Intended status: Standards Track                     Tsinghua University
-Expires: June 21, 2014                                      M. Siodelski
+Expires: June 23, 2014                                      M. Siodelski
                                                                      ISC
                                                              S. Krishnan
                                                                 Ericsson
                                                                I. Farrer
                                                      Deutsche Telekom AG
-                                                       December 18, 2013
+                                                       December 20, 2013
 
 
                       DHCPv4 over DHCPv6 Transport
@@ -42,7 +42,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on June 21, 2014.
+   This Internet-Draft will expire on June 23, 2014.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Sun, et al.               Expires June 21, 2014                 [Page 1]
+Sun, et al.               Expires June 23, 2014                 [Page 1]
 
 Internet-Draft             DHCPv4 over DHCPv6              December 2013
 
@@ -77,20 +77,20 @@ Table of Contents
      5.1.  Message Types . . . . . . . . . . . . . . . . . . . . . .   5
      5.2.  Message Formats . . . . . . . . . . . . . . . . . . . . .   5
      5.3.  DHCPv4-query Message Flags  . . . . . . . . . . . . . . .   6
-     5.4.  DHCPv4-response Message Flags . . . . . . . . . . . . . .   6
+     5.4.  DHCPv4-response Message Flags . . . . . . . . . . . . . .   7
    6.  New DHCPv6 Options  . . . . . . . . . . . . . . . . . . . . .   7
      6.1.  BOOTP Message Option Format . . . . . . . . . . . . . . .   7
-     6.2.  4o6 Server Address Option Format  . . . . . . . . . . . .   7
-   7.  Use of the DHCPv4-query Unicast Flag  . . . . . . . . . . . .   8
+     6.2.  4o6 Server Address Option Format  . . . . . . . . . . . .   8
+   7.  Use of the DHCPv4-query Unicast Flag  . . . . . . . . . . . .   9
    8.  4o6 DHCP Client Behavior  . . . . . . . . . . . . . . . . . .   9
-   9.  Relay Agent Behavior  . . . . . . . . . . . . . . . . . . . .  10
+   9.  Relay Agent Behavior  . . . . . . . . . . . . . . . . . . . .  11
    10. 4o6 DHCP Server Behavior  . . . . . . . . . . . . . . . . . .  11
-   11. Security Considerations . . . . . . . . . . . . . . . . . . .  11
+   11. Security Considerations . . . . . . . . . . . . . . . . . . .  12
    12. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  12
    13. Contributors List . . . . . . . . . . . . . . . . . . . . . .  12
    14. References  . . . . . . . . . . . . . . . . . . . . . . . . .  12
-     14.1.  Normative References . . . . . . . . . . . . . . . . . .  12
-     14.2.  Informative References . . . . . . . . . . . . . . . . .  12
+     14.1.  Normative References . . . . . . . . . . . . . . . . . .  13
+     14.2.  Informative References . . . . . . . . . . . . . . . . .  13
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  13
 
 1.  Introduction
@@ -109,15 +109,17 @@ Table of Contents
 
 
 
-Sun, et al.               Expires June 21, 2014                 [Page 2]
+Sun, et al.               Expires June 23, 2014                 [Page 2]
 
 Internet-Draft             DHCPv4 over DHCPv6              December 2013
 
 
-   for DHCPv4, e.g. failover, DNS updates, leasequery, etc.  Also, it
-   has the added benefit of providing information about the IPv6 network
-   over which the request is sent, as a result of having passed through
-   one or more DHCPv6 relay agents.
+   for DHCPv4, e.g. failover, DNS updates, leasequery, etc.
+
+   When IPv6 multicast is used to transport 4o6 messages, another
+   benefit is that the operator can gain information about the
+   underlying IPv6 network the 4o6 client is connected to from the the
+   DHCPv6 relay agents the request has passed through.
 
 2.  Requirements Language
 
@@ -160,16 +162,16 @@ Internet-Draft             DHCPv4 over DHCPv6              December 2013
    underlying network protocol.
 
    Although the purpose of this document is to address the problem of
-   communication between the DHCPv4 client and the DHCPv4 server, the
-   mechanism that it describes does not restrict the transported
 
 
 
-Sun, et al.               Expires June 21, 2014                 [Page 3]
+Sun, et al.               Expires June 23, 2014                 [Page 3]
 
 Internet-Draft             DHCPv4 over DHCPv6              December 2013
 
 
+   communication between the DHCPv4 client and the DHCPv4 server, the
+   mechanism that it describes does not restrict the transported
    messages types only to DHCPv4.  As the DHCPv4 message is a special
    type of the BOOTP message, BOOTP messages can also be transported
    using the same mechanism.
@@ -216,15 +218,15 @@ Internet-Draft             DHCPv4 over DHCPv6              December 2013
    option from the DHCPv6 server by sending the option code in Option
    Request option described in [RFC3315].  If the DHCPv6 server
    responses with the 4o6 Server Address option, it is an indication to
-   the client to use DHCPv4 over DHCPv6 to obtain IPv4 configuration.
 
 
 
-
-Sun, et al.               Expires June 21, 2014                 [Page 4]
+Sun, et al.               Expires June 23, 2014                 [Page 4]
 
 Internet-Draft             DHCPv4 over DHCPv6              December 2013
 
+
+   the client to use DHCPv4 over DHCPv6 to obtain IPv4 configuration.
 
    The 4o6 DHCP client obtains the address(es) of the 4o6 DHCP server(s)
    from the 4o6 Server Address option and uses them to communicate with
@@ -232,6 +234,13 @@ Internet-Draft             DHCPv4 over DHCPv6              December 2013
    Address option contains no addresses (is empty), the 4o6 DHCP client
    uses well known All_DHCP_Relay_Agents_and_Servers multicast address
    to communicate with the 4o6 DHCP server(s).
+
+   Before applying for an IPv4 address via a DHCPv4-query message, the
+   DHCP4o6 client must identify a suitable network interface for the
+   address.  Once the request is acknowledged by the DHCP4o6 server, the
+   client can configure the address and other relevant parameters on
+   this interface.  The mechanism for determining a suitable interface
+   is out of the scope of the document.
 
 5.  New DHCPv6 Messages
 
@@ -261,6 +270,18 @@ Internet-Draft             DHCPv4 over DHCPv6              December 2013
    Both DHCPv6 messages defined in this document share the following
    format:
 
+
+
+
+
+
+
+
+Sun, et al.               Expires June 23, 2014                 [Page 5]
+
+Internet-Draft             DHCPv4 over DHCPv6              December 2013
+
+
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -273,14 +294,6 @@ Internet-Draft             DHCPv4 over DHCPv6              December 2013
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
                       Figure 2: Architecture Overview
-
-
-
-
-Sun, et al.               Expires June 21, 2014                 [Page 5]
-
-Internet-Draft             DHCPv4 over DHCPv6              December 2013
-
 
    msg-type        Identifies the message type.  It can be either
                    DHCPV4-QUERY (TBD) or DHCPv4-RESPONSE (TBD) which
@@ -295,9 +308,10 @@ Internet-Draft             DHCPv4 over DHCPv6              December 2013
 
    options         The options carried by the message.  The BOOTP
                    Message Option described in Section 6.1 MUST be
-                   carried by the message.  The options related to
-                   DHCPv6 configuration MUST NOT be included in this
-                   field.
+                   carried by the message.  Only DHCPv6 options for IPv4
+                   configuration may be included in this field.  It MUST
+                   NOT contain DHCPv6 options related IPv6, or IPv6-only
+                   service configuration.
 
 5.3.  DHCPv4-query Message Flags
 
@@ -316,6 +330,14 @@ Internet-Draft             DHCPv4 over DHCPv6              December 2013
                     Figure 3: DHCPv4-query flags format
 
    U               Unicast Flag.  If set to 1, it indicates that the
+
+
+
+Sun, et al.               Expires June 23, 2014                 [Page 6]
+
+Internet-Draft             DHCPv4 over DHCPv6              December 2013
+
+
                    DHCPv4 message encapsulated within the DHCPv4-query
                    message would be sent to a unicast address if it was
                    sent using IPv4.  If this flag is set to 0, it
@@ -330,14 +352,6 @@ Internet-Draft             DHCPv4 over DHCPv6              December 2013
    This document introduces no flags to be carried in the "flags" field
    of the DHCPv4-response message.  They are all reserved for the future
    use.  The 4o6 Server MUST set all bits of this field to 0 and the 4o6
-
-
-
-Sun, et al.               Expires June 21, 2014                 [Page 6]
-
-Internet-Draft             DHCPv4 over DHCPv6              December 2013
-
-
    client MUST ignore the content in this field.
 
 6.  New DHCPv6 Options
@@ -372,6 +386,14 @@ Internet-Draft             DHCPv4 over DHCPv6              December 2013
                    In a DHCPv4-query message it contains a BOOTREQUEST
                    message sent by a client.  In a DHCPv4-response
                    message it contains a BOOTREPLY message sent by a
+
+
+
+Sun, et al.               Expires June 23, 2014                 [Page 7]
+
+Internet-Draft             DHCPv4 over DHCPv6              December 2013
+
+
                    server in response to a client.
 
 6.2.  4o6 Server Address Option Format
@@ -386,13 +408,6 @@ Internet-Draft             DHCPv4 over DHCPv6              December 2013
    It is allowed that this option carries no IPv6 addresses, which
    instructs the client to use All_DHCP_Relay_Agents_and_Servers
    multicast address as a default.
-
-
-
-Sun, et al.               Expires June 21, 2014                 [Page 7]
-
-Internet-Draft             DHCPv4 over DHCPv6              December 2013
-
 
    The presence of this option in the DHCPv6 server's response indicates
    to the client that it should use DHCPv4 over DHCPv6 to obtain IPv4
@@ -424,6 +439,17 @@ Internet-Draft             DHCPv4 over DHCPv6              December 2013
    IPv6 Address    Zero or more IPv6 addresses of the 4o6 DHCP
                    Server(s).
 
+
+
+
+
+
+
+Sun, et al.               Expires June 23, 2014                 [Page 8]
+
+Internet-Draft             DHCPv4 over DHCPv6              December 2013
+
+
 7.  Use of the DHCPv4-query Unicast Flag
 
    A DHCPv4 client conforming to [RFC2131] may send its DHCPREQUEST
@@ -442,14 +468,6 @@ Internet-Draft             DHCPv4 over DHCPv6              December 2013
    In DHCPv4 over DHCPv6, IPv6 is used to deliver DHCPv4 messages to the
    4o6 DHCP Server.  There is no relation between the outer IPv6 address
    and the inner DHCPv4 message.  So the server is not able to determine
-
-
-
-Sun, et al.               Expires June 21, 2014                 [Page 8]
-
-Internet-Draft             DHCPv4 over DHCPv6              December 2013
-
-
    whether the received DHCPv4 messages should have been sent using
    broadcast or unicast in IPv4 by checking the IPv6 address.  This is
    similar to the case addressed by [RFC5010].
@@ -480,6 +498,14 @@ Internet-Draft             DHCPv4 over DHCPv6              December 2013
    response to the client.  If the client receives this option, it MUST
    enable the DHCPv4-over-DHCPv6 function.  The client MUST NOT enable
    the DHCPv4-over-DHCPv6 function if the DHCPv6 server does not include
+
+
+
+Sun, et al.               Expires June 23, 2014                 [Page 9]
+
+Internet-Draft             DHCPv4 over DHCPv6              December 2013
+
+
    the 4o6 Server Address option in its response.  If the client does
    not receive this option and DHCPv4 over DHCPv6 is running, the client
    MUST disable the DHCPv4-over-DHCPv6 function.
@@ -498,14 +524,6 @@ Internet-Draft             DHCPv4 over DHCPv6              December 2013
    The 4o6 DHCP client MUST employ a source IPv6 address of a proper
    scope to send the DHCPv4-query message.  When the client sends a
    DHCPv4-query message to the multicast address, it MUST use a link-
-
-
-
-Sun, et al.               Expires June 21, 2014                 [Page 9]
-
-Internet-Draft             DHCPv4 over DHCPv6              December 2013
-
-
    local address as the source address as in RFC3315.  When the client
    sends a DHCPv4-query message using unicast, the source address MUST
    be the global IPv6 address acquired in advance.
@@ -537,6 +555,13 @@ Internet-Draft             DHCPv4 over DHCPv6              December 2013
    The 4o6 DHCP client MUST implement [RFC4361] to ensure that the
    device correctly identifies itself.
 
+
+
+Sun, et al.               Expires June 23, 2014                [Page 10]
+
+Internet-Draft             DHCPv4 over DHCPv6              December 2013
+
+
 9.  Relay Agent Behavior
 
    When a DHCPv6 relay agent receives a DHCPv4-query message, it may not
@@ -554,14 +579,6 @@ Internet-Draft             DHCPv4 over DHCPv6              December 2013
        DHCPv6 packet (i.e. DHCPv6/UDP/IPv6).
 
    2.  For any other DHCPv6 message type, forward according to section
-
-
-
-Sun, et al.               Expires June 21, 2014                [Page 10]
-
-Internet-Draft             DHCPv4 over DHCPv6              December 2013
-
-
        20 of [RFC3315].
 
    The above logic only allows for separate relay destinations
@@ -593,6 +610,14 @@ Internet-Draft             DHCPv4 over DHCPv6              December 2013
    it in the payload of a BOOTP Message Option, which it puts into the
    DHCPv4-response message.
 
+
+
+
+Sun, et al.               Expires June 23, 2014                [Page 11]
+
+Internet-Draft             DHCPv4 over DHCPv6              December 2013
+
+
    If the DHCPv4-query message was received directly by the server, the
    DHCPv4-response message MUST be unicast from the interface on which
    the original message was received.
@@ -610,14 +635,6 @@ Internet-Draft             DHCPv4 over DHCPv6              December 2013
    network authentication gateways, a malicious attacker may leverage
    this feature to convey other messages using DHCPv6, i.e. use DHCPv6
    as a form of encapsulation.  However, the potential risk from this is
-
-
-
-Sun, et al.               Expires June 21, 2014                [Page 11]
-
-Internet-Draft             DHCPv4 over DHCPv6              December 2013
-
-
    no more severe than that with the current DHCPv4 and DHCPv6 practice.
 
    There are chances that a rogue DHCPv6 server may reply with a 4o6
@@ -645,6 +662,18 @@ Internet-Draft             DHCPv4 over DHCPv6              December 2013
 
 14.  References
 
+
+
+
+
+
+
+
+Sun, et al.               Expires June 23, 2014                [Page 12]
+
+Internet-Draft             DHCPv4 over DHCPv6              December 2013
+
+
 14.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
@@ -667,13 +696,6 @@ Internet-Draft             DHCPv4 over DHCPv6              December 2013
 
 14.2.  Informative References
 
-
-
-Sun, et al.               Expires June 21, 2014                [Page 12]
-
-Internet-Draft             DHCPv4 over DHCPv6              December 2013
-
-
    [I-D.ietf-dhc-dhcpv6-unknown-msg]
               Cui, Y., Sun, Q., and T. Lemon, "Handling Unknown DHCPv6
               Messages", draft-ietf-dhc-dhcpv6-unknown-msg-03 (work in
@@ -692,6 +714,20 @@ Authors' Addresses
 
    Phone: +86-10-6278-5822
    Email: sunqi@csnet1.cs.tsinghua.edu.cn
+
+
+
+
+
+
+
+
+
+
+
+Sun, et al.               Expires June 23, 2014                [Page 13]
+
+Internet-Draft             DHCPv4 over DHCPv6              December 2013
 
 
    Yong Cui
@@ -716,18 +752,6 @@ Authors' Addresses
    Ericsson
 
    Email: suresh.krishnan@ericsson.com
-
-
-
-
-
-
-
-
-
-Sun, et al.               Expires June 21, 2014                [Page 13]
-
-Internet-Draft             DHCPv4 over DHCPv6              December 2013
 
 
    Ian Farrer
@@ -757,28 +781,4 @@ Internet-Draft             DHCPv4 over DHCPv6              December 2013
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Sun, et al.               Expires June 21, 2014                [Page 14]
+Sun, et al.               Expires June 23, 2014                [Page 14]
