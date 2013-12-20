@@ -115,12 +115,13 @@
       <t>This document describes a transport mechanism to carry DHCPv4 messages using 
       the DHCPv6 protocol for the dynamic provisioning of IPv4 addresses and other
       DHCPv4 specific configuration parameters across IPv6-only networks. It leverages
-      the existing infrastructure for DHCPv4, e.g. failover, DNS updates, leasequery, etc.
-      Also, it has the added benefit of providing information about the IPv6 network 
-      over which the request is sent, as a result of having passed through one or 
-      more DHCPv6 relay agents.
-      </t>
-
+      the existing infrastructure for DHCPv4, e.g. failover, DNS updates, 
+      leasequery, etc.</t>
+      
+      <t>When IPv6 multicast is used to transport 4o6 messages, another benefit
+      is that the operator can gain information about the underlying IPv6
+      network the 4o6 client is connected to from the the DHCPv6 relay
+      agents the request has passed through.</t>
     </section>
 
     <section title="Requirements Language">
@@ -223,11 +224,16 @@
     All_DHCP_Relay_Agents_and_Servers multicast address to communicate with the 
     4o6 DHCP server(s).</t>
     
+    <t>Before applying for an IPv4 address via a DHCPv4-query message, the 
+    DHCP4o6 client must identify a suitable network interface for the address. 
+    Once the request is acknowledged by the DHCP4o6 server, the client can 
+    configure the address and other relevant parameters on this interface. The 
+    mechanism for determining a suitable interface is out of the scope of the 
+    document.</t>
+    
     <!-- Should a clarification be added here that "The options related to DHCPv6 configuration
     MUST NOT be included in the new DHCPv6 messages, including the 4o6 Server Address option"? 
     Or some place else? -->
-
-    <!-- Write some text what 4o6 DHCP client is supposed to do with the obtained configuration! -->
     
     </section>
 
