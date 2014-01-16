@@ -650,12 +650,12 @@ Internet-Draft             DHCPv4 over DHCPv6               January 2014
 12.  IANA Considerations
 
    IANA is requested to allocate two DHCPv6 option codes for use by
-   OPTION_DHCPV4_MSG, OPTION_DHCP4_O_DHCP6_SERVER from the "DHCP Option
-   Codes" table, and two DHCPv6 message type codes for the DHCPV4-QUERY
-   and DHCPV4-RESPONSE from the "DHCP Message Codes" table of the
-   Dynamic Host Configuration Protocol for IPv6 (DHCPv6) Registry.  Both
-   tables can be found at http://www.iana.org/assignments/
-   dhcpv6-parameters/dhcpv6-parameters.xml.
+   OPTION_DHCPV4_MSG and OPTION_DHCP4_O_DHCP6_SERVER from the "DHCP
+   Option Codes" table, and two DHCPv6 message type codes for the
+   DHCPV4-QUERY and DHCPV4-RESPONSE from the "DHCP Message Codes" table
+   of the Dynamic Host Configuration Protocol for IPv6 (DHCPv6)
+   Registry.  Both tables can be found at http://www.iana.org/
+   assignments/dhcpv6-parameters/dhcpv6-parameters.xml.
 
 13.  Contributors List
 
