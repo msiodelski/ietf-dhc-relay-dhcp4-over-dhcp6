@@ -630,11 +630,18 @@
   <section title="IANA Considerations">
 
     <t>IANA is requested to allocate two DHCPv6 option codes for use by
+<<<<<<< HEAD
     OPTION_DHCPV4_MSG and OPTION_DHCP4_O_DHCP6_SERVER from the "DHCP Option 
     Codes" table, and two DHCPv6 message type codes for the DHCPV4-QUERY and 
     DHCPV4-RESPONSE from the "DHCP Message Codes" table of the Dynamic Host 
     Configuration Protocol for IPv6 (DHCPv6) Registry. Both tables can be found 
     at http://www.iana.org/assignments/dhcpv6-parameters/dhcpv6-parameters.xml.
+=======
+    OPTION_DHCPV4_MSG, OPTION_DHCP4_O_DHCP6_SERVER from the "DHCP Option Codes" table, and two
+    DHCPv6 message type codes for the DHCPV4-QUERY and DHCPV4-RESPONSE from the
+    "DHCP Message Codes" table of the Dynamic Host Configuration Protocol for
+    IPv6 (DHCPv6) Registry. Both tables can be found at http://www.iana.org/assignments/dhcpv6-parameters/dhcpv6-parameters.xml.
+>>>>>>> 2a18bec1972bde20c5fabbea1dbd4a8003967ff2
     </t>
 
   </section>
