@@ -473,8 +473,7 @@
       MUST obtain the necessary IPv6 configuration before using DHCPv4 over DHCPv6. A
       client intending to use DHCPv4 over DHCPv6 MUST request the 4o6 Server Address option
 	  using Option Request option (ORO) in every Solicit, Request, Renew and
-	  Information-request message. The DHCP 4o6 client MUST NOT request the 4o6
-	  Server Address option in the DHCPv4-query message.</t>
+	  Information-request message.</t>
 
       <t>The DHCPv6 server MAY include the 4o6 Server Address option in its
       response to the client. If the client receives this option, it MUST enable
@@ -510,6 +509,8 @@
       <t>The client generates a DHCPv4 message and stores it verbatim in the
       DHCPv4 Message option carried by the DHCPv4-query message. The client MUST
       put exactly one DHCPv4 Message option into a single DHCPv4-query message.
+      The client MUST NOT request the 4o6 Server Address option in the
+      DHCPv4-query message.
       </t>
 
       <t>The client MUST follow rules defined in <xref target="uni_flag"/> when
