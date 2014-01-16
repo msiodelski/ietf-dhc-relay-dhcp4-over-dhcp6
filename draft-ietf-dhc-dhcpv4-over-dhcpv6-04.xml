@@ -177,8 +177,8 @@
       DHCP clients on CPE devices are comparatively easier to modify than those
       implemented on end hosts. As a result, this document uses the CPE as an
       example for describing the mechanism. This does not preclude any end-host,
-      or other device requiring IPv4 configuration, from implementing DHCP 4o6
-      in the future.</t>
+      or other device requiring IPv4 configuration, from implementing DHCPv4
+      over DHCPv6 in the future.</t>
 
       <t>This mechanism works by carrying DHCPv4 messages encapsulated within
       DHCPv6 messages. <xref target="architecture-overview"/>, below,
@@ -470,8 +470,8 @@
     <section anchor="client-behavior" title="DHCP 4o6 Client Behavior">
 
       <t>The DHCPv4-over-DHCPv6 function MUST be disabled by default. The client
-      MUST obtain the necessary IPv6 configuration before using DHCP 4o6. A
-      client intending to use DHCP 4o6 MUST request the 4o6 Server Address option
+      MUST obtain the necessary IPv6 configuration before using DHCPv4 over DHCPv6. A
+      client intending to use DHCPv4 over DHCPv6 MUST request the 4o6 Server Address option
 	  using Option Request option (ORO) in every Solicit, Request, Renew and
 	  Information-request message. The DHCP 4o6 client MUST NOT request the 4o6
 	  Server Address option in the DHCPv4-query message.</t>
