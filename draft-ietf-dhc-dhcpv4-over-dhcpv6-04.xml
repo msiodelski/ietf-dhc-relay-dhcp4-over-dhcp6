@@ -141,7 +141,7 @@
         DHCPv4 over DHCPv6.</t>
 
         <t hangText="DHCP 4o6 Server:"> A DHCP server that is capable of 
-        processing DHCPv4 packets encapsulated in the BOOTP Message option 
+        processing DHCPv4 packets encapsulated in the DHCPv4 Message option
         (defined below).</t>
 
         <t hangText="CPE:"> Customer Premises Equipment (also known as Customer 
@@ -185,15 +185,15 @@
       illustrates one possible deployment architecture.</t>
 
       <t>The DHCP 4o6 client implements a new DHCPv6 message called 
-      DHCPv4-query, which contains a new option called the BOOTP Message option 
-      encapsulating a DHCPv4 request. The format of this option is described in
-      <xref target="bootp-message-option"/>.
+      DHCPv4-query, which contains a new option called the DHCPv4 Message option
+      encapsulating a DHCPv4 message sent by the client. The format of this
+      option is described in <xref target="dhcpv4-message-option"/>.
       </t>
 
       <t>The DHCPv6 message can be transmitted either via DHCPv6 Relay Agents or
       directly to the DHCP 4o6 Server. The server replies with a DHCPv4-response
-       message, which is a new DHCPv6 message carrying the DHCPv4 response 
-       encapsulated in the BOOTP Message option.
+      message, which is a new DHCPv6 message carrying the DHCPv4 response
+      encapsulated in the DHCPv4 Message option.
       </t>
 
       <figure align="center" anchor="architecture-overview"
@@ -252,16 +252,16 @@
 	    <t>
         <list hangIndent="24" style="hanging">
           <t hangText="DHCPV4-QUERY (TBD):"> The DHCP 4o6 client sends a 
-          DHCPv4-query message to a DHCP 4o6 server. The BOOTP Message Option 
-          carried by this message contains a BOOTREQUEST message that the DHCP 
+          DHCPv4-query message to a DHCP 4o6 server. The DHCPv4 Message option
+          carried by this message contains a DHCPv4 message that the DHCP 
           4o6 client uses to request IPv4 configuration parameters from the 
           server.</t>
 
           <t hangText="DHCPv4-RESPONSE (TBD):">A DHCP 4o6 server sends a 
-          DHCPv4-response message to a DHCP 4o6 client. It contains a BOOTP 
-          Message Option carrying a BOOTREPLY message in response to a 
-          BOOTREQUEST received by the server in the BOOTP Message Option of the 
-          DHCPv4-query message. </t>
+          DHCPv4-response message to a DHCP 4o6 client. It contains a DHCPv4 
+          Message option carrying a DHCPv4 message in response to a 
+          DHCPv4 message received by the server in the DHCPv4 Message option
+          of the DHCPv4-query message. </t>
         </list>
         </t>
       </section>
@@ -269,8 +269,8 @@
       <section title="Message Formats">
         <t>Both DHCPv6 messages defined in this document share the following format:</t>
 
-        <figure align="center" anchor="boot-v6-msg-format"
-                title="Architecture Overview">
+        <figure align="center" anchor="new-msg-format"
+                title="The format of DHCPv4-query and DHCPv4-response messages">
           <artwork><![CDATA[
    0                   1                   2                   3
    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -287,7 +287,7 @@
         <t>
           <list hangIndent="16" style="hanging">
             <t hangText="msg-type">Identifies the message type. It can be either 
-            DHCPV4-QUERY (TBD) or DHCPv4-RESPONSE (TBD) corresponding to the 
+            DHCPV4-QUERY (TBD) or DHCPV4-RESPONSE (TBD) corresponding to the 
             contained DHCPv4-query or DHCPv4-response, respectively.</t>
             
             <t hangText="flags">Specifies flags providing additional information 
@@ -295,12 +295,12 @@
             the DHCPv4-query message, or required by the client to process a
             DHCPv4 message encapsulated in the DHCPv4-response message.</t>
             
-            <t hangText="options">Options carried by the message. The BOOTP 
-            Message Option (described in <xref target="bootp-message-option"/>)
-             MUST be carried by the message. Only DHCPv6 options for IPv4 
-             configuration may be included in this field. It MUST NOT contain 
-             DHCPv6 options related solely to IPv6, or IPv6-only service 
-             configuration.</t>
+            <t hangText="options">Options carried by the message. The DHCPv4 
+            Message Option (described in <xref target="dhcpv4-message-option"/>)
+            MUST be carried by the message. Only DHCPv6 options for IPv4 
+            configuration may be included in this field. It MUST NOT contain 
+            DHCPv6 options related solely to IPv6, or IPv6-only service 
+            configuration.</t>
           </list>
         </t>
       </section>
@@ -347,23 +347,23 @@
 
     <section title="New DHCPv6 Options" anchor="new-v6-options">
 
-      <section title="BOOTP Message Option Format" anchor="bootp-message-option">
-        <t>The BOOTP Message option carries a BOOTP message that is sent
-        by the client or the server. Such BOOTP messages exclude any IP or
+      <section title="DHCPv4 Message Option Format" anchor="dhcpv4-message-option">
+        <t>The DHCPv4 Message option carries a DHCPv4 message that is sent
+        by the client or the server. Such messages exclude any IP or
         UDP headers. </t>
 
-        <t>The format of the BOOTP Message Option is: </t>
+        <t>The format of the DHCPv4 Message option is: </t>
 
-        <figure align="center" anchor="option-bootp-msg"
-              title="BOOTP Message Option Format">
+        <figure align="center" anchor="option-dhcpv4-msg"
+              title="DHCPv4 Message option Format">
         <artwork><![CDATA[
    0                   1                   2                   3
    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |        OPTION_BOOTP_MSG       |           option-len          |
+  |       OPTION_DHCPV4_MSG       |           option-len          |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |                                                               |
-  .                         BOOTP-message                         .
+  .                        DHCPv4-message                         .
   .                                                               .
   .                                                               .
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -371,14 +371,14 @@
         </figure>
       <t>
         <list hangIndent="16" style="hanging">
-          <t hangText="option-code">OPTION_BOOTP_MSG (TBD).</t>
+          <t hangText="option-code">OPTION_DHCPV4_MSG (TBD).</t>
           
-          <t hangText="option-len">Length of BOOTP message.</t>
+          <t hangText="option-len">Length of the DHCPv4 message.</t>
           
-          <t hangText="BOOTP-message">The BOOTP message sent by the client
-          or the server. In a DHCPv4-query message it contains a BOOTREQUEST 
+          <t hangText="DHCPv4-message">The DHCPv4 message sent by the client
+          or the server. In a DHCPv4-query message it contains a DHCPv4
           message sent by a client. In a DHCPv4-response message it contains a 
-          BOOTREPLY message sent by a server in response to a client.</t>
+          DHCPv4 message sent by a server in response to a client.</t>
         </list>
       </t>
       </section>
@@ -508,8 +508,8 @@
       </t>
       
       <t>The client generates a DHCPv4 message and stores it verbatim in the 
-      BOOTP Message option carried by the DHCPv4-query message. The client MUST 
-      put exactly one BOOTP Message option into a single DHCPv4-query message.  
+      DHCPv4 Message option carried by the DHCPv4-query message. The client MUST
+      put exactly one DHCPv4 Message option into a single DHCPv4-query message.
       </t>
 
       <t>The client MUST follow rules defined in <xref target="uni_flag"/> when 
@@ -525,8 +525,8 @@
 	  SHOULD send DHCPv4-query message to all unicast addresses listed in the option.</t> -->
 
       <t>On receiving a DHCPv4-response message, the client MUST look for the
-      BOOTP Message option within this message. If this option is not found, the
-      DHCPv4-response message is discarded. If the BOOTP Message Option is 
+      DHCPv4 Message option within this message. If this option is not found, the
+      DHCPv4-response message is discarded. If the DHCPv4 Message option is
       present, the client extracts the DHCPv4 message it contains and processes 
       it as described in section 4.4 of <xref target="RFC2131"/>.
       </t>
@@ -573,12 +573,12 @@
 
     <section title="DHCP 4o6 Server Behavior">
       <t>When the server receives a DHCPv4-query message from a client, it 
-      searches for the BOOTP Message Option. The server discards the packet 
+      searches for the DHCPv4 Message option. The server discards the packet
       without this option. The server MAY notify an administrator about the 
       receipt of a malformed packet. The mechanism for this notification is out 
       of scope for this document. </t>
 
-      <t>If the server finds a valid BOOTP Message option, it extracts the 
+      <t>If the server finds a valid DHCPv4 Message option, it extracts the 
       original DHCPv4 message and the contents of the "flags" field carried in 
       the DHCPv4-query message and uses them to generate the appropriate DHCPv4
       response (server to client message). The response is generated as 
@@ -591,7 +591,7 @@
       </t>
 
       <t>When an appropriate DHCPv4 response is generated, the 4o6 Server places
-      it in the payload of a BOOTP Message Option, which it puts into the 
+      it in the payload of a DHCPv4 Message option, which it puts into the
       DHCPv4-response message.</t>
 
       <t>If the DHCPv4-query message was received directly by the server,
@@ -624,7 +624,7 @@
   <section title="IANA Considerations">
 
     <t>IANA is requested to allocate three DHCPv6 option codes for use by 
-    OPTION_BOOTP_MSG, OPTION_DHCP4_O_DHCP6_ENABLE and 
+    OPTION_DHCPV4_MSG, OPTION_DHCP4_O_DHCP6_ENABLE and 
     OPTION_DHCP4_O_DHCP6_SERVERS from the "DHCP Option Codes" table, and two 
     DHCPv6 message type codes for the DHCPV4-QUERY and DHCPv4-RESPONSE from the 
     "DHCP Message Codes" table of the Dynamic Host Configuration Protocol for 
