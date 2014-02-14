@@ -340,7 +340,7 @@
       <section title="DHCPv4-response Message Flags">
         <t>This document introduces no flags to be carried in the "flags" field
         of the DHCPv4-response message. They are all reserved for the future
-        use. The 4o6 Server MUST set all bits of this field to 0 and the DHCP 4o6
+        use. The DHCP 4o6 server MUST set all bits of this field to 0 and the DHCP 4o6
         client MUST ignore the content in this field.</t>
       </section>
     </section>
@@ -386,7 +386,7 @@
 
       <section title="4o6 Server Address Option Format"
       anchor="dhcp4o6-server-addr-option">
-        <t>The 4o6 Server Address option is sent by the server to a
+        <t>The 4o6 Server Address option is sent by a server to a
         client requesting IPv6 configuration using DHCPv6 <xref target="RFC3315"/>.
         It carries a list of DHCP 4o6 server's IPv6 addresses that the client
         should contact to obtain IPv4 configuration. This list may include either
@@ -400,7 +400,7 @@
         <t>The presence of this option in the server's response indicates
         to the client that it should use DHCPv4 over DHCPv6 to obtain IPv4
         configuration. If the option is absent, the client MUST NOT enable
-        DHCPv4 over DHCPv6 function.</t>
+        DHCPv4-over-DHCPv6 function.</t>
 
         <t>The format of the 4o6 Server Address option is: </t>
 
@@ -449,7 +449,7 @@
       to indicate whether broadcast or unicast was used by the client.</t>
 
       <t>In DHCPv4 over DHCPv6, IPv6 is used to deliver DHCPv4 messages to the
-      4o6 DHCP server. There is no relation between the outer IPv6 address and
+      DHCP 4o6 server. There is no relation between the outer IPv6 address and
       the inner DHCPv4 message. As a result, the server is unable to determine
       whether the received DHCPv4 messages should have been sent using broadcast
       or unicast in IPv4 by checking the IPv6 address. This is similar to the
@@ -509,11 +509,6 @@
       address as the source address as described in <xref target="RFC3315"/>.
       When the client sends a DHCPv4-query message using unicast, the source 
       address MUST be an address of appropriate scope, acquired in advance.</t>
-
-      <t>A client supporting DHCPv4 over DHCPv6 SHOULD use Information Refresh
-      Time Option <xref target="RFC4242"/> to refresh the status of
-      DHCPv4-over-DHCPv6 function as well as other DHCPv6 configuration data.
-      </t>
 
       <t>The client generates a DHCPv4 message and stores it verbatim in the
       DHCPv4 Message option carried by the DHCPv4-query message. The client MUST
