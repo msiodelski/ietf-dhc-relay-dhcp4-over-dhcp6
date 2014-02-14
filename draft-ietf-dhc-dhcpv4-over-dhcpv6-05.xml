@@ -13,12 +13,10 @@
 <!ENTITY rfc3315 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3315.xml">
 <!ENTITY rfc4242 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4242.xml">
 <!ENTITY rfc4361 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4361.xml">
-<!ENTITY rfc6842 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6842.xml">
-
 <!ENTITY rfc5010 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5010.xml">
 ]>
 
-<rfc category="std" docName="draft-ietf-dhc-dhcpv4-over-dhcpv6-04" ipr="trust200902">
+<rfc category="std" docName="draft-ietf-dhc-dhcpv4-over-dhcpv6-05" ipr="trust200902">
 
 <front>
   <title abbrev="DHCPv4 over DHCPv6">DHCPv4 over DHCPv6 Transport</title>
@@ -135,20 +133,21 @@
     <section title="Terminology">
       <t>This document makes use of the following terms:
       <list hangIndent="20" style="hanging">
-        <t hangText="DHCP 4o6 Client:"> A DHCP client supporting both the DHCPv6
-         protocol <xref target="RFC3315"/> as well as the DHCPv4 over DHCPv6
-         protocol described in this document. Such a client is capable of
-         requesting IPv6 configuration using DHCPv6 and IPv4 configuration using
-        DHCPv4 over DHCPv6.</t>
-
-        <t hangText="DHCP 4o6 Server:"> A DHCP server that is capable of
-        processing DHCPv4 packets encapsulated in the DHCPv4 Message option
-        (defined below).</t>
 
         <t hangText="CPE:"> Customer Premises Equipment (also known as Customer
         Provided Equipment), which provides access for devices connected to a
         Local Area Network (typically at the customer's site/home) to the
         Internet Service Provider's network.</t>
+
+        <t hangText="DHCP 4o6 client (or client):"> A DHCP client supporting both the DHCPv6
+         protocol <xref target="RFC3315"/> as well as the DHCPv4 over DHCPv6
+         protocol described in this document. Such a client is capable of
+         requesting IPv6 configuration using DHCPv6 and IPv4 configuration using
+        DHCPv4 over DHCPv6.</t>
+
+        <t hangText="DHCP 4o6 server (or server):"> A DHCP server that is capable of
+        processing DHCPv4 packets encapsulated in the DHCPv4 Message option
+        (defined below).</t>
 
         <t hangText="DHCPv4 over DHCPv6:"> A protocol described in this
         document, used to carry DHCPv4 messages in the payload of DHCPv6
@@ -192,7 +191,7 @@
       </t>
 
       <t>The DHCPv6 message can be transmitted either via DHCPv6 Relay Agents or
-      directly to the DHCP 4o6 Server. The server replies with a DHCPv4-response
+      directly to the DHCP 4o6 server. The server replies with a DHCPv4-response
       message, which is a new DHCPv6 message carrying the DHCPv4 response
       encapsulated in the DHCPv4 Message option.
       </t>
@@ -205,7 +204,7 @@
              |             |           |             |
     +--------+-+  IPv6   +-+-----------+-+  IPv6   +-+--------+
     | DHCP 4o6 | network |    DHCPv6     | network | DHCP 4o6 |
-    |  Client  +---------+  Relay Agent  +---------+  Server  |
+    |  client  +---------+  Relay Agent  +---------+  Server  |
     | (on CPE) |         |               |         |          |
     +--------+-+         +-+-----------+-+         +-+--------+
              |             |           |             |
@@ -218,22 +217,22 @@
     <t>By default, the DHCPv4-over-DHCPv6 function MUST be disabled on the
     client. Before the client can use DHCPv4 over DHCPv6, it MUST obtain the
     necessary IPv6 configuration. The client requests the 4o6 Server Address
-    option from the DHCPv6 server by sending the option code in Option Request
-    option as described in <xref target="RFC3315"/>. If the DHCPv6 server
+    option from the server by sending the option code in Option Request
+    option as described in <xref target="RFC3315"/>. If the server
     responds with the 4o6 Server Address option, it is an indication to
     the client to attempt using DHCPv4 over DHCPv6 to obtain IPv4 configuration.
     </t>
 
-    <t>The DHCP 4o6 client obtains the address(es) of the DHCP 4o6 server(s)
+    <t>The client obtains the address(es) of the DHCP 4o6 server(s)
     from the 4o6 Server Address option and uses them to communicate with the
     DHCP 4o6 servers as described in <xref target="client-behavior"/>. If the
-    4o6 Server Address option contains no addresses (is empty), the DHCP 4o6
+    4o6 Server Address option contains no addresses (is empty), the
     client uses the well-known All_DHCP_Relay_Agents_and_Servers multicast
     address to communicate with the DHCP 4o6 server(s).</t>
 
     <t>Before applying for an IPv4 address via a DHCPv4-query message, the
-    DHCP 4o6 client must identify a suitable network interface for the address.
-    Once the request is acknowledged by the DHCP 4o6 server, the client can
+    client must identify a suitable network interface for the address.
+    Once the request is acknowledged by the server, the client can
     configure the address and other relevant parameters on this interface. The
     mechanism for determining a suitable interface is out of the scope of the
     document.</t>
@@ -319,7 +318,7 @@
        0                   1                   2
        0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      |U|                 Reserved                    |
+      |U|                    MBZ                      |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ]]></artwork>
         </figure>
@@ -329,9 +328,10 @@
             DHCPv4 message encapsulated within the DHCPv4-query message would be
             sent to a unicast address if it was sent using IPv4. If this flag is
             set to 0, it indicates that the DHCPv4 message would be sent to the
-            broadcast address if it was sent using IPv4.</t>
+            broadcast address if it was sent using IPv4. The usage of the flag is
+            described in detail in <xref target="uni_flag"/>.</t>
 
-            <t hangText="Reserved">Bits MUST be set to zero when sending and
+            <t hangText="MBZ">Bits MUST be set to zero when sending and
             MUST be ignored when receiving.</t>
           </list>
         </t>
@@ -340,7 +340,7 @@
       <section title="DHCPv4-response Message Flags">
         <t>This document introduces no flags to be carried in the "flags" field
         of the DHCPv4-response message. They are all reserved for the future
-        use. The 4o6 Server MUST set all bits of this field to 0 and the 4o6
+        use. The 4o6 Server MUST set all bits of this field to 0 and the DHCP 4o6
         client MUST ignore the content in this field.</t>
       </section>
     </section>
@@ -386,18 +386,18 @@
 
       <section title="4o6 Server Address Option Format"
       anchor="dhcp4o6-server-addr-option">
-        <t>The 4o6 Server Address option is sent by the DHCPv6 server to a
-        client requesting IPv6 configuration. It carries a list of DHCP 4o6
-        server's IPv6 addresses that the DHCP 4o6 client should contact to
-        obtain IPv4 configuration. This list may include either multicast or
-        unicast addresses. The DHCP 4o6 client sends its requests to all unique
-        addresses carried in this option.</t>
+        <t>The 4o6 Server Address option is sent by the server to a
+        client requesting IPv6 configuration using DHCPv6 <xref target="RFC3315"/>.
+        It carries a list of DHCP 4o6 server's IPv6 addresses that the client
+        should contact to obtain IPv4 configuration. This list may include either
+        multicast or unicast addresses. The client sends its requests
+        to all unique addresses carried in this option.</t>
 
         <t>This option may also carry no IPv6 addresses, which instructs the
         client to use the All_DHCP_Relay_Agents_and_Servers multicast address
         as the destination address.</t>
 
-        <t>The presence of this option in the DHCPv6 server's response indicates
+        <t>The presence of this option in the server's response indicates
         to the client that it should use DHCPv4 over DHCPv6 to obtain IPv4
         configuration. If the option is absent, the client MUST NOT enable
         DHCPv4 over DHCPv6 function.</t>
@@ -449,7 +449,7 @@
       to indicate whether broadcast or unicast was used by the client.</t>
 
       <t>In DHCPv4 over DHCPv6, IPv6 is used to deliver DHCPv4 messages to the
-      4o6 DHCP Server. There is no relation between the outer IPv6 address and
+      4o6 DHCP server. There is no relation between the outer IPv6 address and
       the inner DHCPv4 message. As a result, the server is unable to determine
       whether the received DHCPv4 messages should have been sent using broadcast
       or unicast in IPv4 by checking the IPv6 address. This is similar to the
@@ -471,36 +471,44 @@
     <section anchor="client-behavior" title="DHCP 4o6 Client Behavior">
 
       <t>The DHCPv4-over-DHCPv6 function MUST be disabled by default. The client
-      MUST obtain the necessary IPv6 configuration before using DHCPv4 over DHCPv6. A
-      client intending to use DHCPv4 over DHCPv6 MUST request the 4o6 Server Address option
-	  using Option Request option (ORO) in every Solicit, Request, Renew and
-	  Information-request message.</t>
+      MUST obtain the necessary IPv6 configuration (stateless or stateful) before
+      using DHCPv4 over DHCPv6. The client intending to use DHCPv4 over DHCPv6 MUST
+      request the 4o6 Server Address option using Option Request option (ORO) in
+      every Solicit, Request, Renew, Rebind and Information-request message.</t>
 
-      <t>The DHCPv6 server MAY include the 4o6 Server Address option in its
+      <t>The server MAY include the 4o6 Server Address option in its
       response to the client. If the client receives this option, it MUST enable
       the DHCPv4-over-DHCPv6 function. The client MUST NOT enable the
-      DHCPv4-over-DHCPv6 function if the DHCPv6 server does not include the 4o6
+      DHCPv4-over-DHCPv6 function if the server does not include the 4o6
       Server Address option in its response. If the client does not receive this
       option and DHCPv4 over DHCPv6 is already enabled, the client MUST disable
       the DHCPv4-over-DHCPv6 function.</t>
 
-      <t>If the DHCP 4o6 client receives the 4o6 Server Address option and
+      <t>If the client receives the 4o6 Server Address option and
       there is a DHCPv4 client active on the interface over which that DHCPv6
       option was received, it MUST stop the DHCPv4 client from sending messages
       using <xref target="RFC2131"/>.</t>
 
-      <t>If the 4o6 client receives a 4o6 Server Address option that contains no
-      IP addresses, i.e. the option is empty, the DHCP 4o6 client MUST send its
+      <t>If the client receives a 4o6 Server Address option that contains no
+      IP addresses, i.e. the option is empty, the client MUST send its
       requests to the All_DHCP_Relay_Agents_and_Servers multicast address. If
-      there is a list of IP addresses in the option, the DHCP 4o6 client SHOULD
+      there is a list of IP addresses in the option, the client SHOULD
       send requests to each unique address carried by the option.</t>
 
-      <t>The DHCP 4o6 client MUST employ an IPv6 address of an appropriate scope
+      <t>If the client obtained stateless IPv6 configuration by sending
+      Information-request message to the server, the client MUST follow the rules
+      in <xref target="RFC4242"/> to periodically refresh the DHCPv4-over-DHCPv6
+      configuration (i.e. list of DHCP 4o6 servers) as well as other configuration
+      data. The client which obtained stateful IPv6 configuration will refresh the
+      status of DHCPv4-over-DHCPv6 function when extending a lifetime of acquired
+      IPv6 address (Renew and Rebind messages).</t>
+
+      <t>The client MUST employ an IPv6 address of an appropriate scope
       to source the DHCPv4-query message from. When the client sends a
       DHCPv4-query message to the multicast address, it MUST use a link-local
       address as the source address as described in <xref target="RFC3315"/>.
-      When the client sends a DHCPv4-query message using unicast, the source
-      address MUST be the global IPv6 address, acquired in advance.</t>
+      When the client sends a DHCPv4-query message using unicast, the source 
+      address MUST be an address of appropriate scope, acquired in advance.</t>
 
       <t>A client supporting DHCPv4 over DHCPv6 SHOULD use Information Refresh
       Time Option <xref target="RFC4242"/> to refresh the status of
@@ -517,15 +525,6 @@
       <t>The client MUST follow rules defined in <xref target="uni_flag"/> when
       setting the Unicast flag based on the DHCPv4 destination.</t>
 
-
-<!-- The following paragraph does not seem to apply anymore as we may have multiple addresses
-     of a different kind in a single option.
-
-      <t>If the client has not received the 4o6 Server Addresses option from the
-	  DHCPv6 server, it transmits the DHCPv4-query message as specified in
-	  Section 13 of <xref target="RFC3315"/>. If the client received this option, it
-	  SHOULD send DHCPv4-query message to all unicast addresses listed in the option.</t> -->
-
       <t>On receiving a DHCPv4-response message, the client MUST look for the
       DHCPv4 Message option within this message. If this option is not found, the
       DHCPv4-response message is discarded. If the DHCPv4 Message option is
@@ -533,13 +532,13 @@
       it as described in section 4.4 of <xref target="RFC2131"/>.
       </t>
 
-      <t>When dealing with IPv4 configuration, the DHCP 4o6 client MUST follow
+      <t>When dealing with IPv4 configuration, the client MUST follow
       the normal DHCPv4 retransmission requirements and strategy as specified in
       section 4.1 of <xref target="RFC2131"/>. There are no explicit
       transmission parameters associated with a DHCPv4-query message, as this is
       governed by the DHCPv4 <xref target="RFC2131"/> "state machine".</t>
 
-      <t>The DHCP 4o6 client MUST implement <xref target="RFC4361"/> to ensure
+      <t>The client MUST implement <xref target="RFC4361"/> to ensure
       that the device correctly identifies itself.</t>
 
     </section>
@@ -590,10 +589,6 @@
       been sent to the broadcast or unicast address if IPv4 has been used. This
       is useful for the server to determine the state of the client. The use of
       the "flags" field is described in detail in <xref target="uni_flag"/>.
-      Since the client MUST use a client identifier to identify itself (as
-      per <xref target="RFC4361"/>), the server MUST implement
-      <xref target="RFC6842"/> and use the client identifier in all DHCPv4 message
-      exchanges with the client.
       </t>
 
       <t>When an appropriate DHCPv4 response is generated, the 4o6 Server places
@@ -620,28 +615,20 @@
     as a form of encapsulation. However, the potential risk from this is no
     more severe than that with the current DHCPv4 and DHCPv6 practice.</t>
 
-    <t>It is possible for a rogue DHCPv6 server to reply with a 4o6 Server
+    <t>It is possible for a rogue server to reply with a 4o6 Server
     Address Option containing duplicated IPv6 addresses, which could cause an
     amplification attack. To avoid this, the client MUST check if there are
     duplicate IPv6 addresses in a 4o6 Server Address Option when receiving one.
-    The client MUST ignore those duplicated IPv6 addresses. </t>
+    The client MUST ignore any but the first instance of each address.</t>
   </section>
 
   <section title="IANA Considerations">
 
     <t>IANA is requested to allocate two DHCPv6 option codes for use by
-<<<<<<< HEAD
-    OPTION_DHCPV4_MSG and OPTION_DHCP4_O_DHCP6_SERVER from the "DHCP Option 
-    Codes" table, and two DHCPv6 message type codes for the DHCPV4-QUERY and 
-    DHCPV4-RESPONSE from the "DHCP Message Codes" table of the Dynamic Host 
-    Configuration Protocol for IPv6 (DHCPv6) Registry. Both tables can be found 
-    at http://www.iana.org/assignments/dhcpv6-parameters/dhcpv6-parameters.xml.
-=======
     OPTION_DHCPV4_MSG, OPTION_DHCP4_O_DHCP6_SERVER from the "DHCP Option Codes" table, and two
     DHCPv6 message type codes for the DHCPV4-QUERY and DHCPV4-RESPONSE from the
     "DHCP Message Codes" table of the Dynamic Host Configuration Protocol for
     IPv6 (DHCPv6) Registry. Both tables can be found at http://www.iana.org/assignments/dhcpv6-parameters/dhcpv6-parameters.xml.
->>>>>>> 2a18bec1972bde20c5fabbea1dbd4a8003967ff2
     </t>
 
   </section>
@@ -661,7 +648,6 @@
     &rfc3315;
     &rfc4242;
     &rfc4361;
-    &rfc6842;
   </references>
 
   <references title="Informative References">
