@@ -132,7 +132,7 @@
 
     <section title="Terminology">
       <t>This document makes use of the following terms:
-      <list hangIndent="20" style="hanging">
+      <list hangIndent="32" style="hanging">
 
         <t hangText="CPE:"> Customer Premises Equipment (also known as Customer
         Provided Equipment), which provides access for devices connected to a
