@@ -11,6 +11,7 @@
 <!ENTITY rfc2119 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
 <!ENTITY rfc2131 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2131.xml">
 <!ENTITY rfc3315 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3315.xml">
+<!ENTITY rfc3527 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3527.xml">
 <!ENTITY rfc4242 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4242.xml">
 <!ENTITY rfc4361 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4361.xml">
 <!ENTITY rfc5010 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5010.xml">
@@ -389,8 +390,8 @@
         <t>The 4o6 Server Address option is sent by a server to a
         client requesting IPv6 configuration using DHCPv6 <xref target="RFC3315"/>.
         It carries a list of DHCP 4o6 server's IPv6 addresses that the client
-        should contact to obtain IPv4 configuration. This list may include either
-        multicast or unicast addresses. The client sends its requests
+        should contact to obtain IPv4 configuration. This list may include
+        multicast and unicast addresses. The client sends its requests
         to all unique addresses carried in this option.</t>
 
         <t>This option may also carry no IPv6 addresses, which instructs the
@@ -575,18 +576,37 @@
       of scope for this document. </t>
 
       <t>If the server finds a valid DHCPv4 Message option, it extracts the
-      original DHCPv4 message and the contents of the "flags" field carried in
-      the DHCPv4-query message and uses them to generate the appropriate DHCPv4
-      response (server to client message). The response is generated as
-      described in <xref target="RFC2131"/> with the exception that the server
-      SHOULD use the information carried in the "flags" field of the
-      DHCPv4-query message to find out whether the client's message would have
-      been sent to the broadcast or unicast address if IPv4 has been used. This
-      is useful for the server to determine the state of the client. The use of
-      the "flags" field is described in detail in <xref target="uni_flag"/>.
-      </t>
+      original DHCPv4 message. Since the DHCPv4 message is encapsulated
+      in the DHCPv6 message, it lacks the information which is typically used
+      by the DHCPv4 server, implementing <xref target="RFC2131"/>, to make
+      address allocation decisions, e.g. giaddr for relayed messages and
+      IPv4 address of the interface which the server using to communicate
+      with directly connected client. Therefore, the DHCP 4o6 server allocates
+      addresses according to the local address assignment policies
+      determined by the server administrator. For example, if the DHCPv4-query
+      message has been sent via a relay, the server MAY use the link-address
+      field of the Relay-forward message as a lookup for the IPv4 subnet to
+      assign DHCPv4 address from. If the DHCPv4-query message has been
+      sent from a directly connected client, the server MAY use IPv6
+      source address of the message to determine the appropriate IPv4
+      subnet to use for DHCPv4 address assignment.</t>
 
-      <t>When an appropriate DHCPv4 response is generated, the 4o6 Server places
+      <t>The server may also act as a DHCPv4 relay agent and forward the
+      DHCPv4 packet to a "normal" DHCPv4 server. In this case, the server
+      would need to set the giaddr to one of its own addresses and add Relay
+      Agent Information option (82), including a Link Selection suboption
+      <xref target="RFC3527"/> with the IPv4 subnet to assign a DHCPv4
+      address from, as mentioned above. There are other complexities with
+      this solution as enough information needs to be retained (or included
+      in a Relay Agent Information option) to be able to return the response
+      back to the client; how this might be done is outside the scope of
+      this document.</t>
+
+      <t>The server SHOULD use "flags" field of the DHCPv4-query message to
+      create a response (server to client DHCPv4 message). The use of this
+      field is described in detail in <xref target="uni_flag"/>.</t>
+
+      <t>When an appropriate DHCPv4 response is created, the server places
       it in the payload of a DHCPv4 Message option, which it puts into the
       DHCPv4-response message.</t>
 
@@ -646,7 +666,7 @@
   </references>
 
   <references title="Informative References">
-
+    &rfc3527;
     &rfc5010;
     <?rfc include="reference.I-D.ietf-dhc-dhcpv6-unknown-msg" ?>
   </references>
