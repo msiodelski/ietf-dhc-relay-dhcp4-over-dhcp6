@@ -15,7 +15,7 @@ Expires: August 23, 2014                                    M. Siodelski
 
 
                       DHCPv4 over DHCPv6 Transport
-                  draft-ietf-dhc-dhcpv4-over-dhcpv6-05
+                  draft-ietf-dhc-dhcpv4-over-dhcpv6-06
 
 Abstract
 
