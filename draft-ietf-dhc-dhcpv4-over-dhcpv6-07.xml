@@ -439,13 +439,14 @@
       its state. For example, a client in the RENEWING state uses a unicast
       address to contact the DHCPv4 server to renew its lease. A client in the
       REBINDING state uses a broadcast address. If there is a DHCPv4 relay agent
-      in the middle, a client in the RENEWING state may send a DHCPREQUEST
-      message to the unicast address of the relay agent. In such a case, the
-      server is unable to determine whether the client sent the message to a
-      unicast or broadcast address and thus the server may be unable to
-      correctly determine the client's state. <xref target="RFC5010"/>
-      introduced the "Flags Suboption" that relay agents add to relayed messages
-      to indicate whether broadcast or unicast was used by the client.</t>
+      in the middle, <xref target="RFC5010"/> describes the possibility of a client 
+      in the RENEWING state sending a DHCPREQUEST message to the unicast address 
+      of the relay agent. In such a case, the server is unable to determine 
+      whether the client sent the message to a unicast or broadcast address and 
+      thus the server may be unable to correctly determine the client's state. 
+      <xref target="RFC5010"/> introduced the "Flags Suboption" that relay agents 
+      add to relayed messages to indicate whether broadcast or unicast was used 
+      by the client.</t>
 
       <t>In DHCPv4 over DHCPv6, IPv6 is used to deliver DHCPv4 messages to the
       DHCP 4o6 server. There is no relation between the outer IPv6 address and
