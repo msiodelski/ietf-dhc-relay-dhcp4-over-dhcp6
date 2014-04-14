@@ -5,13 +5,13 @@
 DHC Working Group                                                 Q. Sun
 Internet-Draft                                                    Y. Cui
 Intended status: Standards Track                     Tsinghua University
-Expires: October 14, 2014                                   M. Siodelski
+Expires: October 16, 2014                                   M. Siodelski
                                                                      ISC
                                                              S. Krishnan
                                                                 Ericsson
                                                                I. Farrer
                                                      Deutsche Telekom AG
-                                                          April 12, 2014
+                                                          April 14, 2014
 
 
                       DHCPv4 over DHCPv6 Transport
@@ -41,7 +41,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on October 14, 2014.
+   This Internet-Draft will expire on October 16, 2014.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Sun, et al.             Expires October 14, 2014                [Page 1]
+Sun, et al.             Expires October 16, 2014                [Page 1]
 
 Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Sun, et al.             Expires October 14, 2014                [Page 2]
+Sun, et al.             Expires October 16, 2014                [Page 2]
 
 Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 
@@ -165,7 +165,7 @@ Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 
 
 
-Sun, et al.             Expires October 14, 2014                [Page 3]
+Sun, et al.             Expires October 16, 2014                [Page 3]
 
 Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 
@@ -221,7 +221,7 @@ Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 
 
 
-Sun, et al.             Expires October 14, 2014                [Page 4]
+Sun, et al.             Expires October 16, 2014                [Page 4]
 
 Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 
@@ -277,7 +277,7 @@ Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 
 
 
-Sun, et al.             Expires October 14, 2014                [Page 5]
+Sun, et al.             Expires October 16, 2014                [Page 5]
 
 Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 
@@ -333,7 +333,7 @@ Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 
 
 
-Sun, et al.             Expires October 14, 2014                [Page 6]
+Sun, et al.             Expires October 16, 2014                [Page 6]
 
 Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 
@@ -389,7 +389,7 @@ Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 
 
 
-Sun, et al.             Expires October 14, 2014                [Page 7]
+Sun, et al.             Expires October 16, 2014                [Page 7]
 
 Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 
@@ -445,7 +445,7 @@ Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 
 
 
-Sun, et al.             Expires October 14, 2014                [Page 8]
+Sun, et al.             Expires October 16, 2014                [Page 8]
 
 Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 
@@ -457,14 +457,14 @@ Internet-Draft             DHCPv4 over DHCPv6                 April 2014
    state.  For example, a client in the RENEWING state uses a unicast
    address to contact the DHCPv4 server to renew its lease.  A client in
    the REBINDING state uses a broadcast address.  If there is a DHCPv4
-   relay agent in the middle, a client in the RENEWING state may send a
-   DHCPREQUEST message to the unicast address of the relay agent.  In
-   such a case, the server is unable to determine whether the client
-   sent the message to a unicast or broadcast address and thus the
-   server may be unable to correctly determine the client's state.
-   [RFC5010] introduced the "Flags Suboption" that relay agents add to
-   relayed messages to indicate whether broadcast or unicast was used by
-   the client.
+   relay agent in the middle, [RFC5010] describes the possibility of a
+   client in the RENEWING state sending a DHCPREQUEST message to the
+   unicast address of the relay agent.  In such a case, the server is
+   unable to determine whether the client sent the message to a unicast
+   or broadcast address and thus the server may be unable to correctly
+   determine the client's state.  [RFC5010] introduced the "Flags
+   Suboption" that relay agents add to relayed messages to indicate
+   whether broadcast or unicast was used by the client.
 
    In DHCPv4 over DHCPv6, IPv6 is used to deliver DHCPv4 messages to the
    DHCP 4o6 server.  There is no relation between the outer IPv6 address
@@ -501,7 +501,7 @@ Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 
 
 
-Sun, et al.             Expires October 14, 2014                [Page 9]
+Sun, et al.             Expires October 16, 2014                [Page 9]
 
 Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 
@@ -557,7 +557,7 @@ Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 
 
 
-Sun, et al.             Expires October 14, 2014               [Page 10]
+Sun, et al.             Expires October 16, 2014               [Page 10]
 
 Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 
@@ -613,7 +613,7 @@ Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 
 
 
-Sun, et al.             Expires October 14, 2014               [Page 11]
+Sun, et al.             Expires October 16, 2014               [Page 11]
 
 Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 
@@ -669,7 +669,7 @@ Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 
 
 
-Sun, et al.             Expires October 14, 2014               [Page 12]
+Sun, et al.             Expires October 16, 2014               [Page 12]
 
 Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 
@@ -725,7 +725,7 @@ Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 
 
 
-Sun, et al.             Expires October 14, 2014               [Page 13]
+Sun, et al.             Expires October 16, 2014               [Page 13]
 
 Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 
@@ -781,7 +781,7 @@ Authors' Addresses
 
 
 
-Sun, et al.             Expires October 14, 2014               [Page 14]
+Sun, et al.             Expires October 16, 2014               [Page 14]
 
 Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 
@@ -837,4 +837,4 @@ Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 
 
 
-Sun, et al.             Expires October 14, 2014               [Page 15]
+Sun, et al.             Expires October 16, 2014               [Page 15]
