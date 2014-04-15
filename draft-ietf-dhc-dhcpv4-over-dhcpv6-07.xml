@@ -14,7 +14,6 @@
 <!ENTITY rfc3527 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3527.xml">
 <!ENTITY rfc4242 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4242.xml">
 <!ENTITY rfc4361 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4361.xml">
-<!ENTITY rfc5010 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5010.xml">
 ]>
 
 <rfc category="std" docName="draft-ietf-dhc-dhcpv4-over-dhcpv6-07" ipr="trust200902">
@@ -438,22 +437,13 @@
       DHCPREQUEST message to either a broadcast or unicast address depending on
       its state. For example, a client in the RENEWING state uses a unicast
       address to contact the DHCPv4 server to renew its lease. A client in the
-      REBINDING state uses a broadcast address. If there is a DHCPv4 relay agent
-      in the middle, <xref target="RFC5010"/> describes the possibility of a client 
-      in the RENEWING state sending a DHCPREQUEST message to the unicast address 
-      of the relay agent. In such a case, the server is unable to determine 
-      whether the client sent the message to a unicast or broadcast address and 
-      thus the server may be unable to correctly determine the client's state. 
-      <xref target="RFC5010"/> introduced the "Flags Suboption" that relay agents 
-      add to relayed messages to indicate whether broadcast or unicast was used 
-      by the client.</t>
+      REBINDING state uses a broadcast address. </t>
 
       <t>In DHCPv4 over DHCPv6, IPv6 is used to deliver DHCPv4 messages to the
       DHCP 4o6 server. There is no relation between the outer IPv6 address and
       the inner DHCPv4 message. As a result, the server is unable to determine
       whether the received DHCPv4 messages should have been sent using broadcast
-      or unicast in IPv4 by checking the IPv6 address. This is similar to the
-      case addressed by <xref target="RFC5010"/>.</t>
+      or unicast in IPv4 by checking the IPv6 address. </t>
 
       <t>In order to allow the server to determine the client's state, the
       "Unicast" flag is carried in the DHCPv4-query message. The client MUST set
@@ -687,7 +677,6 @@
 
   <references title="Informative References">
     &rfc3527;
-    &rfc5010;
     <?rfc include="reference.I-D.ietf-dhc-dhcpv6-unknown-msg" ?>
   </references>
 
