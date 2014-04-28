@@ -5,17 +5,17 @@
 DHC Working Group                                                 Q. Sun
 Internet-Draft                                                    Y. Cui
 Intended status: Standards Track                     Tsinghua University
-Expires: October 17, 2014                                   M. Siodelski
+Expires: October 28, 2014                                   M. Siodelski
                                                                      ISC
                                                              S. Krishnan
                                                                 Ericsson
                                                                I. Farrer
                                                      Deutsche Telekom AG
-                                                          April 15, 2014
+                                                          April 26, 2014
 
 
                       DHCPv4 over DHCPv6 Transport
-                  draft-ietf-dhc-dhcpv4-over-dhcpv6-07
+                  draft-ietf-dhc-dhcpv4-over-dhcpv6-08
 
 Abstract
 
@@ -41,7 +41,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on October 17, 2014.
+   This Internet-Draft will expire on October 28, 2014.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Sun, et al.             Expires October 17, 2014                [Page 1]
+Sun, et al.             Expires October 28, 2014                [Page 1]
 
 Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Sun, et al.             Expires October 17, 2014                [Page 2]
+Sun, et al.             Expires October 28, 2014                [Page 2]
 
 Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 
@@ -165,7 +165,7 @@ Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 
 
 
-Sun, et al.             Expires October 17, 2014                [Page 3]
+Sun, et al.             Expires October 28, 2014                [Page 3]
 
 Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 
@@ -221,7 +221,7 @@ Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 
 
 
-Sun, et al.             Expires October 17, 2014                [Page 4]
+Sun, et al.             Expires October 28, 2014                [Page 4]
 
 Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 
@@ -277,7 +277,7 @@ Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 
 
 
-Sun, et al.             Expires October 17, 2014                [Page 5]
+Sun, et al.             Expires October 28, 2014                [Page 5]
 
 Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 
@@ -333,7 +333,7 @@ Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 
 
 
-Sun, et al.             Expires October 17, 2014                [Page 6]
+Sun, et al.             Expires October 28, 2014                [Page 6]
 
 Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 
@@ -389,7 +389,7 @@ Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 
 
 
-Sun, et al.             Expires October 17, 2014                [Page 7]
+Sun, et al.             Expires October 28, 2014                [Page 7]
 
 Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 
@@ -445,7 +445,7 @@ Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 
 
 
-Sun, et al.             Expires October 17, 2014                [Page 8]
+Sun, et al.             Expires October 28, 2014                [Page 8]
 
 Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 
@@ -501,7 +501,7 @@ Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 
 
 
-Sun, et al.             Expires October 17, 2014                [Page 9]
+Sun, et al.             Expires October 28, 2014                [Page 9]
 
 Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 
@@ -557,7 +557,7 @@ Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 
 
 
-Sun, et al.             Expires October 17, 2014               [Page 10]
+Sun, et al.             Expires October 28, 2014               [Page 10]
 
 Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 
@@ -613,7 +613,7 @@ Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 
 
 
-Sun, et al.             Expires October 17, 2014               [Page 11]
+Sun, et al.             Expires October 28, 2014               [Page 11]
 
 Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 
@@ -669,7 +669,7 @@ Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 
 
 
-Sun, et al.             Expires October 17, 2014               [Page 12]
+Sun, et al.             Expires October 28, 2014               [Page 12]
 
 Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 
@@ -698,12 +698,11 @@ Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 12.  IANA Considerations
 
    IANA is requested to allocate two DHCPv6 option codes for use by
-   OPTION_DHCPV4_MSG, OPTION_DHCP4_O_DHCP6_SERVER from the "DHCP Option
+   OPTION_DHCPV4_MSG and OPTION_DHCP4_O_DHCP6_SERVER from the "Option
    Codes" table, and two DHCPv6 message type codes for the DHCPV4-QUERY
-   and DHCPV4-RESPONSE from the "DHCP Message Codes" table of the
-   Dynamic Host Configuration Protocol for IPv6 (DHCPv6) Registry.  Both
-   tables can be found at http://www.iana.org/assignments/
-   dhcpv6-parameters/dhcpv6-parameters.xml.
+   and DHCPV4-RESPONSE from the "Message Types" table of the Dynamic
+   Host Configuration Protocol for IPv6 (DHCPv6) Registry.  Both tables
+   can be found at http://www.iana.org/assignments/dhcpv6-parameters/.
 
 13.  Contributors List
 
@@ -720,19 +719,16 @@ Internet-Draft             DHCPv4 over DHCPv6                 April 2014
    [RFC2131]  Droms, R., "Dynamic Host Configuration Protocol", RFC
               2131, March 1997.
 
-
-
-
-
-
-Sun, et al.             Expires October 17, 2014               [Page 13]
-
-Internet-Draft             DHCPv4 over DHCPv6                 April 2014
-
-
    [RFC3315]  Droms, R., Bound, J., Volz, B., Lemon, T., Perkins, C.,
               and M. Carney, "Dynamic Host Configuration Protocol for
               IPv6 (DHCPv6)", RFC 3315, July 2003.
+
+
+
+Sun, et al.             Expires October 28, 2014               [Page 13]
+
+Internet-Draft             DHCPv4 over DHCPv6                 April 2014
+
 
    [RFC4242]  Venaas, S., Chown, T., and B. Volz, "Information Refresh
               Time Option for Dynamic Host Configuration Protocol for
@@ -773,19 +769,6 @@ Authors' Addresses
    Email: yong@csnet1.cs.tsinghua.edu.cn
 
 
-
-
-
-
-
-
-
-
-Sun, et al.             Expires October 17, 2014               [Page 14]
-
-Internet-Draft             DHCPv4 over DHCPv6                 April 2014
-
-
    Marcin Siodelski
    950 Charter Street
    Redwood City, CA  94063
@@ -793,6 +776,14 @@ Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 
    Phone: +1 650 423 1431
    Email: msiodelski@gmail.com
+
+
+
+
+
+Sun, et al.             Expires October 28, 2014               [Page 14]
+
+Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 
 
    Suresh Krishnan
@@ -837,4 +828,13 @@ Internet-Draft             DHCPv4 over DHCPv6                 April 2014
 
 
 
-Sun, et al.             Expires October 17, 2014               [Page 15]
+
+
+
+
+
+
+
+
+
+Sun, et al.             Expires October 28, 2014               [Page 15]
