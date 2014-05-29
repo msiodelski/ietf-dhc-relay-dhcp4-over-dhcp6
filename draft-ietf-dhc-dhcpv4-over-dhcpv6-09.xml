@@ -511,10 +511,14 @@
       redundancy in some applications, but may be needlessly complex in
       other cases.</t>
 
-      <t>If the client receives the 4o6 Server Address option and
-      there is a DHCPv4 client active on the interface over which that DHCPv6
-      option was received, it MUST stop the DHCPv4 client from sending messages
-      using <xref target="RFC2131"/>.</t>
+      <t>If the client receives the 4o6 Server Address option and the DHCPv4
+      <xref target="RFC2131"/> is used on the interface over which the DHCPv6
+      option was received, the client MUST stop using the IPv4 configuration
+      received using the DHCPv4 on this interface. The client MAY send a
+      DHCPRELEASE to the DHCPv4 server to relinquish an existing lease as
+      described in <xref target="RFC2131"/> in section 4.4.6. The client MUST
+      NOT use the DHCPv4 on this interface as long as it receives 4o6 Server
+      Address option in the messages received from the DHCPv6 server.</t>
 
       <t>If the client receives a 4o6 Server Address option that contains no
       IP addresses, i.e. the option is empty, the client MUST send its
