@@ -165,7 +165,7 @@
       follow the advice in the "client behavior" section; nodes that do not require
       this functionality are expected not to implement it, or not to enable it by 
       default. This mechanism may be enabled using an administrative control, or may 
-      be enabled automatically in accordance with to the needs of some dual-stack 
+      be enabled automatically in accordance with the needs of some dual-stack
       transition mechanism such as <xref target="I-D.ietf-softwire-lw4over6"/>. 
       Such mechanisms are beyond the scope of this document.
       </t>
