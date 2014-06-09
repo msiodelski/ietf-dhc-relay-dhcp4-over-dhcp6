@@ -5,13 +5,13 @@
 DHC Working Group                                                 Q. Sun
 Internet-Draft                                                    Y. Cui
 Intended status: Standards Track                     Tsinghua University
-Expires: December 7, 2014                                   M. Siodelski
+Expires: December 11, 2014                                  M. Siodelski
                                                                      ISC
                                                              S. Krishnan
                                                                 Ericsson
                                                                I. Farrer
                                                      Deutsche Telekom AG
-                                                            June 5, 2014
+                                                            June 9, 2014
 
 
                       DHCPv4 over DHCPv6 Transport
@@ -41,7 +41,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on December 7, 2014.
+   This Internet-Draft will expire on December 11, 2014.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Sun, et al.             Expires December 7, 2014                [Page 1]
+Sun, et al.             Expires December 11, 2014               [Page 1]
 
 Internet-Draft             DHCPv4 over DHCPv6                  June 2014
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Sun, et al.             Expires December 7, 2014                [Page 2]
+Sun, et al.             Expires December 11, 2014               [Page 2]
 
 Internet-Draft             DHCPv4 over DHCPv6                  June 2014
 
@@ -165,7 +165,7 @@ Internet-Draft             DHCPv4 over DHCPv6                  June 2014
 
 
 
-Sun, et al.             Expires December 7, 2014                [Page 3]
+Sun, et al.             Expires December 11, 2014               [Page 3]
 
 Internet-Draft             DHCPv4 over DHCPv6                  June 2014
 
@@ -180,8 +180,8 @@ Internet-Draft             DHCPv4 over DHCPv6                  June 2014
    the "client behavior" section; nodes that do not require this
    functionality are expected not to implement it, or not to enable it
    by default.  This mechanism may be enabled using an administrative
-   control, or may be enabled automatically in accordance with to the
-   needs of some dual-stack transition mechanism such as
+   control, or may be enabled automatically in accordance with the needs
+   of some dual-stack transition mechanism such as
    [I-D.ietf-softwire-lw4over6].  Such mechanisms are beyond the scope
    of this document.
 
@@ -221,7 +221,7 @@ Internet-Draft             DHCPv4 over DHCPv6                  June 2014
 
 
 
-Sun, et al.             Expires December 7, 2014                [Page 4]
+Sun, et al.             Expires December 11, 2014               [Page 4]
 
 Internet-Draft             DHCPv4 over DHCPv6                  June 2014
 
@@ -277,7 +277,7 @@ Internet-Draft             DHCPv4 over DHCPv6                  June 2014
 
 
 
-Sun, et al.             Expires December 7, 2014                [Page 5]
+Sun, et al.             Expires December 11, 2014               [Page 5]
 
 Internet-Draft             DHCPv4 over DHCPv6                  June 2014
 
@@ -333,7 +333,7 @@ Internet-Draft             DHCPv4 over DHCPv6                  June 2014
 
 
 
-Sun, et al.             Expires December 7, 2014                [Page 6]
+Sun, et al.             Expires December 11, 2014               [Page 6]
 
 Internet-Draft             DHCPv4 over DHCPv6                  June 2014
 
@@ -389,7 +389,7 @@ Internet-Draft             DHCPv4 over DHCPv6                  June 2014
 
 
 
-Sun, et al.             Expires December 7, 2014                [Page 7]
+Sun, et al.             Expires December 11, 2014               [Page 7]
 
 Internet-Draft             DHCPv4 over DHCPv6                  June 2014
 
@@ -445,7 +445,7 @@ Internet-Draft             DHCPv4 over DHCPv6                  June 2014
 
 
 
-Sun, et al.             Expires December 7, 2014                [Page 8]
+Sun, et al.             Expires December 11, 2014               [Page 8]
 
 Internet-Draft             DHCPv4 over DHCPv6                  June 2014
 
@@ -501,7 +501,7 @@ Internet-Draft             DHCPv4 over DHCPv6                  June 2014
 
 
 
-Sun, et al.             Expires December 7, 2014                [Page 9]
+Sun, et al.             Expires December 11, 2014               [Page 9]
 
 Internet-Draft             DHCPv4 over DHCPv6                  June 2014
 
@@ -557,7 +557,7 @@ Internet-Draft             DHCPv4 over DHCPv6                  June 2014
 
 
 
-Sun, et al.             Expires December 7, 2014               [Page 10]
+Sun, et al.             Expires December 11, 2014              [Page 10]
 
 Internet-Draft             DHCPv4 over DHCPv6                  June 2014
 
@@ -613,7 +613,7 @@ Internet-Draft             DHCPv4 over DHCPv6                  June 2014
 
 
 
-Sun, et al.             Expires December 7, 2014               [Page 11]
+Sun, et al.             Expires December 11, 2014              [Page 11]
 
 Internet-Draft             DHCPv4 over DHCPv6                  June 2014
 
@@ -669,7 +669,7 @@ Internet-Draft             DHCPv4 over DHCPv6                  June 2014
 
 
 
-Sun, et al.             Expires December 7, 2014               [Page 12]
+Sun, et al.             Expires December 11, 2014              [Page 12]
 
 Internet-Draft             DHCPv4 over DHCPv6                  June 2014
 
@@ -725,7 +725,7 @@ Internet-Draft             DHCPv4 over DHCPv6                  June 2014
 
 
 
-Sun, et al.             Expires December 7, 2014               [Page 13]
+Sun, et al.             Expires December 11, 2014              [Page 13]
 
 Internet-Draft             DHCPv4 over DHCPv6                  June 2014
 
@@ -767,7 +767,7 @@ Internet-Draft             DHCPv4 over DHCPv6                  June 2014
    [I-D.ietf-softwire-lw4over6]
               Cui, Y., Qiong, Q., Boucadair, M., Tsou, T., Lee, Y., and
               I. Farrer, "Lightweight 4over6: An Extension to the DS-
-              Lite Architecture", draft-ietf-softwire-lw4over6-09 (work
+              Lite Architecture", draft-ietf-softwire-lw4over6-10 (work
               in progress), June 2014.
 
    [RFC0951]  Croft, B. and J. Gilmore, "Bootstrap Protocol", RFC 951,
@@ -781,7 +781,7 @@ Authors' Addresses
 
 
 
-Sun, et al.             Expires December 7, 2014               [Page 14]
+Sun, et al.             Expires December 11, 2014              [Page 14]
 
 Internet-Draft             DHCPv4 over DHCPv6                  June 2014
 
@@ -837,4 +837,4 @@ Internet-Draft             DHCPv4 over DHCPv6                  June 2014
 
 
 
-Sun, et al.             Expires December 7, 2014               [Page 15]
+Sun, et al.             Expires December 11, 2014              [Page 15]
