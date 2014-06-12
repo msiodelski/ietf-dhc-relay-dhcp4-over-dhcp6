@@ -647,32 +647,45 @@
       section 20.3 of <xref target="RFC3315"/>. </t>
     </section>
 
-  <section title="Security Considerations">
-    <t>In this specification, DHCPv4 messages are encapsulated in the newly
-    defined option and messages. This is similar to the handling of the 
-    current relay agent messages. In order to bypass firewalls or network
-    authentication gateways, a malicious attacker may leverage this feature
-    to convey other messages using DHCPv6, i.e. use DHCPv6 as a form of 
-    encapsulation. However, the potential risk from this is no more severe 
-    than that with the current DHCPv4 and DHCPv6 practice.</t>
+    <section title="Security Considerations">
+      <t>In this specification, DHCPv4 messages are encapsulated in the newly
+      defined option and messages. This is similar to the handling of the 
+      current relay agent messages. In order to bypass firewalls or network
+      authentication gateways, a malicious attacker may leverage this feature
+      to convey other messages using DHCPv6, i.e. use DHCPv6 as a form of 
+      encapsulation. However, the potential risk from this is no more severe 
+      than that with the current DHCPv4 and DHCPv6 practice.</t>
 
-    <t>It is possible for a rogue server to reply with a 4o6 Server
-    Address Option containing duplicated IPv6 addresses, which could cause an
-    amplification attack. To avoid this, the client MUST check if there are
-    duplicate IPv6 addresses in a 4o6 Server Address Option when receiving one.
-    The client MUST ignore any but the first instance of each address.</t>
-  </section>
+      <t>It is possible for a rogue server to reply with a 4o6 Server
+      Address Option containing duplicated IPv6 addresses, which could cause an
+      amplification attack. To avoid this, the client MUST check if there are
+      duplicate IPv6 addresses in a 4o6 Server Address Option when receiving one.
+      The client MUST ignore any but the first instance of each address.</t>
+    
+      <t>When considering whether to enable DHCPv4-over-DHCPv6, one important 
+      consideration is that when it is enabled, this gives the DHCPv6 server 
+      the ability to shut off DHCPv4 traffic, and, consequently, IPv4 traffic, 
+      on the interface that is configured to do DHCPv4-over-DHCPv6. For this 
+      reason, DHCPv4-over-DHCPv6 should only be enabled in situations where 
+      there is a clear trust relationship that eliminates this concern. 
+      For instance, a CPE device can safely enable this on its WAN interface, 
+      because it is reasonable to assume that an ISP will not accidentally 
+      configure DHCPv4 over DHCPv6 service on that link, and that it will 
+      be impractical for an attacker to set up a rogue DHCPv6 server in the 
+      ISP's network.</t>
+    
+    </section>
 
-  <section title="IANA Considerations">
+    <section title="IANA Considerations">
 
-    <t>IANA is requested to allocate two DHCPv6 option codes for use by
-    OPTION_DHCPV4_MSG and OPTION_DHCP4_O_DHCP6_SERVER from the "Option
-    Codes" table, and two DHCPv6 message type codes for the DHCPV4-QUERY
-    and DHCPV4-RESPONSE from the "Message Types" table of the
-    Dynamic Host Configuration Protocol for IPv6 (DHCPv6) Registry.  Both
-    tables can be found at http://www.iana.org/assignments/dhcpv6-parameters/.</t>
+      <t>IANA is requested to allocate two DHCPv6 option codes for use by
+      OPTION_DHCPV4_MSG and OPTION_DHCP4_O_DHCP6_SERVER from the "Option
+      Codes" table, and two DHCPv6 message type codes for the DHCPV4-QUERY
+      and DHCPV4-RESPONSE from the "Message Types" table of the
+      Dynamic Host Configuration Protocol for IPv6 (DHCPv6) Registry.  Both
+      tables can be found at http://www.iana.org/assignments/dhcpv6-parameters/.</t>
 
-  </section>
+    </section>
 
     <section title="Contributors List">
       <t>Many thanks to Ted Lemon, Bernie Volz, Tomek Mrugalski, Cong Liu and
